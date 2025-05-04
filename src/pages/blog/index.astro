@@ -8,9 +8,6 @@ const posts = (await getCollection("blog"))
   .filter(post => !post.data.draft)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-// Extract all unique tags
-const allTags = [...new Set(posts.flatMap(post => post.data.tags))].sort();
-
 // Categorize posts
 const blogPosts = posts.filter(post => post.data.tags.includes("Legal Analysis") || post.data.tags.includes("ADR"));
 
@@ -80,7 +77,7 @@ const creativeWritingData = [
     </h1>
     
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-      <!-- Toggleable Sidebar -->
+      <!-- Sidebar with Sections Only -->
       <div class="lg:col-span-1 bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 p-6">
         <div class="sticky top-24 space-y-6">
           <!-- Section Navigation -->
@@ -102,23 +99,10 @@ const creativeWritingData = [
             </nav>
           </div>
           
-          <!-- Filter By Tags -->
-          <div>
-            <h2 class="text-xl font-semibold mb-4 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">Filter by Tags</h2>
-            <div class="space-y-2 max-h-64 overflow-y-auto pr-2">
-              {allTags.map(tag => (
-                <label class="flex items-center gap-2 cursor-pointer group">
-                  <input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-black focus:ring-black dark:border-gray-600 dark:bg-gray-700 dark:focus:ring-offset-gray-800" data-tag={tag} />
-                  <span class="text-black/70 dark:text-white/70 group-hover:text-black group-hover:dark:text-white">{tag}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-          
           <!-- Toggle Button for Mobile -->
           <div class="lg:hidden">
-            <button id="toggle-filters" class="w-full py-2 px-4 bg-black dark:bg-white text-white dark:text-black rounded hover:opacity-90 transition-opacity">
-              Toggle Filters
+            <button id="toggle-sidebar" class="w-full py-2 px-4 bg-black dark:bg-white text-white dark:text-black rounded hover:opacity-90 transition-opacity">
+              Toggle Sections
             </button>
           </div>
         </div>
@@ -171,8 +155,8 @@ const creativeWritingData = [
           
           <div class="grid grid-cols-1 gap-6">
             {academicWritingData.map((paper) => (
-              <details class="group bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300">
-                <summary class="p-6 cursor-pointer list-none">
+              <article class="bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300">
+                <a href={`/blog/academic/${paper.title.toLowerCase().replace(/ /g, '-')}`} class="block p-6">
                   <div class="flex flex-col md:flex-row gap-6">
                     <div class="md:w-1/3">
                       <img src={paper.image} alt={paper.title} class="w-full h-auto rounded-lg object-cover" />
@@ -182,23 +166,16 @@ const creativeWritingData = [
                       <p class="text-black/60 dark:text-white/60 text-sm mb-2">
                         {paper.date} • {paper.publication}
                       </p>
-                      <p class="text-black/80 dark:text-white/80">{paper.summary}</p>
+                      <p class="text-black/80 dark:text-white/80 mb-4">{paper.summary}</p>
+                      <div class="flex flex-wrap gap-2">
+                        {paper.tags.map(tag => (
+                          <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </summary>
-                <div class="px-6 pb-6 pt-0 border-t border-black/10 dark:border-white/10 mt-4">
-                  <div class="flex flex-wrap gap-2 mb-4">
-                    {paper.tags.map(tag => (
-                      <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
-                    ))}
-                  </div>
-                  <div class="flex justify-end">
-                    <a href="#" class="inline-block bg-black dark:bg-white text-white dark:text-black py-1 px-3 rounded text-sm hover:opacity-80 transition-opacity">
-                      View Full Paper
-                    </a>
-                  </div>
-                </div>
-              </details>
+                </a>
+              </article>
             ))}
           </div>
         </section>
@@ -211,24 +188,26 @@ const creativeWritingData = [
           
           <div class="grid grid-cols-1 gap-6">
             {researchPaperSkeleton.map((paper) => (
-              <article class="bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 p-6">
-                <div class="flex flex-col md:flex-row gap-6">
-                  <div class="md:w-1/3">
-                    <img src={paper.image} alt={paper.title} class="w-full h-auto rounded-lg object-cover" />
-                    <div class="mt-2 inline-block px-3 py-1 bg-black/10 dark:bg-white/10 rounded text-sm text-black/70 dark:text-white/70">
-                      Status: {paper.status}
+              <article class="bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300">
+                <a href={`/blog/research/${paper.title.toLowerCase().replace(/ /g, '-')}`} class="block p-6">
+                  <div class="flex flex-col md:flex-row gap-6">
+                    <div class="md:w-1/3">
+                      <img src={paper.image} alt={paper.title} class="w-full h-auto rounded-lg object-cover" />
+                      <div class="mt-2 inline-block px-3 py-1 bg-black/10 dark:bg-white/10 rounded text-sm text-black/70 dark:text-white/70">
+                        Status: {paper.status}
+                      </div>
+                    </div>
+                    <div class="md:w-2/3">
+                      <h3 class="text-xl font-semibold text-black dark:text-white">{paper.title}</h3>
+                      <p class="text-black/80 dark:text-white/80 mt-2 mb-4">{paper.summary}</p>
+                      <div class="flex flex-wrap gap-2">
+                        {paper.tags.map(tag => (
+                          <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                  <div class="md:w-2/3">
-                    <h3 class="text-xl font-semibold text-black dark:text-white">{paper.title}</h3>
-                    <p class="text-black/80 dark:text-white/80 mt-2">{paper.summary}</p>
-                    <div class="flex flex-wrap gap-2 mt-4">
-                      {paper.tags.map(tag => (
-                        <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                </a>
               </article>
             ))}
           </div>
@@ -242,30 +221,23 @@ const creativeWritingData = [
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             {creativeWritingData.map((work) => (
-              <details class="group bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300">
-                <summary class="p-6 cursor-pointer list-none">
+              <article class="bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300">
+                <a href={`/blog/creative/${work.title.toLowerCase().replace(/ /g, '-')}`} class="block p-6">
                   <div>
                     <img src={work.image} alt={work.title} class="w-full h-48 object-cover rounded-lg mb-4" />
                     <h3 class="text-xl font-semibold text-black dark:text-white">{work.title}</h3>
                     <p class="text-black/60 dark:text-white/60 text-sm mb-2">
                       {work.genre} • {work.date}
                     </p>
+                    <p class="text-black/80 dark:text-white/80 mb-4">{work.summary}</p>
+                    <div class="flex flex-wrap gap-2">
+                      {work.tags.map(tag => (
+                        <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
+                      ))}
+                    </div>
                   </div>
-                </summary>
-                <div class="px-6 pb-6 pt-0 border-t border-black/10 dark:border-white/10 mt-4">
-                  <p class="text-black/80 dark:text-white/80 mb-4">{work.summary}</p>
-                  <div class="flex flex-wrap gap-2 mb-4">
-                    {work.tags.map(tag => (
-                      <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
-                    ))}
-                  </div>
-                  <div class="flex justify-end">
-                    <a href="#" class="inline-block bg-black dark:bg-white text-white dark:text-black py-1 px-3 rounded text-sm hover:opacity-80 transition-opacity">
-                      Read Sample
-                    </a>
-                  </div>
-                </div>
-              </details>
+                </a>
+              </article>
             ))}
           </div>
         </section>
@@ -277,7 +249,7 @@ const creativeWritingData = [
 <script>
 // Mobile toggle functionality
 document.addEventListener('DOMContentLoaded', () => {
-  const toggleButton = document.getElementById('toggle-filters');
+  const toggleButton = document.getElementById('toggle-sidebar');
   const sidebar = document.querySelector('.lg\\:col-span-1');
   
   toggleButton?.addEventListener('click', () => {
@@ -288,38 +260,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
-  
-  // Tag filtering
-  const tagCheckboxes = document.querySelectorAll('input[data-tag]');
-  const articles = document.querySelectorAll('article');
-  
-  tagCheckboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', updateFilters);
-  });
-  
-  function updateFilters() {
-    const selectedTags = Array.from(tagCheckboxes)
-      .filter(checkbox => (checkbox as HTMLInputElement).checked)
-      .map(checkbox => checkbox.getAttribute('data-tag') ?? '');
-    
-    if (selectedTags.length === 0) {
-      // If no tags selected, show all
-      articles.forEach(article => {
-        article.style.display = 'block';
-      });
-      return;
-    }
-    
-    // Filter articles based on selected tags
-    articles.forEach(article => {
-      const articleTags = Array.from(article.querySelectorAll('span'))
-        .map(span => span.textContent?.trim() ?? '');
-      
-      const hasSelectedTag = selectedTags.some(tag => articleTags.includes(tag));
-      
-      article.style.display = hasSelectedTag ? 'block' : 'none';
-    });
-  }
 });
 </script>
 

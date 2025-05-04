@@ -1,27 +1,28 @@
 ---
-import { getCollection } from "astro:content"
 import PageLayout from "@layouts/PageLayout.astro"
 import { PROJECTS } from "@consts"
 
-// Get all projects
-const allProjects = await getCollection("projects");
-
-// Organize projects by category
-const ipProjects = allProjects.filter(project => 
-  project.slug.includes("ip-certificate")
-);
-
-const adrProjects = allProjects.filter(project => 
-  project.slug.includes("adr-mediation")
-);
-
-const writingProjects = allProjects.filter(project => 
-  project.slug.includes("legal-writing")
-);
-
-const internshipProjects = allProjects.filter(project => 
-  project.slug.includes("internship-research")
-);
+// Projects data
+const projectsData = [
+  {
+    title: "Tower of Babel",
+    description: "A web development project focused on creating a multilingual communication platform that breaks down language barriers in real-time digital conversations.",
+    image: "/placeholder-image.svg",
+    tags: ["React", "NodeJS", "MongoDB", "WebSockets"],
+    link: "/projects/tower-of-babel",
+    status: "In Development",
+    period: "2024 - Present"
+  },
+  {
+    title: "Legal Document Analyzer",
+    description: "An application for parsing and analyzing legal documents using natural language processing, designed to streamline document review for legal professionals.",
+    image: "/placeholder-image.svg",
+    tags: ["Python", "NLP", "Legal Tech"],
+    link: "/projects/legal-document-analyzer",
+    status: "Concept Stage",
+    period: "2025 (Planned)"
+  }
+];
 ---
 
 <PageLayout title={PROJECTS.TITLE} description={PROJECTS.DESCRIPTION}>
@@ -30,138 +31,53 @@ const internshipProjects = allProjects.filter(project =>
       {PROJECTS.TITLE}
     </h1>
     
-    <div class="space-y-16">
-      <!-- IP Projects Section -->
-      <section class="scroll-mt-24">
-        <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
-          Intellectual Property Projects
-        </h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {ipProjects.map((project) => (
-            <details class="group bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300 overflow-hidden">
-              <summary class="cursor-pointer list-none">
-                <div class="p-6">
-                  <div class="aspect-video mb-4 overflow-hidden rounded-lg">
-                    <img src="/placeholder-image.svg" alt={project.data.title} class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                  </div>
-                  <h3 class="text-xl font-semibold text-black dark:text-white mb-2">{project.data.title}</h3>
-                  <p class="text-black/80 dark:text-white/80">{project.data.summary}</p>
-                </div>
-              </summary>
-              <div class="px-6 pb-6 pt-0 border-t border-black/10 dark:border-white/10">
-                <div class="prose prose-sm dark:prose-invert max-w-none mt-4">
-                  <Fragment set:html={project.body} />
-                </div>
-                <div class="flex flex-wrap gap-2 mt-4">
-                  {project.data.tags.map(tag => (
-                    <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
-                  ))}
-                </div>
-              </div>
-            </details>
-          ))}
-        </div>
-      </section>
+    <div class="max-w-4xl mx-auto">
+      <p class="text-black/80 dark:text-white/80 mb-10">
+        A collection of my technical and creative projects showcasing my interests at the intersection of technology and law.
+      </p>
       
-      <!-- ADR Projects Section -->
-      <section class="scroll-mt-24">
-        <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
-          Alternative Dispute Resolution Projects
-        </h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {adrProjects.map((project) => (
-            <details class="group bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300 overflow-hidden">
-              <summary class="cursor-pointer list-none">
-                <div class="p-6">
-                  <div class="aspect-video mb-4 overflow-hidden rounded-lg">
-                    <img src="/placeholder-image.svg" alt={project.data.title} class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                  </div>
-                  <h3 class="text-xl font-semibold text-black dark:text-white mb-2">{project.data.title}</h3>
-                  <p class="text-black/80 dark:text-white/80">{project.data.summary}</p>
-                </div>
-              </summary>
-              <div class="px-6 pb-6 pt-0 border-t border-black/10 dark:border-white/10">
-                <div class="prose prose-sm dark:prose-invert max-w-none mt-4">
-                  <Fragment set:html={project.body} />
-                </div>
-                <div class="flex flex-wrap gap-2 mt-4">
-                  {project.data.tags.map(tag => (
-                    <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
-                  ))}
+      <div class="space-y-10">
+        {projectsData.map(project => (
+          <a href={project.link} class="block bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300 overflow-hidden">
+            <div class="flex flex-col md:flex-row">
+              <div class="md:w-2/5">
+                <div class="aspect-video md:h-full overflow-hidden">
+                  <img src={project.image} alt={project.title} class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
                 </div>
               </div>
-            </details>
-          ))}
-        </div>
-      </section>
+              <div class="md:w-3/5 p-6">
+                <div class="flex flex-wrap gap-2 mb-3">
+                  <span class="inline-block px-2 py-1 bg-black/10 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">
+                    {project.status}
+                  </span>
+                  <span class="inline-block px-2 py-1 bg-black/10 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">
+                    {project.period}
+                  </span>
+                </div>
+                <h2 class="text-2xl font-semibold text-black dark:text-white mb-2">{project.title}</h2>
+                <p class="text-black/80 dark:text-white/80 mb-4">{project.description}</p>
+                <div class="flex flex-wrap gap-2 mb-4">
+                  {project.tags.map(tag => (
+                    <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <div class="mt-2">
+                  <span class="text-sm font-medium text-black dark:text-white hover:underline">View project details →</span>
+                </div>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
       
-      <!-- Legal Writing Projects Section -->
-      <section class="scroll-mt-24">
-        <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
-          Legal Writing Projects
-        </h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {writingProjects.map((project) => (
-            <details class="group bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300 overflow-hidden">
-              <summary class="cursor-pointer list-none">
-                <div class="p-6">
-                  <div class="aspect-video mb-4 overflow-hidden rounded-lg">
-                    <img src="/placeholder-image.svg" alt={project.data.title} class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                  </div>
-                  <h3 class="text-xl font-semibold text-black dark:text-white mb-2">{project.data.title}</h3>
-                  <p class="text-black/80 dark:text-white/80">{project.data.summary}</p>
-                </div>
-              </summary>
-              <div class="px-6 pb-6 pt-0 border-t border-black/10 dark:border-white/10">
-                <div class="prose prose-sm dark:prose-invert max-w-none mt-4">
-                  <Fragment set:html={project.body} />
-                </div>
-                <div class="flex flex-wrap gap-2 mt-4">
-                  {project.data.tags.map(tag => (
-                    <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
-                  ))}
-                </div>
-              </div>
-            </details>
-          ))}
-        </div>
-      </section>
-      
-      <!-- Internship Research Projects Section -->
-      <section class="scroll-mt-24">
-        <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
-          Internship Research Projects
-        </h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {internshipProjects.map((project) => (
-            <details class="group bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300 overflow-hidden">
-              <summary class="cursor-pointer list-none">
-                <div class="p-6">
-                  <div class="aspect-video mb-4 overflow-hidden rounded-lg">
-                    <img src="/placeholder-image.svg" alt={project.data.title} class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                  </div>
-                  <h3 class="text-xl font-semibold text-black dark:text-white mb-2">{project.data.title}</h3>
-                  <p class="text-black/80 dark:text-white/80">{project.data.summary}</p>
-                </div>
-              </summary>
-              <div class="px-6 pb-6 pt-0 border-t border-black/10 dark:border-white/10">
-                <div class="prose prose-sm dark:prose-invert max-w-none mt-4">
-                  <Fragment set:html={project.body} />
-                </div>
-                <div class="flex flex-wrap gap-2 mt-4">
-                  {project.data.tags.map(tag => (
-                    <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
-                  ))}
-                </div>
-              </div>
-            </details>
-          ))}
-        </div>
-      </section>
+      <div class="mt-16 p-8 bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 text-center">
+        <h2 class="text-xl font-semibold text-black dark:text-white mb-3">Future Projects</h2>
+        <p class="text-black/80 dark:text-white/80">
+          Additional projects are currently in planning stages, exploring applications of technology in legal research, education, and practice. Check back for updates!
+        </p>
+      </div>
     </div>
   </div>
 </PageLayout>

@@ -11,7 +11,20 @@ const professionalExperience = workEntries.filter(entry =>
   entry.id === "genesis-studio.md" || 
   entry.id === "genesis-team-leader.md" || 
   entry.id === "wuxiaworld.md"
-);
+).sort((a, b) => {
+  // Parse dates for sorting (format: "Month Year")
+  const getDate = (entry: typeof workEntries[0]): number => {
+    const dateStartStr = typeof entry.data.dateStart === 'string' 
+      ? entry.data.dateStart 
+      : entry.data.dateStart.toString();
+    const parts = dateStartStr.split(" ");
+    const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].indexOf(parts[0]);
+    const year = parseInt(parts[1]);
+    return new Date(year, month).getTime();
+  };
+  
+  return getDate(b) - getDate(a); // Descending order
+});
 
 // Internship data
 const internshipData = [
@@ -19,6 +32,7 @@ const internshipData = [
     title: "Jus Scriptum",
     role: "Legal Research & Writing Intern",
     period: "December 2024 – January 2025",
+    dateStart: "Dec 2024",
     description: "Conducted in-depth legal research and contributed to legal articles focusing on constitutional developments and intellectual property jurisprudence in India.",
     image: "/placeholder-image.svg",
     skills: ["Legal Research", "Constitutional Law", "IP Law", "Academic Writing"]
@@ -27,11 +41,23 @@ const internshipData = [
     title: "Jus Corpus",
     role: "Legal Writing Intern",
     period: "January – February 2025",
+    dateStart: "Jan 2025",
     description: "Wrote analytical pieces on legal developments and case law summaries for publication on an open-access legal platform.",
     image: "/placeholder-image.svg",
     skills: ["Legal Writing", "Case Analysis", "Legal Research", "Content Creation"]
   }
-];
+].sort((a, b) => {
+  // Sort by date (newest first)
+  const getDate = (entry: {dateStart: string}): number => {
+    const dateStart = entry.dateStart;
+    const parts = dateStart.split(" ");
+    const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].indexOf(parts[0]);
+    const year = parseInt(parts[1]);
+    return new Date(year, month).getTime();
+  };
+  
+  return getDate(b) - getDate(a); // Descending order
+});
 
 // Committee data
 const committeeData = [
@@ -39,6 +65,7 @@ const committeeData = [
     title: "Journal and Seminar Committee",
     role: "General Member",
     period: "2024 - Present",
+    dateStart: "Jun 2024",
     description: "Active member of the Journal and Seminar Committee at the Department of Law, University of Calcutta, contributing to academic publications and event planning.",
     image: "/placeholder-image.svg",
     responsibilities: [
@@ -57,6 +84,7 @@ const extracurricularData = [
     organizer: "Journal and Seminar Committee, Department of Law, University of Calcutta",
     role: "Participant",
     period: "December 2024",
+    dateStart: "Dec 2024",
     description: "Participated in the national-level legal writing competition focused on contemporary legal issues.",
     image: "/placeholder-image.svg"
   },
@@ -65,6 +93,7 @@ const extracurricularData = [
     organizer: "Lloyd Law College, India",
     role: "Mediator",
     period: "March 2025",
+    dateStart: "Mar 2025",
     description: "Served as a mediator in this prestigious international competition, applying ADR principles in simulated dispute scenarios.",
     image: "/placeholder-image.svg"
   },
@@ -73,10 +102,86 @@ const extracurricularData = [
     organizer: "NUJS IPLTS in collaboration with The Dialogue",
     role: "Participant",
     period: "2025",
+    dateStart: "Feb 2025",
     description: "Contributed a research article on intellectual property rights in the digital age.",
     image: "/placeholder-image.svg"
   }
-];
+].sort((a, b) => {
+  // Sort by date (newest first)
+  const getDate = (entry: {dateStart: string}): number => {
+    const dateStart = entry.dateStart;
+    const parts = dateStart.split(" ");
+    const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].indexOf(parts[0]);
+    const year = parseInt(parts[1]);
+    return new Date(year, month).getTime();
+  };
+  
+  return getDate(b) - getDate(a); // Descending order
+});
+
+// Format professional entries
+const professionalTimelineEntries = professionalExperience.map(entry => {
+  const dateStartStr = typeof entry.data.dateStart === 'string' 
+    ? entry.data.dateStart 
+    : entry.data.dateStart.toString();
+  
+  const dateEndStr = entry.data.dateEnd === "Now" 
+    ? "Present" 
+    : (typeof entry.data.dateEnd === 'string' 
+        ? entry.data.dateEnd 
+        : entry.data.dateEnd.toString());
+    
+  return {
+    type: "professional" as const,
+    title: entry.data.company,
+    role: entry.data.role,
+    period: `${dateStartStr} - ${dateEndStr}`,
+    dateStart: dateStartStr,
+    dateEnd: dateEndStr,
+    description: entry.body,
+    image: "/placeholder-image.svg",
+    slug: entry.slug
+  };
+});
+
+// Format internship entries
+const internshipTimelineEntries = internshipData.map(entry => ({
+  type: "internship" as const,
+  title: entry.title,
+  role: entry.role,
+  period: entry.period,
+  dateStart: entry.dateStart,
+  description: entry.description,
+  image: entry.image,
+  skills: entry.skills,
+  slug: entry.title.toLowerCase().replace(/\s+/g, '-')
+}));
+
+// Format committee entries
+const committeeTimelineEntries = committeeData.map(entry => ({
+  type: "committee" as const,
+  title: entry.title,
+  role: entry.role,
+  period: entry.period,
+  dateStart: entry.dateStart,
+  description: entry.description,
+  image: entry.image,
+  responsibilities: entry.responsibilities,
+  slug: entry.title.toLowerCase().replace(/\s+/g, '-')
+}));
+
+// Format extracurricular entries
+const extracurricularTimelineEntries = extracurricularData.map(entry => ({
+  type: "extracurricular" as const,
+  title: entry.title,
+  organizer: entry.organizer,
+  role: entry.role,
+  period: entry.period,
+  dateStart: entry.dateStart,
+  description: entry.description,
+  image: entry.image,
+  slug: entry.title.toLowerCase().replace(/\s+/g, '-')
+}));
 ---
 
 <PageLayout title={WORK.TITLE} description={WORK.DESCRIPTION}>
@@ -85,189 +190,225 @@ const extracurricularData = [
       {WORK.TITLE}
     </h1>
     
-    <!-- Experience with timeline sidebar layout -->
-    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-      <!-- Timeline Sidebar -->
-      <div class="lg:col-span-1 hidden lg:block">
-        <div class="sticky top-24 space-y-4">
-          <div class="text-sm font-semibold uppercase mb-4 text-black dark:text-white">Timeline</div>
-          <nav class="space-y-2 relative">
-            <!-- Timeline vertical line -->
-            <div class="absolute left-2.5 top-2 h-full w-0.5 bg-black/20 dark:bg-white/20"></div>
-            
-            <a href="#professional" class="flex items-center py-2 pl-6 relative focus:outline-none group">
-              <div class="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-5 rounded-full bg-black/10 dark:bg-white/10 border border-black/20 dark:border-white/20 group-hover:bg-black/20 group-hover:dark:bg-white/30"></div>
-              <span class="text-black/70 dark:text-white/70 group-hover:text-black group-hover:dark:text-white">
-                Professional Experience
-              </span>
-            </a>
-            
-            <a href="#internships" class="flex items-center py-2 pl-6 relative focus:outline-none group">
-              <div class="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-5 rounded-full bg-black/10 dark:bg-white/10 border border-black/20 dark:border-white/20 group-hover:bg-black/20 group-hover:dark:bg-white/30"></div>
-              <span class="text-black/70 dark:text-white/70 group-hover:text-black group-hover:dark:text-white">
-                Internships
-              </span>
-            </a>
-            
-            <a href="#committees" class="flex items-center py-2 pl-6 relative focus:outline-none group">
-              <div class="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-5 rounded-full bg-black/10 dark:bg-white/10 border border-black/20 dark:border-white/20 group-hover:bg-black/20 group-hover:dark:bg-white/30"></div>
-              <span class="text-black/70 dark:text-white/70 group-hover:text-black group-hover:dark:text-white">
-                Committees
-              </span>
-            </a>
-            
-            <a href="#extracurricular" class="flex items-center py-2 pl-6 relative focus:outline-none group">
-              <div class="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-5 rounded-full bg-black/10 dark:bg-white/10 border border-black/20 dark:border-white/20 group-hover:bg-black/20 group-hover:dark:bg-white/30"></div>
-              <span class="text-black/70 dark:text-white/70 group-hover:text-black group-hover:dark:text-white">
-                Competitions & Activities
-              </span>
-            </a>
-          </nav>
-        </div>
-      </div>
+    <!-- Navigation Links -->
+    <div class="flex flex-wrap gap-4 mb-8">
+      <a href="#professional" class="px-4 py-2 bg-black/5 dark:bg-white/10 rounded-lg hover:bg-black/10 hover:dark:bg-white/20 transition-colors">
+        Professional Experience
+      </a>
+      <a href="#internships" class="px-4 py-2 bg-black/5 dark:bg-white/10 rounded-lg hover:bg-black/10 hover:dark:bg-white/20 transition-colors">
+        Internships
+      </a>
+      <a href="#committees" class="px-4 py-2 bg-black/5 dark:bg-white/10 rounded-lg hover:bg-black/10 hover:dark:bg-white/20 transition-colors">
+        Committees
+      </a>
+      <a href="#extracurricular" class="px-4 py-2 bg-black/5 dark:bg-white/10 rounded-lg hover:bg-black/10 hover:dark:bg-white/20 transition-colors">
+        Competitions & Activities
+      </a>
+    </div>
+    
+    <!-- Professional Experience Section -->
+    <section id="professional" class="scroll-mt-24 mb-16">
+      <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
+        Professional Experience
+      </h2>
       
-      <!-- Main Content -->
-      <div class="lg:col-span-3 space-y-16">
-        <!-- Professional Experience Section -->
-        <section id="professional" class="scroll-mt-24">
-          <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
-            Professional Experience
-          </h2>
-          
-          <div class="space-y-6">
-            {professionalExperience.map((work) => (
-              <details class="group bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300">
-                <summary class="p-6 cursor-pointer list-none">
-                  <div class="flex flex-col md:flex-row gap-4 items-start">
+      <div class="relative">
+        <!-- Timeline line on the left -->
+        <div class="absolute left-16 top-0 bottom-0 w-0.5 bg-black/20 dark:bg-white/20"></div>
+        
+        <div class="space-y-8">
+          {professionalTimelineEntries.map((entry) => (
+            <div class="ml-24 relative">
+              <!-- Timeline dot -->
+              <div class="absolute left-[-8px] top-6 w-4 h-4 rounded-full bg-black dark:bg-white"></div>
+              
+              <!-- Timeline date -->
+              <div class="absolute left-[-60px] top-5 text-sm font-medium text-black/70 dark:text-white/70">
+                {entry.dateStart}
+              </div>
+              
+              <!-- Content card -->
+              <a href={`/work/${entry.slug}`} class="block bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300 overflow-hidden">
+                <div class="p-6">
+                  <div class="flex flex-col md:flex-row gap-6">
                     <div class="md:w-1/4">
-                      <div class="bg-black/5 dark:bg-white/5 p-4 rounded-lg text-center">
-                        <p class="text-sm text-black/60 dark:text-white/60">
-                          {work.data.dateStart} - {work.data.dateEnd === "Now" ? "Present" : work.data.dateEnd}
-                        </p>
+                      <img src={entry.image} alt={entry.title} class="w-full rounded-lg object-cover aspect-video" />
+                    </div>
+                    <div class="md:w-3/4">
+                      <div class="mb-2">
+                        <span class="inline-block px-2 py-1 bg-black/10 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">
+                          Professional
+                        </span>
+                      </div>
+                      <h3 class="text-xl font-semibold text-black dark:text-white">{entry.role}</h3>
+                      <p class="text-black/70 dark:text-white/70 mb-1">{entry.title}</p>
+                      <p class="text-black/60 dark:text-white/60 mb-3">{entry.period}</p>
+                      <p class="text-black/80 dark:text-white/80 line-clamp-3">{entry.description}</p>
+                      <div class="mt-3">
+                        <span class="text-sm font-medium text-black dark:text-white hover:underline">Read more →</span>
                       </div>
                     </div>
-                    <div class="md:w-3/4">
-                      <h3 class="text-xl font-semibold text-black dark:text-white">{work.data.role}</h3>
-                      <p class="text-black/70 dark:text-white/70 mb-2">{work.data.company}</p>
-                    </div>
-                  </div>
-                </summary>
-                <div class="px-6 pb-6 pt-0 border-t border-black/10 dark:border-white/10 mt-4">
-                  <div class="prose prose-sm dark:prose-invert max-w-none mt-4">
-                    <Fragment set:html={work.body} />
                   </div>
                 </div>
-              </details>
-            ))}
-          </div>
-        </section>
-        
-        <!-- Internships Section -->
-        <section id="internships" class="scroll-mt-24">
-          <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
-            Internships
-          </h2>
-          
-          <div class="space-y-6">
-            {internshipData.map((internship) => (
-              <details class="group bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300">
-                <summary class="p-6 cursor-pointer list-none">
-                  <div class="flex flex-col md:flex-row gap-4 items-start">
-                    <div class="md:w-1/4">
-                      <img src={internship.image} alt={internship.title} class="w-full h-auto rounded-lg object-cover" />
-                    </div>
-                    <div class="md:w-3/4">
-                      <h3 class="text-xl font-semibold text-black dark:text-white">{internship.role}</h3>
-                      <p class="text-black/70 dark:text-white/70 mb-2">{internship.title}</p>
-                      <p class="text-black/60 dark:text-white/60">{internship.period}</p>
-                    </div>
-                  </div>
-                </summary>
-                <div class="px-6 pb-6 pt-0 border-t border-black/10 dark:border-white/10 mt-4">
-                  <p class="text-black/80 dark:text-white/80 mb-4">{internship.description}</p>
-                  <div class="mt-4">
-                    <h4 class="text-sm font-semibold text-black/70 dark:text-white/70 mb-2">Skills Applied</h4>
-                    <div class="flex flex-wrap gap-2">
-                      {internship.skills.map((skill) => (
-                        <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs">
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </details>
-            ))}
-          </div>
-        </section>
-        
-        <!-- Committees Section -->
-        <section id="committees" class="scroll-mt-24">
-          <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
-            Committees
-          </h2>
-          
-          <div class="space-y-6">
-            {committeeData.map((committee) => (
-              <details class="group bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300">
-                <summary class="p-6 cursor-pointer list-none">
-                  <div class="flex flex-col md:flex-row gap-4 items-start">
-                    <div class="md:w-1/4">
-                      <img src={committee.image} alt={committee.title} class="w-full h-auto rounded-lg object-cover" />
-                    </div>
-                    <div class="md:w-3/4">
-                      <h3 class="text-xl font-semibold text-black dark:text-white">{committee.title}</h3>
-                      <p class="text-black/70 dark:text-white/70 mb-2">{committee.role}</p>
-                      <p class="text-black/60 dark:text-white/60">{committee.period}</p>
-                    </div>
-                  </div>
-                </summary>
-                <div class="px-6 pb-6 pt-0 border-t border-black/10 dark:border-white/10 mt-4">
-                  <p class="text-black/80 dark:text-white/80 mb-4">{committee.description}</p>
-                  <div class="mt-4">
-                    <h4 class="text-sm font-semibold text-black/70 dark:text-white/70 mb-2">Responsibilities</h4>
-                    <ul class="list-disc pl-5 space-y-1 text-black/80 dark:text-white/80">
-                      {committee.responsibilities.map((item) => (
-                        <li>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </details>
-            ))}
-          </div>
-        </section>
-        
-        <!-- Competitions & Extracurricular Section -->
-        <section id="extracurricular" class="scroll-mt-24">
-          <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
-            Competitions & Activities
-          </h2>
-          
-          <div class="space-y-6">
-            {extracurricularData.map((activity) => (
-              <details class="group bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300">
-                <summary class="p-6 cursor-pointer list-none">
-                  <div class="flex flex-col md:flex-row gap-4 items-start">
-                    <div class="md:w-1/4">
-                      <img src={activity.image} alt={activity.title} class="w-full h-auto rounded-lg object-cover" />
-                    </div>
-                    <div class="md:w-3/4">
-                      <h3 class="text-xl font-semibold text-black dark:text-white">{activity.title}</h3>
-                      <p class="text-black/70 dark:text-white/70 mb-2">{activity.role}</p>
-                      <p class="text-black/60 dark:text-white/60">{activity.period}</p>
-                    </div>
-                  </div>
-                </summary>
-                <div class="px-6 pb-6 pt-0 border-t border-black/10 dark:border-white/10 mt-4">
-                  <p class="text-black/70 dark:text-white/70 mb-2 italic">Organized by: {activity.organizer}</p>
-                  <p class="text-black/80 dark:text-white/80">{activity.description}</p>
-                </div>
-              </details>
-            ))}
-          </div>
-        </section>
+              </a>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
+    
+    <!-- Internships Section -->
+    <section id="internships" class="scroll-mt-24 mb-16">
+      <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
+        Internships
+      </h2>
+      
+      <div class="relative">
+        <!-- Timeline line on the left -->
+        <div class="absolute left-16 top-0 bottom-0 w-0.5 bg-black/20 dark:bg-white/20"></div>
+        
+        <div class="space-y-8">
+          {internshipTimelineEntries.map((entry) => (
+            <div class="ml-24 relative">
+              <!-- Timeline dot -->
+              <div class="absolute left-[-8px] top-6 w-4 h-4 rounded-full bg-black dark:bg-white"></div>
+              
+              <!-- Timeline date -->
+              <div class="absolute left-[-60px] top-5 text-sm font-medium text-black/70 dark:text-white/70">
+                {entry.dateStart}
+              </div>
+              
+              <!-- Content card -->
+              <a href={`/work/internships/${entry.slug}`} class="block bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300 overflow-hidden">
+                <div class="p-6">
+                  <div class="flex flex-col md:flex-row gap-6">
+                    <div class="md:w-1/4">
+                      <img src={entry.image} alt={entry.title} class="w-full rounded-lg object-cover aspect-video" />
+                    </div>
+                    <div class="md:w-3/4">
+                      <div class="mb-2">
+                        <span class="inline-block px-2 py-1 bg-black/10 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">
+                          Internship
+                        </span>
+                      </div>
+                      <h3 class="text-xl font-semibold text-black dark:text-white">{entry.role}</h3>
+                      <p class="text-black/70 dark:text-white/70 mb-1">{entry.title}</p>
+                      <p class="text-black/60 dark:text-white/60 mb-3">{entry.period}</p>
+                      <p class="text-black/80 dark:text-white/80 line-clamp-3">{entry.description}</p>
+                      <div class="mt-3">
+                        <span class="text-sm font-medium text-black dark:text-white hover:underline">Read more →</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+    
+    <!-- Committees Section -->
+    <section id="committees" class="scroll-mt-24 mb-16">
+      <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
+        Committees
+      </h2>
+      
+      <div class="relative">
+        <!-- Timeline line on the left -->
+        <div class="absolute left-16 top-0 bottom-0 w-0.5 bg-black/20 dark:bg-white/20"></div>
+        
+        <div class="space-y-8">
+          {committeeTimelineEntries.map((entry) => (
+            <div class="ml-24 relative">
+              <!-- Timeline dot -->
+              <div class="absolute left-[-8px] top-6 w-4 h-4 rounded-full bg-black dark:bg-white"></div>
+              
+              <!-- Timeline date -->
+              <div class="absolute left-[-60px] top-5 text-sm font-medium text-black/70 dark:text-white/70">
+                {entry.dateStart}
+              </div>
+              
+              <!-- Content card -->
+              <a href={`/work/committees/${entry.slug}`} class="block bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300 overflow-hidden">
+                <div class="p-6">
+                  <div class="flex flex-col md:flex-row gap-6">
+                    <div class="md:w-1/4">
+                      <img src={entry.image} alt={entry.title} class="w-full rounded-lg object-cover aspect-video" />
+                    </div>
+                    <div class="md:w-3/4">
+                      <div class="mb-2">
+                        <span class="inline-block px-2 py-1 bg-black/10 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">
+                          Committee
+                        </span>
+                      </div>
+                      <h3 class="text-xl font-semibold text-black dark:text-white">{entry.role}</h3>
+                      <p class="text-black/70 dark:text-white/70 mb-1">{entry.title}</p>
+                      <p class="text-black/60 dark:text-white/60 mb-3">{entry.period}</p>
+                      <p class="text-black/80 dark:text-white/80 line-clamp-3">{entry.description}</p>
+                      <div class="mt-3">
+                        <span class="text-sm font-medium text-black dark:text-white hover:underline">Read more →</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+    
+    <!-- Extracurricular Section -->
+    <section id="extracurricular" class="scroll-mt-24">
+      <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
+        Competitions & Activities
+      </h2>
+      
+      <div class="relative">
+        <!-- Timeline line on the left -->
+        <div class="absolute left-16 top-0 bottom-0 w-0.5 bg-black/20 dark:bg-white/20"></div>
+        
+        <div class="space-y-8">
+          {extracurricularTimelineEntries.map((entry) => (
+            <div class="ml-24 relative">
+              <!-- Timeline dot -->
+              <div class="absolute left-[-8px] top-6 w-4 h-4 rounded-full bg-black dark:bg-white"></div>
+              
+              <!-- Timeline date -->
+              <div class="absolute left-[-60px] top-5 text-sm font-medium text-black/70 dark:text-white/70">
+                {entry.dateStart}
+              </div>
+              
+              <!-- Content card -->
+              <a href={`/work/activities/${entry.slug}`} class="block bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300 overflow-hidden">
+                <div class="p-6">
+                  <div class="flex flex-col md:flex-row gap-6">
+                    <div class="md:w-1/4">
+                      <img src={entry.image} alt={entry.title} class="w-full rounded-lg object-cover aspect-video" />
+                    </div>
+                    <div class="md:w-3/4">
+                      <div class="mb-2">
+                        <span class="inline-block px-2 py-1 bg-black/10 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">
+                          Competition
+                        </span>
+                      </div>
+                      <h3 class="text-xl font-semibold text-black dark:text-white">{entry.role}</h3>
+                      <p class="text-black/70 dark:text-white/70 mb-1">{entry.title}</p>
+                      <p class="text-black/60 dark:text-white/60 mb-1">{entry.organizer}</p>
+                      <p class="text-black/60 dark:text-white/60 mb-3">{entry.period}</p>
+                      <p class="text-black/80 dark:text-white/80 line-clamp-3">{entry.description}</p>
+                      <div class="mt-3">
+                        <span class="text-sm font-medium text-black dark:text-white hover:underline">Read more →</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   </div>
 </PageLayout> 
