@@ -91,7 +91,7 @@ header.scrolled {
 
 html.dark header.scrolled {
   background-color: rgba(10, 25, 41, 0.5); /* Dark mode header */
-  @apply dark:border-white/25;
+  @apply border-white/25;
   @apply backdrop-blur-sm saturate-200;
 }
 
@@ -120,7 +120,16 @@ article {
 }
 
 .glass-effect {
-  @apply bg-white/30 dark:bg-black/30 backdrop-blur-md border border-black/10 dark:border-white/10 shadow-sm transition-all duration-300;
+  background-color: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 300ms;
+}
+
+html.dark .glass-effect {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Custom glow effects */
@@ -244,10 +253,6 @@ html:not(.dark) #meteors .meteor {
 }
 
 @layer components {
-  .glass-effect {
-    @apply bg-white/30 dark:bg-black/30 backdrop-blur-md border border-black/10 dark:border-white/10 shadow-sm transition-all duration-300;
-  }
-  
   .teal-glow {
     text-shadow: 0 0 8px rgba(59, 233, 209, 0.3);
   }
