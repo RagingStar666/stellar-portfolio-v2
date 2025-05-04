@@ -152,15 +152,16 @@ article {
 }
 
 .glass-effect {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 0.5rem;
   transition: all 300ms;
 }
 
 .dark .glass-effect {
   background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Custom glow effects */
@@ -198,107 +199,9 @@ article {
 article img {
   padding-top: 20px;
   padding-bottom: 20px;
-  display: block;
-  margin: 0 auto;
 }
 
-/**
- * TWINKLE STARS
- */
-
-#twinkle-star.template {
-  @apply absolute -left-full; /* hide offscreen */
-}
-
-#twinkle-star.twinkle {
-  @apply animate-twinkle; /* defined in tailwind.config */
-  color: var(--teal-star-color); /* Dark mode star color */
-}
-
-html:not(.dark) #twinkle-star.twinkle {
-  color: var(--gold-star-color); /* Light mode star color */
-}
-
-/**
- * Meteors
- */
-
-#meteors .shower {
-  @apply absolute inset-0 top-0;;
-  @apply left-1/2 -translate-x-1/2;
-  @apply w-screen aspect-square;
-}
-
-#meteors .meteor {
-  @apply animate-meteor; /* defined in tailwind.config */
-  @apply absolute top-1/2 left-1/2 w-px h-[75vh];
-  background: linear-gradient(to bottom, var(--teal-star-color), transparent); /* Dark mode meteor color */
-}
-
-html:not(.dark) #meteors .meteor {
-  background: linear-gradient(to bottom, var(--gold-star-color), transparent); /* Light mode meteor color */
-}
-
-#meteors .shower.ur {
-  @apply rotate-45;
-}
-
-#meteors .shower.dr {
-  @apply rotate-135;
-}
-
-#meteors .shower.dl {
-  @apply rotate-225;
-}
-
-#meteors .shower.ul {
-  @apply rotate-315;
-}
-
-.copy-cnt{
-  @apply absolute w-full;
-  top:var(--copy-btn-margin);
-}
-.copy-btn {
-  @apply  w-[30px] fixed;
-  left:calc(100% - var(--copy-btn-margin));
-  transform: translateX(-100%);
-}
-
-.copy-svg {
-  @apply w-full aspect-square text-white opacity-70 hover:opacity-90;
-}
-
-/* Add animation for pulse effect */
-@keyframes pulse {
-  0%, 100% {
-    opacity: 0.2;
-  }
-  50% {
-    opacity: 0.8;
-  }
-}
-
-.animate-pulse {
-  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@layer components {
-  .teal-glow {
-    text-shadow: 0 0 8px rgba(59, 233, 209, 0.3);
-  }
-}
-
-@keyframes float-up-down {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-15px);
-  }
-}
-
-/* Timeline styling */
+/* Timeline and floating nav styles */
 .timeline-container {
   position: relative;
   padding-left: 30px;
@@ -306,16 +209,16 @@ html:not(.dark) #meteors .meteor {
 
 .timeline-line {
   position: absolute;
-  left: 0;
-  top: 24px;
+  left: 10px;
+  top: 0;
   bottom: 0;
   width: 2px;
-  background: linear-gradient(to bottom, rgba(59, 233, 209, 0.5), rgba(59, 233, 209, 0.1));
+  background: linear-gradient(to bottom, rgba(59, 233, 209, 0.8), rgba(59, 233, 209, 0.1));
 }
 
 .timeline-item {
   position: relative;
-  margin-bottom: 2rem;
+  margin-bottom: 30px;
 }
 
 .timeline-item:last-child {
@@ -324,19 +227,19 @@ html:not(.dark) #meteors .meteor {
 
 .timeline-node {
   position: absolute;
-  left: -31px;
-  top: 24px;
-  width: 14px;
-  height: 14px;
+  left: -30px;
+  top: 20px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background-color: #3be9d1;
-  transform: translateY(-50%);
-  box-shadow: 0 0 15px rgba(59, 233, 209, 0.5);
+  box-shadow: 0 0 10px rgba(59, 233, 209, 0.6);
   z-index: 1;
 }
 
 .timeline-content {
-  transition: all 0.3s;
+  position: relative;
+  transition: all 0.3s ease;
 }
 
 .timeline-content:hover {
@@ -344,67 +247,99 @@ html:not(.dark) #meteors .meteor {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Additional hover effects for glass cards */
+/* Updated glass effect */
 .glass-effect {
-  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
 }
 
 .glass-effect:hover {
-  box-shadow: 0 0 20px rgba(59, 233, 209, 0.2);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
 }
 
-/* Remove sidebar on mobile and make it floating */
+/* Dark mode glass effect override */
+.dark .glass-effect {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.dark .glass-effect:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* Floating navigation for page sections */
 .floating-nav {
-  position: fixed;
-  bottom: 15px;
-  left: 50%;
-  transform: translateX(-50%);
+  position: sticky;
+  top: 80px;
   z-index: 10;
-  width: 90%;
-  max-width: 300px;
-  transition: all 0.3s ease;
+  margin-bottom: 2rem;
+  width: 100%;
 }
 
 @media (min-width: 768px) {
   .floating-nav {
-    display: none;
+    margin-bottom: 2.5rem;
   }
 }
 
 .floating-nav-content {
   display: flex;
-  justify-content: space-between;
-  padding: 8px 16px;
-  background-color: rgba(13, 27, 42, 0.9);
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(59, 233, 209, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 9999px;
+  padding: 0.5rem;
+  overflow-x: auto;
+  max-width: 100%;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.dark .floating-nav-content {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .floating-nav-item {
-  font-size: 0.875rem;
-  color: white;
-  padding: 6px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  padding: 0.5rem 1rem;
   border-radius: 9999px;
-  transition: all 0.25s ease;
+  font-size: 0.875rem;
+  transition: all 0.2s ease-in-out;
+  color: #000000;
+}
+
+.dark .floating-nav-item {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .floating-nav-item.active {
-  background-color: rgba(59, 233, 209, 0.2);
-  color: rgba(59, 233, 209, 1);
+  background-color: #3be9d1;
+  color: #000000;
 }
 
-/* Improved Cards for Mobile */
+.dark .floating-nav-item.active {
+  background-color: #3be9d1;
+  color: #000000;
+}
+
+/* Mobile scrolling card container */
 @media (max-width: 767px) {
   .card-container {
     display: flex;
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 12px;
-    padding-bottom: 8px;
-    margin-bottom: 8px;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    margin: 0 -1rem;
+    padding: 0 1rem;
     scrollbar-width: none;
-    scroll-padding: 12px;
+    -ms-overflow-style: none;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
   }
   
   .card-container::-webkit-scrollbar {
@@ -412,49 +347,53 @@ html:not(.dark) #meteors .meteor {
   }
   
   .card-item {
-    scroll-snap-align: start;
-    min-width: 85%;
     flex: 0 0 auto;
+    width: 85%;
+    max-width: 320px;
   }
 }
 
-/* Particle background animations */
+/* Stars animation */
 @keyframes rotate {
-  0% {
+  from {
     transform: rotate(0deg);
   }
-  100% {
+  
+  to {
     transform: rotate(360deg);
   }
 }
 
-/* Star background */
+/* Stars styling */
 .stars {
-  background-image: 
-    radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 160px 120px, #ddd, rgba(0,0,0,0));
-  background-repeat: repeat;
-  background-size: 200px 200px;
-  opacity: 0.15;
-  animation: twinkle 5s ease-in-out infinite alternate;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: url('/stars-light.svg') repeat;
+  z-index: -1;
+  opacity: 0.2;
+  animation: rotate 400s linear infinite;
+  pointer-events: none;
 }
 
 .dark .stars {
-  opacity: 0.3;
+  background: url('/stars.svg') repeat;
+  opacity: 0.6;
 }
 
 @keyframes twinkle {
-  0% {
-    background-position: 0 0;
+  0%, 100% {
+    opacity: 0.2;
   }
-  100% {
-    background-position: -100px 100px;
+  50% {
+    opacity: 0.5;
   }
 }
 
-/* Light/dark mode transition */
+/* Ensure smooth transitions between color schemes */
 html.transition,
 html.transition *,
 html.transition *:before,

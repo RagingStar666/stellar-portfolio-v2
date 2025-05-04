@@ -95,37 +95,6 @@ const committees = committeesFromCollection.length > 0 ? committeesFromCollectio
   }
 ];
 
-// Extracurricular data
-const extracurricularData = [
-  {
-    title: "3rd National Article Writing Competition",
-    organizer: "Journal and Seminar Committee, UC Law",
-    role: "Participant",
-    period: "December 2024",
-    date: "Dec 2024",
-    description: "Participated in the national-level legal writing competition focused on contemporary legal issues.",
-    slug: "3rd-national-article-writing-competition"
-  },
-  {
-    title: "SKMMIMNC 6.0 Mediation Competition",
-    organizer: "Lloyd Law College, India",
-    role: "Mediator",
-    period: "March 2025",
-    date: "Mar 2025",
-    description: "Served as a mediator in this prestigious international competition, applying ADR principles in simulated dispute scenarios.",
-    slug: "skmmimnc-6-international-mediation-competition"
-  },
-  {
-    title: "Article Writing Competition (2025 Edition)",
-    organizer: "NUJS IPLTS in collaboration with The Dialogue",
-    role: "Participant",
-    period: "2025",
-    date: "Feb 2025",
-    description: "Contributed a research article on intellectual property rights in the digital age.",
-    slug: "nujs-iplts-article-competition"
-  }
-];
-
 const links = [
   { name: "Home", url: "/" },
   { name: "Experience", url: "/work" }
@@ -150,8 +119,8 @@ function formatWorkDate(input: Date | string) {
       
       <!-- Section Heading -->
       <div class="glass-effect rounded-lg p-6 md:p-8 mb-8">
-        <h1 class="text-2xl md:text-3xl font-bold text-white mb-2 md:mb-4">Professional Experience</h1>
-        <p class="text-white/80 text-sm md:text-base">
+        <h1 class="text-2xl md:text-3xl font-bold text-black dark:text-white mb-2 md:mb-4">Professional Experience</h1>
+        <p class="text-black/80 dark:text-white/80 text-sm md:text-base">
           A chronological overview of my professional journey, internships, and committee engagements,
           highlighting my experience in legal practice, operations management, and organizational leadership.
         </p>
@@ -163,13 +132,12 @@ function formatWorkDate(input: Date | string) {
           <a href="#professional" class="floating-nav-item">Experience</a>
           <a href="#internships" class="floating-nav-item">Internships</a>
           <a href="#committees" class="floating-nav-item">Committees</a>
-          <a href="#extracurricular" class="floating-nav-item">Activities</a>
         </div>
       </div>
 
       <!-- Professional Experience Section -->
       <div id="professional" class="mb-12 md:mb-16 scroll-mt-24">
-        <h2 class="text-xl md:text-2xl font-bold text-white mb-6 flex items-center">
+        <h2 class="text-xl md:text-2xl font-bold text-black dark:text-white mb-6 flex items-center">
           <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">P</span>
           Professional Experience
         </h2>
@@ -186,10 +154,10 @@ function formatWorkDate(input: Date | string) {
                   {formatWorkDate(entry.data.dateStart)} - {formatWorkDate(entry.data.dateEnd)}
                 </div>
                 
-                <h3 class="text-lg font-semibold text-white">{entry.data.role}</h3>
-                <p class="text-white/80 mb-4">{entry.data.company}</p>
+                <h3 class="text-lg font-semibold text-black dark:text-white">{entry.data.role}</h3>
+                <p class="text-black/80 dark:text-white/80 mb-4">{entry.data.company}</p>
                 
-                <div class="text-white/70 text-sm prose-sm dark:prose-invert">
+                <div class="text-black/70 dark:text-white/70 text-sm prose-sm dark:prose-invert">
                   <entry.Content />
                 </div>
               </a>
@@ -200,7 +168,7 @@ function formatWorkDate(input: Date | string) {
       
       <!-- Internships Section -->
       <div id="internships" class="mb-12 md:mb-16 scroll-mt-24">
-        <h2 class="text-xl md:text-2xl font-bold text-white mb-6 flex items-center">
+        <h2 class="text-xl md:text-2xl font-bold text-black dark:text-white mb-6 flex items-center">
           <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">I</span>
           Internships
         </h2>
@@ -217,10 +185,10 @@ function formatWorkDate(input: Date | string) {
                   {formatWorkDate(entry.data.dateStart)} - {formatWorkDate(entry.data.dateEnd)}
                 </div>
                 
-                <h3 class="text-lg font-semibold text-white">{entry.data.role}</h3>
-                <p class="text-white/80 mb-4">{entry.data.company}</p>
+                <h3 class="text-lg font-semibold text-black dark:text-white">{entry.data.role}</h3>
+                <p class="text-black/80 dark:text-white/80 mb-4">{entry.data.company}</p>
                 
-                <div class="text-white/70 text-sm prose-sm dark:prose-invert">
+                <div class="text-black/70 dark:text-white/70 text-sm prose-sm dark:prose-invert">
                   <entry.Content />
                 </div>
               </a>
@@ -231,7 +199,7 @@ function formatWorkDate(input: Date | string) {
       
       <!-- Committees Section -->
       <div id="committees" class="mb-12 md:mb-16 scroll-mt-24">
-        <h2 class="text-xl md:text-2xl font-bold text-white mb-6 flex items-center">
+        <h2 class="text-xl md:text-2xl font-bold text-black dark:text-white mb-6 flex items-center">
           <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">C</span>
           Committees & Organizations
         </h2>
@@ -248,37 +216,14 @@ function formatWorkDate(input: Date | string) {
                   {formatWorkDate(entry.data.dateStart)} - {formatWorkDate(entry.data.dateEnd)}
                 </div>
                 
-                <h3 class="text-lg font-semibold text-white">{entry.data.role}</h3>
-                <p class="text-white/80 mb-4">{entry.data.company}</p>
+                <h3 class="text-lg font-semibold text-black dark:text-white">{entry.data.role}</h3>
+                <p class="text-black/80 dark:text-white/80 mb-4">{entry.data.company}</p>
                 
-                <div class="text-white/70 text-sm prose-sm dark:prose-invert">
+                <div class="text-black/70 dark:text-white/70 text-sm prose-sm dark:prose-invert">
                   <entry.Content />
                 </div>
               </a>
             </div>
-          ))}
-        </div>
-      </div>
-      
-      <!-- Extracurricular Section -->
-      <div id="extracurricular" class="mb-12 md:mb-16 scroll-mt-24">
-        <h2 class="text-xl md:text-2xl font-bold text-white mb-6 flex items-center">
-          <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">E</span>
-          Competitions & Activities
-        </h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-          {extracurricularData.map((entry) => (
-            <a href={`/work/activities/${entry.slug}`} class="glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
-              <div class="mb-2 flex items-center justify-between">
-                <span class="text-xs text-[#3be9d1]">{entry.date}</span>
-                <span class="px-2 py-0.5 bg-[#3be9d1]/10 rounded-full text-xs text-[#3be9d1]/90">Competition</span>
-              </div>
-              <h3 class="text-lg font-medium text-white mb-2">{entry.title}</h3>
-              <p class="text-white/80 mb-2">{entry.organizer}</p>
-              <p class="text-white/60 text-sm line-clamp-2 mb-2">{entry.description}</p>
-              <span class="text-xs text-[#3be9d1] hover:underline">View details →</span>
-            </a>
           ))}
         </div>
       </div>

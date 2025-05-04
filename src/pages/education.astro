@@ -68,6 +68,37 @@ const certificationEntries = certsData.map(cert => ({
   return getDate(b) - getDate(a); // Descending order
 });
 
+// Extracurricular data (migrated from work page)
+const extracurricularData = [
+  {
+    title: "3rd National Article Writing Competition",
+    organizer: "Journal and Seminar Committee, UC Law",
+    role: "Participant",
+    period: "December 2024",
+    date: "Dec 2024",
+    description: "Participated in the national-level legal writing competition focused on contemporary legal issues.",
+    slug: "3rd-national-article-writing-competition"
+  },
+  {
+    title: "SKMMIMNC 6.0 Mediation Competition",
+    organizer: "Lloyd Law College, India",
+    role: "Mediator",
+    period: "March 2025",
+    date: "Mar 2025",
+    description: "Served as a mediator in this prestigious international competition, applying ADR principles in simulated dispute scenarios.",
+    slug: "skmmimnc-6-international-mediation-competition"
+  },
+  {
+    title: "Article Writing Competition (2025 Edition)",
+    organizer: "NUJS IPLTS in collaboration with The Dialogue",
+    role: "Participant",
+    period: "2025",
+    date: "Feb 2025",
+    description: "Contributed a research article on intellectual property rights in the digital age.",
+    slug: "nujs-iplts-article-competition"
+  }
+];
+
 // Skills data restructured to focus on tools
 const skillsData = [
   {
@@ -133,9 +164,9 @@ const links = [
       
       <!-- Section Heading -->
       <div class="glass-effect rounded-lg p-6 md:p-8 mb-8">
-        <h1 class="text-2xl md:text-3xl font-bold text-white mb-2 md:mb-4">Education & Skills</h1>
-        <p class="text-white/80 text-sm md:text-base">
-          An overview of my academic qualifications, professional certifications, and specialized skills
+        <h1 class="text-2xl md:text-3xl font-bold text-black dark:text-white mb-2 md:mb-4">Education & Extracurriculars</h1>
+        <p class="text-black/80 dark:text-white/80 text-sm md:text-base">
+          An overview of my academic qualifications, professional certifications, competitions, and specialized skills
           that I've developed throughout my educational and professional journey.
         </p>
       </div>
@@ -145,13 +176,14 @@ const links = [
         <div class="floating-nav-content">
           <a href="#education" class="floating-nav-item">Education</a>
           <a href="#certifications" class="floating-nav-item">Certifications</a>
+          <a href="#extracurriculars" class="floating-nav-item">Extracurriculars</a>
           <a href="#skills" class="floating-nav-item">Skills</a>
         </div>
       </div>
 
       <!-- Academic Education Section -->
       <div id="education" class="mb-12 md:mb-16 scroll-mt-24">
-        <h2 class="text-xl md:text-2xl font-bold text-white mb-6 flex items-center">
+        <h2 class="text-xl md:text-2xl font-bold text-black dark:text-white mb-6 flex items-center">
           <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">E</span>
           Academic Education
         </h2>
@@ -168,10 +200,10 @@ const links = [
                   {entry.dateStart} - Present
                 </div>
                 
-                <h3 class="text-lg font-semibold text-white">{entry.degree}</h3>
-                <p class="text-white/80 mb-4">{entry.name}</p>
+                <h3 class="text-lg font-semibold text-black dark:text-white">{entry.degree}</h3>
+                <p class="text-black/80 dark:text-white/80 mb-4">{entry.name}</p>
                 
-                <p class="text-white/70 text-sm mb-4">{entry.description}</p>
+                <p class="text-black/70 dark:text-white/70 text-sm mb-4">{entry.description}</p>
                 
                 <div class="flex items-center text-sm">
                   <span class="text-[#3be9d1] hover:underline">View details →</span>
@@ -184,7 +216,7 @@ const links = [
       
       <!-- Certifications Section -->
       <div id="certifications" class="mb-12 md:mb-16 scroll-mt-24">
-        <h2 class="text-xl md:text-2xl font-bold text-white mb-6 flex items-center">
+        <h2 class="text-xl md:text-2xl font-bold text-black dark:text-white mb-6 flex items-center">
           <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">C</span>
           Certifications
         </h2>
@@ -201,10 +233,10 @@ const links = [
                   {entry.date}
                 </div>
                 
-                <h3 class="text-lg font-semibold text-white">{entry.name}</h3>
-                <p class="text-white/80 mb-4">{entry.institution}</p>
+                <h3 class="text-lg font-semibold text-black dark:text-white">{entry.name}</h3>
+                <p class="text-black/80 dark:text-white/80 mb-4">{entry.institution}</p>
                 
-                <p class="text-white/70 text-sm mb-4">{entry.description}</p>
+                <p class="text-black/70 dark:text-white/70 text-sm mb-4">{entry.description}</p>
                 
                 <div class="flex items-center text-sm">
                   <span class="text-[#3be9d1] hover:underline">View certificate →</span>
@@ -215,9 +247,32 @@ const links = [
         </div>
       </div>
       
+      <!-- Extracurriculars Section (Migrated from work page) -->
+      <div id="extracurriculars" class="mb-12 md:mb-16 scroll-mt-24">
+        <h2 class="text-xl md:text-2xl font-bold text-black dark:text-white mb-6 flex items-center">
+          <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">E</span>
+          Competitions & Activities
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          {extracurricularData.map((entry) => (
+            <a href={`/education/activities/${entry.slug}`} class="glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
+              <div class="mb-2 flex items-center justify-between">
+                <span class="text-xs text-[#3be9d1]">{entry.date}</span>
+                <span class="px-2 py-0.5 bg-[#3be9d1]/10 rounded-full text-xs text-[#3be9d1]/90">Competition</span>
+              </div>
+              <h3 class="text-lg font-medium text-black dark:text-white mb-2">{entry.title}</h3>
+              <p class="text-black/80 dark:text-white/80 mb-2">{entry.organizer}</p>
+              <p class="text-black/60 dark:text-white/60 text-sm line-clamp-2 mb-2">{entry.description}</p>
+              <span class="text-xs text-[#3be9d1] hover:underline">View details →</span>
+            </a>
+          ))}
+        </div>
+      </div>
+      
       <!-- Skills Section -->
       <div id="skills" class="mb-12 md:mb-16 scroll-mt-24">
-        <h2 class="text-xl md:text-2xl font-bold text-white mb-6 flex items-center">
+        <h2 class="text-xl md:text-2xl font-bold text-black dark:text-white mb-6 flex items-center">
           <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">S</span>
           Skills & Tools
         </h2>
@@ -225,8 +280,8 @@ const links = [
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {skillsData.map((skillCategory) => (
             <div class="glass-effect rounded-lg p-5 transition-all duration-300 hover:translate-y-[-5px]">
-              <h3 class="text-lg font-semibold text-white mb-3">{skillCategory.category}</h3>
-              <p class="text-white/70 text-sm mb-4">{skillCategory.description}</p>
+              <h3 class="text-lg font-semibold text-black dark:text-white mb-3">{skillCategory.category}</h3>
+              <p class="text-black/70 dark:text-white/70 text-sm mb-4">{skillCategory.description}</p>
               
               <div class="flex flex-wrap gap-2">
                 {skillCategory.tools.map((tool) => (
