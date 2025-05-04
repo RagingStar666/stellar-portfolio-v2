@@ -31,24 +31,7 @@ type BlogEntry = {
   };
 };
 
-type ProjectEntry = {
-  slug: string;
-  data: {
-    title: string;
-    summary: string;
-    date: Date;
-    tags: string[];
-    draft?: boolean;
-    demoUrl?: string;
-    repoUrl?: string;
-    // These properties don't exist in the schema but we're using them
-    client?: string;
-    category?: string;
-    description?: string;
-  };
-};
-
-// Since education collection doesn't exist, create mock data
+// Education data
 const universityDegree = {
   slug: "university-of-calcutta",
   data: {
@@ -63,193 +46,446 @@ const universityDegree = {
 
 // Get all work entries
 const allWork = await getCollection("work") as unknown as WorkEntry[];
-const workExperience = allWork
-  .filter(work => work.data.type === "experience")
-  .sort((a, b) => {
-    const dateA = a.data.date instanceof Date ? a.data.date : new Date();
-    const dateB = b.data.date instanceof Date ? b.data.date : new Date();
-    return dateB.getTime() - dateA.getTime();
-  });
 
-// Get latest work experience or use a fallback if no entries exist
-const latestWorkExperience = workExperience.length > 0 ? workExperience[0] : {
-  slug: "default-experience",
+// Get professional experience
+const professionalExperience = allWork
+  .filter(work => 
+    work.data.role.toLowerCase().includes('director') || 
+    work.data.role.toLowerCase().includes('founder') || 
+    work.data.role.toLowerCase().includes('leader') || 
+    work.data.role.toLowerCase().includes('manager')
+  )
+  .sort((a, b) => {
+    const dateA = a.data.dateStart instanceof Date ? a.data.dateStart : new Date();
+    const dateB = b.data.dateStart instanceof Date ? b.data.dateStart : new Date();
+    return dateB.getTime() - dateA.getTime();
+  })
+  .slice(0, 2);
+
+// Create placeholder internships if none exist in the collection
+const internshipsFromCollection = allWork
+  .filter(work => 
+    work.data.role.toLowerCase().includes('intern') || 
+    work.data.role.toLowerCase().includes('trainee')
+  )
+  .sort((a, b) => {
+    const dateA = a.data.dateStart instanceof Date ? a.data.dateStart : new Date();
+    const dateB = b.data.dateStart instanceof Date ? b.data.dateStart : new Date();
+    return dateB.getTime() - dateA.getTime();
+  })
+  .slice(0, 2);
+
+// Create placeholder internships if none exist
+const internships = internshipsFromCollection.length > 0 ? internshipsFromCollection : [
+  {
+    slug: "jus-scriptum",
+    data: {
+      company: "Jus Scriptum Law Review",
+      role: "Legal Research Intern",
+      dateStart: new Date("2024-05-01"),
+      dateEnd: new Date("2024-08-01"),
+      description: "Conducted legal research for peer-reviewed journal articles and assisted with case law analysis for publication."
+    }
+  },
+  {
+    slug: "jus-corpus",
+    data: {
+      company: "Jus Corpus Legal Services",
+      role: "Legal Intern",
+      dateStart: new Date("2024-12-01"),
+      dateEnd: "Present",
+      description: "Assisting with legal research, case preparation, and client communications at a boutique law firm specializing in intellectual property matters."
+    }
+  }
+];
+
+// Create placeholder committees if none exist in the collection
+const committeesFromCollection = allWork
+  .filter(work => 
+    work.data.role.toLowerCase().includes('committee') || 
+    work.data.role.toLowerCase().includes('member')
+  )
+  .sort((a, b) => {
+    const dateA = a.data.dateStart instanceof Date ? a.data.dateStart : new Date();
+    const dateB = b.data.dateStart instanceof Date ? b.data.dateStart : new Date();
+    return dateB.getTime() - dateA.getTime();
+  })
+  .slice(0, 2);
+
+// Create placeholder committees if none exist
+const committees = committeesFromCollection.length > 0 ? committeesFromCollection : [
+  {
+    slug: "journal-and-seminar-committee",
+    data: {
+      company: "Department of Law, University of Calcutta",
+      role: "Member, Journal and Seminar Committee",
+      dateStart: new Date("2024-08-01"),
+      dateEnd: "Present",
+      description: "Contributing to the organization of academic seminars, workshops, and the publication of the department's legal journal."
+    }
+  }
+];
+
+// Get extracurricular activities data
+const extracurricular = [
+  {
+    title: "3rd National Article Writing Competition",
+    organizer: "Journal and Seminar Committee, UC Law",
+    role: "Participant",
+    date: "Dec 2024",
+    description: "Participated in the national-level legal writing competition focused on contemporary legal issues.",
+    slug: "3rd-national-article-writing-competition"
+  },
+  {
+    title: "SKMMIMNC 6.0 Mediation Competition",
+    organizer: "Lloyd Law College, India",
+    role: "Mediator",
+    date: "Mar 2025",
+    description: "Served as a mediator in this prestigious international competition, applying ADR principles in simulated dispute scenarios.",
+    slug: "skmmimnc-6-international-mediation-competition"
+  }
+];
+
+// Get Tower of Babel project
+const towerOfBabelProject = {
+  slug: "tower-of-babel",
   data: {
-    position: "Operations Manager",
-    role: "Operations Manager",
-    company: "Incenesto Studio",
-    date: new Date("2022-01-01"),
-    description: "Leading operations, management, and strategic initiatives for the studio.",
-    tags: ["Management", "Strategy", "Operations"]
+    title: "Tower of Babel",
+    summary: "A web development project focused on creating a multilingual communication platform that breaks down language barriers in real-time digital conversations.",
+    date: new Date("2024-01-01"),
+    tags: ["React", "NodeJS", "MongoDB", "WebSockets"],
+    client: "Personal Project",
+    category: "Development",
+    description: "The Tower of Babel project is a multilingual communication platform designed to break down language barriers in real-time digital conversations. It leverages advanced machine learning models for translation."
   }
 };
 
-// Get all projects
-const allProjects = await getCollection("projects") as unknown as ProjectEntry[];
-const latestProjects = allProjects
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, 2);
+// Get certifications
+import { certsData } from "@data/certsData";
+const certifications = certsData
+  .sort((a, b) => {
+    const dateA = new Date(a.date.split(' ')[1]);
+    const dateB = new Date(b.date.split(' ')[1]);
+    return dateB.getTime() - dateA.getTime();
+  })
+  .slice(0, 2)
+  .map(cert => ({
+    title: cert.title,
+    institution: cert.description.split(',')[0].trim(),
+    description: cert.description,
+    date: cert.date
+  }));
 
-// Get all blog posts
+// Get academic blog posts 
 const allPosts = await getCollection("blog") as unknown as BlogEntry[];
-const latestPosts = allPosts
-  .filter(post => !post.data.draft)
+const academicPosts = allPosts
+  .filter(post => 
+    post.data.tags.some(tag => 
+      ['Research', 'Academic', 'Legal Analysis', 'IP Law', 'Constitutional Law'].includes(tag)
+    ) && !post.data.draft
+  )
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0, 2);
 
-// Define a position fallback in case SITE.POSITION doesn't exist
-const positionLabel = "Law Student & Operations Professional";
+// Skills data
+const skillsData = [
+  {
+    category: "Legal & Research Tools",
+    tools: ["Zotero", "Google Scholar", "JSTOR", "HeinOnline", "SSRN"]
+  },
+  {
+    category: "Productivity & Collaboration",
+    tools: ["Microsoft Office", "Google Workspace", "Notion", "Trello"]
+  }
+];
 
+function formatDate(date: Date | string) {
+  if (typeof date === "string") return date;
+  
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    year: "numeric"
+  });
+}
+
+// Define a position label
+const positionLabel = "Law Student & Operations Professional";
 ---
 
 <PageLayout title={SITE.TITLE} description={SITE.DESCRIPTION}>
-  <div class="container min-h-screen mx-auto px-6 py-12">
+  <div class="container min-h-screen mx-auto px-4 sm:px-6 py-8 md:py-12">
     <div class="relative max-w-5xl mx-auto">
-      <!-- Crescent moon with teal pulsating cracks -->
-      <div class="absolute -top-32 -left-32 -rotate-45 opacity-70 blur-2xl -z-10">
-        <div class="relative">
-          <div class="absolute w-64 h-64 bg-gradient-to-br from-[#111111] to-[#000000] rounded-full overflow-hidden">
-            <!-- Pulsating teal cracks -->
-            <div class="absolute top-1/4 left-1/2 w-0.5 h-10 bg-[#3be9d1] rotate-45 opacity-40 animate-pulse"></div>
-            <div class="absolute top-1/3 left-1/3 w-0.5 h-8 bg-[#3be9d1] rotate-[30deg] opacity-30 animate-pulse animation-delay-200"></div>
-            <div class="absolute top-1/2 left-1/4 w-0.5 h-12 bg-[#3be9d1] rotate-[60deg] opacity-50 animate-pulse animation-delay-400"></div>
-            <div class="absolute bottom-1/3 right-1/3 w-0.5 h-6 bg-[#3be9d1] rotate-[120deg] opacity-20 animate-pulse animation-delay-300"></div>
-          </div>
-          <div class="absolute w-64 h-64 bg-neutral-100 dark:bg-neutral-900 rounded-full -right-8 -top-8"></div>
-        </div>
-      </div>
-      
-      <!-- About Me Card (without profile picture) -->
-      <div class="glass-effect rounded-lg mb-12 p-10 relative">
+      <!-- Intro Section -->
+      <section class="glass-effect rounded-lg mb-8 md:mb-12 p-6 md:p-10 relative">
         <div class="flex flex-col">
-          <h1 class="text-3xl font-bold text-center md:text-left text-white mb-2">
+          <h1 class="text-2xl md:text-3xl font-bold text-center md:text-left text-white mb-2">
             {SITE.AUTHOR}
           </h1>
           
-          <h2 class="text-lg text-center md:text-left text-white/70 mb-4">
+          <h2 class="text-base md:text-lg text-center md:text-left text-white/70 mb-4">
             {positionLabel}
           </h2>
           
-          <div class="text-white/80 space-y-4">
-            <p>
-              B.A. LL.B. (Hons.) student at the University of Calcutta, specializing in intellectual property rights, 
-              mergers & acquisitions, and finance law. My academic journey focuses on the intersection of law, 
-              technology, and business strategy.
-            </p>
-            
-            <p>
-              As the founder of Incenesto Studio, I lead operations, management, and strategic initiatives, 
-              developing expertise in organizational leadership and project management. My professional 
-              interests lie in legal technology, intellectual property protection in digital domains, and 
-              alternative dispute resolution mechanisms.
-            </p>
-            
-            <p>
-              I'm passionate about bridging traditional legal frameworks with emerging technologies and business models.
-              My research interests include comparative IP regimes, constitutional interpretations in digital contexts,
-              and the evolving standards of legal practice in a technology-driven world.
-            </p>
-          </div>
+          <p class="text-white/80 text-sm md:text-base">
+            B.A. LL.B. (Hons.) student at the University of Calcutta, specializing in intellectual property rights, 
+            mergers & acquisitions, and finance law. Passionate about bridging traditional legal frameworks with 
+            emerging technologies and business models.
+          </p>
         </div>
-      </div>
+      </section>
       
-      <!-- Compact Experience Section -->
-      <section class="mb-16">
-        <div class="flex justify-between items-baseline mb-6">
-          <h2 class="text-2xl font-bold text-white">Experience & Education</h2>
-          <div class="flex gap-4">
-            <a href="/work" class="text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
-              All Experience →
-            </a>
-            <a href="/education" class="text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
-              All Education →
-            </a>
-          </div>
+      <!-- Professional Experience Section -->
+      <section class="mb-8 md:mb-12">
+        <div class="flex justify-between items-baseline mb-4 md:mb-6">
+          <h2 class="text-xl md:text-2xl font-bold text-white">Professional Experience</h2>
+          <a href="/work#professional" class="text-xs md:text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
+            View all →
+          </a>
         </div>
         
-        <!-- Grid for work and education -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Latest Work Experience -->
-          <div class="glass-effect rounded-xl p-6">
-            <span class="text-sm text-[#3be9d1] uppercase tracking-wider mb-3 block">Experience</span>
-            <h3 class="text-xl font-semibold text-white mb-2">{latestWorkExperience.data.position || latestWorkExperience.data.role}</h3>
-            <p class="text-white/70 mb-4">{latestWorkExperience.data.company}</p>
-            <p class="text-white/60 text-sm mb-2">{latestWorkExperience.data.date ? new Date(latestWorkExperience.data.date).getFullYear() : new Date().getFullYear()}-Present</p>
-            <p class="text-white/70 text-sm line-clamp-3 mb-4">{latestWorkExperience.data.description || 'No description available'}</p>
-            <a href={`/work/${latestWorkExperience.slug}`} class="text-sm text-[#3be9d1] hover:underline">View details →</a>
-          </div>
+        <div class="timeline-container">
+          <div class="timeline-line"></div>
           
-          <!-- Latest Education -->
-          <div class="glass-effect rounded-xl p-6">
-            <span class="text-sm text-[#3be9d1] uppercase tracking-wider mb-3 block">Education</span>
-            <h3 class="text-xl font-semibold text-white mb-2">{universityDegree.data.title}</h3>
-            <p class="text-white/70 mb-4">{universityDegree.data.institution}</p>
-            <p class="text-white/60 text-sm mb-2">{new Date(universityDegree.data.date).getFullYear()}-Present</p>
-            <p class="text-white/70 text-sm line-clamp-3 mb-4">{universityDegree.data.description}</p>
-            <a href="/education" class="text-sm text-[#3be9d1] hover:underline">View details →</a>
+          {professionalExperience.map((entry) => (
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <a href={`/work/${entry.slug}`} class="timeline-content glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
+                <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
+                  {formatDate(entry.data.dateStart)} - {formatDate(entry.data.dateEnd)}
+                </div>
+                
+                <h3 class="text-lg font-semibold text-white">{entry.data.role}</h3>
+                <p class="text-white/80 mb-2">{entry.data.company}</p>
+                
+                <p class="text-white/70 text-sm line-clamp-2 mb-2">{entry.data.description || ''}</p>
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
+      
+      <!-- Internships Section -->
+      <section class="mb-8 md:mb-12">
+        <div class="flex justify-between items-baseline mb-4 md:mb-6">
+          <h2 class="text-xl md:text-2xl font-bold text-white">Internships</h2>
+          <a href="/work#internships" class="text-xs md:text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
+            View all →
+          </a>
+        </div>
+        
+        <div class="timeline-container">
+          <div class="timeline-line"></div>
+          
+          {internships.map((entry) => (
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <a href={`/work/internships/${entry.slug}`} class="timeline-content glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
+                <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
+                  {formatDate(entry.data.dateStart)} - {formatDate(entry.data.dateEnd)}
+                </div>
+                
+                <h3 class="text-lg font-semibold text-white">{entry.data.role}</h3>
+                <p class="text-white/80 mb-2">{entry.data.company}</p>
+                
+                <p class="text-white/70 text-sm line-clamp-2 mb-2">{entry.data.description || ''}</p>
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
+      
+      <!-- Committees Section -->
+      <section class="mb-8 md:mb-12">
+        <div class="flex justify-between items-baseline mb-4 md:mb-6">
+          <h2 class="text-xl md:text-2xl font-bold text-white">Committees & Organizations</h2>
+          <a href="/work#committees" class="text-xs md:text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
+            View all →
+          </a>
+        </div>
+        
+        <div class="timeline-container">
+          <div class="timeline-line"></div>
+          
+          {committees.map((entry) => (
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <a href={`/work/committees/${entry.slug}`} class="timeline-content glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
+                <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
+                  {formatDate(entry.data.dateStart)} - {formatDate(entry.data.dateEnd)}
+                </div>
+                
+                <h3 class="text-lg font-semibold text-white">{entry.data.role}</h3>
+                <p class="text-white/80 mb-2">{entry.data.company}</p>
+                
+                <p class="text-white/70 text-sm line-clamp-2 mb-2">{entry.data.description || ''}</p>
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
+      
+      <!-- Extracurricular Section -->
+      <section class="mb-8 md:mb-12">
+        <div class="flex justify-between items-baseline mb-4 md:mb-6">
+          <h2 class="text-xl md:text-2xl font-bold text-white">Extracurriculars</h2>
+          <a href="/work#extracurricular" class="text-xs md:text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
+            View all →
+          </a>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          {extracurricular.map((entry) => (
+            <a href={`/work/activities/${entry.slug}`} class="glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
+              <div class="mb-2 flex items-center justify-between">
+                <span class="text-xs text-[#3be9d1]">{entry.date}</span>
+                <span class="px-2 py-0.5 bg-[#3be9d1]/10 rounded-full text-xs text-[#3be9d1]/90">Competition</span>
+              </div>
+              <h3 class="text-lg font-medium text-white mb-2">{entry.title}</h3>
+              <p class="text-white/80 mb-2">{entry.organizer}</p>
+              <p class="text-white/60 text-sm line-clamp-2 mb-2">{entry.description}</p>
+              <span class="text-xs text-[#3be9d1] hover:underline">View details →</span>
+            </a>
+          ))}
+        </div>
+      </section>
+      
+      <!-- Education Section -->
+      <section class="mb-8 md:mb-12">
+        <div class="flex justify-between items-baseline mb-4 md:mb-6">
+          <h2 class="text-xl md:text-2xl font-bold text-white">Education</h2>
+          <a href="/education#education" class="text-xs md:text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
+            View all →
+          </a>
+        </div>
+        
+        <div class="timeline-container">
+          <div class="timeline-line"></div>
+          
+          <div class="timeline-item">
+            <div class="timeline-node"></div>
+            <a href={`/education/${universityDegree.slug}`} class="timeline-content glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
+              <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
+                {formatDate(universityDegree.data.date)} - Present
+              </div>
+              
+              <h3 class="text-lg font-semibold text-white">{universityDegree.data.title}</h3>
+              <p class="text-white/80 mb-2">{universityDegree.data.institution}</p>
+              
+              <p class="text-white/70 text-sm line-clamp-2 mb-2">{universityDegree.data.description}</p>
+            </a>
           </div>
+        </div>
+      </section>
+      
+      <!-- Certifications Section -->
+      <section class="mb-8 md:mb-12">
+        <div class="flex justify-between items-baseline mb-4 md:mb-6">
+          <h2 class="text-xl md:text-2xl font-bold text-white">Certifications</h2>
+          <a href="/education#certifications" class="text-xs md:text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
+            View all →
+          </a>
+        </div>
+        
+        <div class="timeline-container">
+          <div class="timeline-line"></div>
+          
+          {certifications.map((cert) => (
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <a href={`/education/certifications/${cert.title.toLowerCase().replace(/\s+/g, '-')}`} class="timeline-content glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
+                <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
+                  {cert.date}
+                </div>
+                
+                <h3 class="text-lg font-semibold text-white">{cert.title}</h3>
+                <p class="text-white/80 mb-2">{cert.institution}</p>
+                
+                <p class="text-white/70 text-sm line-clamp-2 mb-2">{cert.description}</p>
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
+      
+      <!-- Skills Section -->
+      <section class="mb-8 md:mb-12">
+        <div class="flex justify-between items-baseline mb-4 md:mb-6">
+          <h2 class="text-xl md:text-2xl font-bold text-white">Skills & Tools</h2>
+          <a href="/education#skills" class="text-xs md:text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
+            View all →
+          </a>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+          {skillsData.map((skill) => (
+            <div class="glass-effect rounded-lg p-5">
+              <h3 class="text-lg font-semibold text-white mb-3">{skill.category}</h3>
+              
+              <div class="flex flex-wrap gap-2">
+                {skill.tools.map((tool) => (
+                  <span class="inline-flex items-center px-3 py-1 bg-[#3be9d1]/10 
+                        rounded-full text-sm text-[#3be9d1] transition-colors">
+                    {tool}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+      
+      <!-- Academic Writing Section -->
+      <section class="mb-8 md:mb-12">
+        <div class="flex justify-between items-baseline mb-4 md:mb-6">
+          <h2 class="text-xl md:text-2xl font-bold text-white">Academic Writing</h2>
+          <a href="/blog#academic" class="text-xs md:text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
+            View all →
+          </a>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          {academicPosts.map((post) => (
+            <a href={`/blog/${post.slug}`} class="glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
+              <div class="mb-2 flex items-center justify-between">
+                <span class="text-xs text-[#3be9d1]">{formatDate(post.data.date)}</span>
+                <span class="px-2 py-0.5 bg-[#3be9d1]/10 rounded-full text-xs text-[#3be9d1]/90">
+                  {post.data.tags[0]}
+                </span>
+              </div>
+              <h3 class="text-lg font-medium text-white mb-2">{post.data.title}</h3>
+              <p class="text-white/60 text-sm line-clamp-2 mb-2">{post.data.summary}</p>
+              <span class="text-xs text-[#3be9d1] hover:underline">Read paper →</span>
+            </a>
+          ))}
         </div>
       </section>
       
       <!-- Projects Section -->
-      <section class="mb-16">
-        <div class="flex justify-between items-center mb-6">
-          <h2 class="text-2xl font-bold text-white">Projects</h2>
-          <a href="/projects" class="text-sm text-[#3be9d1] hover:underline">View All →</a>
+      <section class="mb-8 md:mb-12">
+        <div class="flex justify-between items-baseline mb-4 md:mb-6">
+          <h2 class="text-xl md:text-2xl font-bold text-white">Projects</h2>
+          <a href="/projects" class="text-xs md:text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
+            View all →
+          </a>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {latestProjects.map((project) => (
-            <a href={`/projects/${project.slug}`} class="glass-effect rounded-lg p-6 block hover:shadow-md transition-all duration-300 card-hover-effect">
-              <div class="flex flex-col h-full">
-                <div class="mb-2 flex items-center justify-between">
-                  <span class="text-xs text-white/60">{new Date(project.data.date).getFullYear()}</span>
-                  <span class="px-2 py-0.5 bg-[#3be9d1]/10 rounded-full text-xs text-[#3be9d1]/90">{project.data.category || project.data.tags[0]}</span>
-                </div>
-                <h3 class="text-xl font-medium text-white mb-1">{project.data.title}</h3>
-                <p class="text-sm text-white/70 mb-1">{project.data.client || ''}</p>
-                <p class="text-sm text-white/60 line-clamp-2 mb-4">{project.data.description || project.data.summary}</p>
-                <div class="mt-auto">
-                  <div class="flex flex-wrap gap-1">
-                    {project.data.tags && project.data.tags.slice(0, 3).map((tag: string) => (
-                      <span class="px-2 py-0.5 bg-white/5 rounded-full text-xs text-white/70">{tag}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </a>
-          ))}
-        </div>
-      </section>
-      
-      <!-- Blog Posts Section -->
-      <section class="mb-16">
-        <div class="flex justify-between items-center mb-6">
-          <h2 class="text-2xl font-bold text-white">Writing</h2>
-          <a href="/blog" class="text-sm text-[#3be9d1] hover:underline">View All →</a>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {latestPosts.map((post) => (
-            <a href={`/blog/${post.slug}`} class="glass-effect rounded-lg p-6 block hover:shadow-md transition-all duration-300 card-hover-effect">
-              <div class="flex flex-col h-full">
-                <div class="mb-2 flex items-center justify-between">
-                  <span class="text-xs text-white/60">{new Date(post.data.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                  <span class="px-2 py-0.5 bg-[#3be9d1]/10 rounded-full text-xs text-[#3be9d1]/90">{post.data.tags[0]}</span>
-                </div>
-                <h3 class="text-xl font-medium text-white mb-1">{post.data.title}</h3>
-                <p class="text-sm text-white/60 line-clamp-2 mb-4">{post.data.summary}</p>
-                <div class="mt-auto">
-                  <div class="flex flex-wrap gap-1">
-                    {post.data.tags && post.data.tags.slice(0, 3).map((tag: string) => (
-                      <span class="px-2 py-0.5 bg-white/5 rounded-full text-xs text-white/70">{tag}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </a>
-          ))}
-        </div>
+        <a href={`/projects/${towerOfBabelProject.slug}`} class="glass-effect rounded-lg p-5 block hover:shadow-md transition-all duration-300 hover:translate-y-[-5px]">
+          <div class="mb-2 flex items-center justify-between">
+            <span class="text-xs text-white/60">{formatDate(towerOfBabelProject.data.date)}</span>
+            <span class="px-2 py-0.5 bg-[#3be9d1]/10 rounded-full text-xs text-[#3be9d1]/90">
+              {towerOfBabelProject.data.category}
+            </span>
+          </div>
+          <h3 class="text-xl font-medium text-white mb-1">{towerOfBabelProject.data.title}</h3>
+          <p class="text-sm text-white/70 mb-1">{towerOfBabelProject.data.client}</p>
+          <p class="text-sm text-white/60 mb-4">{towerOfBabelProject.data.summary}</p>
+          <div class="flex flex-wrap gap-1 mb-2">
+            {towerOfBabelProject.data.tags.map((tag: string) => (
+              <span class="px-2 py-0.5 bg-white/5 rounded-full text-xs text-white/70">{tag}</span>
+            ))}
+          </div>
+          <span class="text-sm text-[#3be9d1] hover:underline">View project details →</span>
+        </a>
       </section>
     </div>
   </div>

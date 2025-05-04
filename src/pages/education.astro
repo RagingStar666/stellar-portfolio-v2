@@ -127,174 +127,159 @@ const links = [
 ---
 
 <PageLayout title={EDUCATION.TITLE} description={EDUCATION.DESCRIPTION}>
-  <div class="container mx-auto px-6 py-12">
-    <div class="max-w-6xl mx-auto">
+  <div class="container mx-auto px-4 sm:px-6 py-12">
+    <div class="max-w-5xl mx-auto">
       <Breadcrumbs links={links} />
       
-      <!-- Mobile Sidebar Toggle -->
-      <button id="toggle-sidebar" class="md:hidden mb-4 px-4 py-2 bg-[#3be9d1]/10 text-[#3be9d1] rounded-md flex items-center justify-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-        Toggle Navigation
-      </button>
+      <!-- Section Heading -->
+      <div class="glass-effect rounded-lg p-6 md:p-8 mb-8">
+        <h1 class="text-2xl md:text-3xl font-bold text-white mb-2 md:mb-4">Education & Skills</h1>
+        <p class="text-white/80 text-sm md:text-base">
+          An overview of my academic qualifications, professional certifications, and specialized skills
+          that I've developed throughout my educational and professional journey.
+        </p>
+      </div>
       
-      <div class="flex flex-col md:flex-row">
-        <!-- Sidebar Navigation -->
-        <div id="sidebar" class="hidden md:block md:w-64 md:mr-8 flex-shrink-0 mb-8 md:mb-0 transition-all duration-300">
-          <div class="glass-effect rounded-lg p-6 sticky top-24">
-            <h3 class="text-lg font-semibold text-white mb-4 border-b border-white/10 pb-2">
-              Education
-            </h3>
-            <nav class="space-y-4">
-              <a href="#education" class="block text-white hover:text-[#3be9d1] transition-colors py-1">
-                Academic Education
-              </a>
-              <a href="#certifications" class="block text-white hover:text-[#3be9d1] transition-colors py-1">
-                Certifications
-              </a>
-              <a href="#skills" class="block text-white hover:text-[#3be9d1] transition-colors py-1">
-                Skills & Tools
-              </a>
-            </nav>
-          </div>
+      <!-- Floating Navigation for Mobile -->
+      <div class="floating-nav">
+        <div class="floating-nav-content">
+          <a href="#education" class="floating-nav-item">Education</a>
+          <a href="#certifications" class="floating-nav-item">Certifications</a>
+          <a href="#skills" class="floating-nav-item">Skills</a>
         </div>
+      </div>
+
+      <!-- Academic Education Section -->
+      <div id="education" class="mb-12 md:mb-16 scroll-mt-24">
+        <h2 class="text-xl md:text-2xl font-bold text-white mb-6 flex items-center">
+          <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">E</span>
+          Academic Education
+        </h2>
         
-        <!-- Main Content -->
-        <div class="flex-1">
-          <div class="glass-effect rounded-lg p-8 mb-8">
-            <h1 class="text-3xl font-bold text-white mb-4">Education & Skills</h1>
-            <p class="text-white/80">
-              An overview of my academic qualifications, professional certifications, and specialized skills
-              that I've developed throughout my educational and professional journey.
-            </p>
-          </div>
+        <!-- LinkedIn-style Timeline -->
+        <div class="timeline-container">
+          <div class="timeline-line"></div>
           
-          <!-- Academic Education Section -->
-          <section id="education" class="mb-12">
-            <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
-              <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">E</span>
-              Academic Education
-            </h2>
-            
-            <!-- Timeline -->
-            <div class="relative ml-4 pl-8 border-l-2 border-[#3be9d1]/30">
-              {educationEntries.map((entry, index) => (
-                <div class={`relative mb-10 ${index === educationEntries.length - 1 ? "" : ""}`}>
-                  <!-- Timeline node -->
-                  <div class="absolute -left-10 w-6 h-6 rounded-full bg-[#3be9d1]/20 border-2 border-[#3be9d1] flex items-center justify-center">
-                    <div class="w-2 h-2 rounded-full bg-[#3be9d1]"></div>
-                  </div>
-                  
-                  <!-- Content -->
-                  <a href={`/education/${entry.slug}`} class="glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
-                    <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
-                      {entry.dateStart} - Present
-                    </div>
-                    
-                    <h3 class="text-lg font-semibold text-white">{entry.degree}</h3>
-                    <p class="text-white/80 mb-4">{entry.name}</p>
-                    
-                    <p class="text-white/70 text-sm mb-4">{entry.description}</p>
-                    
-                    <div class="flex items-center text-sm">
-                      <span class="text-[#3be9d1] hover:underline">View details →</span>
-                    </div>
+          {educationEntries.map((entry) => (
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <a href={`/education/${entry.slug}`} class="timeline-content glass-effect rounded-lg p-5 block">
+                <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
+                  {entry.dateStart} - Present
+                </div>
+                
+                <h3 class="text-lg font-semibold text-white">{entry.degree}</h3>
+                <p class="text-white/80 mb-4">{entry.name}</p>
+                
+                <p class="text-white/70 text-sm mb-4">{entry.description}</p>
+                
+                <div class="flex items-center text-sm">
+                  <span class="text-[#3be9d1] hover:underline">View details →</span>
+                </div>
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      <!-- Certifications Section -->
+      <div id="certifications" class="mb-12 md:mb-16 scroll-mt-24">
+        <h2 class="text-xl md:text-2xl font-bold text-white mb-6 flex items-center">
+          <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">C</span>
+          Certifications
+        </h2>
+        
+        <!-- LinkedIn-style Timeline -->
+        <div class="timeline-container">
+          <div class="timeline-line"></div>
+          
+          {certificationEntries.map((entry) => (
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <a href={`/education/certifications/${entry.slug}`} class="timeline-content glass-effect rounded-lg p-5 block">
+                <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
+                  {entry.date}
+                </div>
+                
+                <h3 class="text-lg font-semibold text-white">{entry.name}</h3>
+                <p class="text-white/80 mb-4">{entry.institution}</p>
+                
+                <p class="text-white/70 text-sm mb-4">{entry.description}</p>
+                
+                <div class="flex items-center text-sm">
+                  <span class="text-[#3be9d1] hover:underline">View certificate →</span>
+                </div>
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      <!-- Skills Section -->
+      <div id="skills" class="mb-12 md:mb-16 scroll-mt-24">
+        <h2 class="text-xl md:text-2xl font-bold text-white mb-6 flex items-center">
+          <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">S</span>
+          Skills & Tools
+        </h2>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {skillsData.map((skillCategory) => (
+            <div class="glass-effect rounded-lg p-5 transition-all duration-300 hover:translate-y-[-5px]">
+              <h3 class="text-lg font-semibold text-white mb-3">{skillCategory.category}</h3>
+              <p class="text-white/70 text-sm mb-4">{skillCategory.description}</p>
+              
+              <div class="flex flex-wrap gap-2">
+                {skillCategory.tools.map((tool) => (
+                  <a 
+                    href={tool.link} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center px-3 py-1 bg-[#3be9d1]/10 hover:bg-[#3be9d1]/20 
+                          rounded-full text-sm text-[#3be9d1] transition-colors"
+                  >
+                    {tool.name}
                   </a>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </section>
-          
-          <!-- Certifications Section -->
-          <section id="certifications" class="mb-12">
-            <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
-              <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">C</span>
-              Certifications
-            </h2>
-            
-            <!-- Timeline -->
-            <div class="relative ml-4 pl-8 border-l-2 border-[#3be9d1]/30">
-              {certificationEntries.map((entry, index) => (
-                <div class={`relative mb-10 ${index === certificationEntries.length - 1 ? "" : ""}`}>
-                  <!-- Timeline node -->
-                  <div class="absolute -left-10 w-6 h-6 rounded-full bg-[#3be9d1]/20 border-2 border-[#3be9d1] flex items-center justify-center">
-                    <div class="w-2 h-2 rounded-full bg-[#3be9d1]"></div>
-                  </div>
-                  
-                  <!-- Content -->
-                  <a href={`/education/certifications/${entry.slug}`} class="glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
-                    <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
-                      {entry.date}
-                    </div>
-                    
-                    <h3 class="text-lg font-semibold text-white">{entry.name}</h3>
-                    <p class="text-white/80 mb-4">{entry.institution}</p>
-                    
-                    <p class="text-white/70 text-sm mb-4">{entry.description}</p>
-                    
-                    <div class="flex items-center text-sm">
-                      <span class="text-[#3be9d1] hover:underline">View certificate →</span>
-                    </div>
-                  </a>
-                </div>
-              ))}
-            </div>
-          </section>
-          
-          <!-- Skills Section -->
-          <section id="skills" class="mb-12">
-            <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
-              <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">S</span>
-              Skills & Tools
-            </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {skillsData.map((skillCategory) => (
-                <div class="glass-effect rounded-lg p-5 transition-all duration-300 hover:translate-y-[-5px]">
-                  <h3 class="text-lg font-semibold text-white mb-3">{skillCategory.category}</h3>
-                  <p class="text-white/70 text-sm mb-4">{skillCategory.description}</p>
-                  
-                  <div class="flex flex-wrap gap-2">
-                    {skillCategory.tools.map((tool) => (
-                      <a 
-                        href={tool.link} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        class="inline-flex items-center px-3 py-1 bg-[#3be9d1]/10 hover:bg-[#3be9d1]/20 
-                              rounded-full text-sm text-[#3be9d1] transition-colors"
-                      >
-                        {tool.name}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
+          ))}
         </div>
       </div>
     </div>
   </div>
 </PageLayout>
 
-<style>
-  /* Updated glass effect for dark background */
-  .glass-effect {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-</style>
-
 <script>
-// Mobile toggle functionality
+// Script to update active state on floating nav based on scroll position
 document.addEventListener('DOMContentLoaded', () => {
-  const toggleButton = document.getElementById('toggle-sidebar');
-  const sidebar = document.getElementById('sidebar');
+  const sections = document.querySelectorAll('[id]');
+  const navItems = document.querySelectorAll('.floating-nav-item');
   
-  toggleButton?.addEventListener('click', () => {
-    sidebar?.classList.toggle('hidden');
-  });
+  function updateActiveNavItem() {
+    let currentSection = '';
+    
+    sections.forEach((section) => {
+      const sectionElement = section as HTMLElement;
+      const sectionTop = sectionElement.offsetTop;
+      const sectionHeight = sectionElement.offsetHeight;
+      if (window.scrollY >= sectionTop - 100 && window.scrollY < sectionTop + sectionHeight - 100) {
+        const id = section.getAttribute('id');
+        if (id) {
+          currentSection = id;
+        }
+      }
+    });
+    
+    navItems.forEach(item => {
+      item.classList.remove('active');
+      const href = item.getAttribute('href');
+      if (href === `#${currentSection}`) {
+        item.classList.add('active');
+      }
+    });
+  }
+  
+  window.addEventListener('scroll', updateActiveNavItem);
+  updateActiveNavItem();
 });
 </script> 

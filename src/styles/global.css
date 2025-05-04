@@ -2,7 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-:root{
+/* Variables for light/dark mode */
+:root {
+  --color-text: #111827;
+  --color-bg: #f9fafb;
+  --color-primary: #3be9d1;
+  --color-primary-hover: #36d4be;
+  --color-card-bg: rgba(255, 255, 255, 0.7);
+  --color-card-border: rgba(255, 255, 255, 0.1);
   --copy-btn-margin:10px;
   --dark-bg-color: #0a1929; /* Deep navy blue */
   --light-bg-color: #fff6f6; /* Pinkish white */
@@ -17,6 +24,35 @@
     rgb(var(--accent-light)) 30%,
     white 60%
   );
+}
+
+.dark {
+  --color-text: #f9fafb;
+  --color-bg: #000000;
+  --color-primary: #3be9d1;
+  --color-primary-hover: #42ffe5;
+  --color-card-bg: rgba(0, 0, 0, 0.7);
+  --color-card-border: rgba(255, 255, 255, 0.1);
+  --dark-bg-color: #000000;
+  --light-bg-color: #000000;
+  --teal-star-color: #3be9d1;
+  --gold-star-color: #ffd700;
+  --accent: 136, 58, 234;
+  --accent-light: 224, 204, 250;
+  --accent-dark: 49, 10, 101;
+  --accent-gradient: linear-gradient(
+    45deg,
+    rgb(var(--accent)),
+    rgb(var(--accent-light)) 30%,
+    white 60%
+  );
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color 0.3s, color 0.3s;
+  @apply relative flex flex-col;
 }
 
 @layer base {
@@ -48,8 +84,8 @@ html {
 
 html.dark {
   color-scheme: dark;
-  background-color: var(--dark-bg-color);
-  background: linear-gradient(to bottom, #111111, #000000);
+  background-color: #000000;
+  background: #000000;
 }
 
 html,
@@ -62,11 +98,7 @@ body {
 }
 
 html.dark body {
-  background-color: var(--dark-bg-color);
-}
-
-body {
-  @apply relative flex flex-col;
+  background-color: #000000;
 }
 
 main {
@@ -120,16 +152,15 @@ article {
 }
 
 .glass-effect {
-  background-color: rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
   transition: all 300ms;
 }
 
-html.dark .glass-effect {
-  background-color: rgba(0, 0, 0, 0.3);
-  border-color: rgba(255, 255, 255, 0.1);
+.dark .glass-effect {
+  background: rgba(0, 0, 0, 0.5);
 }
 
 /* Custom glow effects */
@@ -265,4 +296,169 @@ html:not(.dark) #meteors .meteor {
   50% {
     transform: translateY(-15px);
   }
+}
+
+/* Timeline styling */
+.timeline-container {
+  position: relative;
+  padding-left: 30px;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 0;
+  top: 24px;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, rgba(59, 233, 209, 0.5), rgba(59, 233, 209, 0.1));
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-node {
+  position: absolute;
+  left: -31px;
+  top: 24px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: #3be9d1;
+  transform: translateY(-50%);
+  box-shadow: 0 0 15px rgba(59, 233, 209, 0.5);
+  z-index: 1;
+}
+
+.timeline-content {
+  transition: all 0.3s;
+}
+
+.timeline-content:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Additional hover effects for glass cards */
+.glass-effect {
+  transition: all 0.3s ease;
+}
+
+.glass-effect:hover {
+  box-shadow: 0 0 20px rgba(59, 233, 209, 0.2);
+}
+
+/* Remove sidebar on mobile and make it floating */
+.floating-nav {
+  position: fixed;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: 90%;
+  max-width: 300px;
+  transition: all 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .floating-nav {
+    display: none;
+  }
+}
+
+.floating-nav-content {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background-color: rgba(13, 27, 42, 0.9);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(59, 233, 209, 0.2);
+  border-radius: 9999px;
+}
+
+.floating-nav-item {
+  font-size: 0.875rem;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  transition: all 0.25s ease;
+}
+
+.floating-nav-item.active {
+  background-color: rgba(59, 233, 209, 0.2);
+  color: rgba(59, 233, 209, 1);
+}
+
+/* Improved Cards for Mobile */
+@media (max-width: 767px) {
+  .card-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 12px;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    scrollbar-width: none;
+    scroll-padding: 12px;
+  }
+  
+  .card-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .card-item {
+    scroll-snap-align: start;
+    min-width: 85%;
+    flex: 0 0 auto;
+  }
+}
+
+/* Particle background animations */
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Star background */
+.stars {
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 160px 120px, #ddd, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  opacity: 0.15;
+  animation: twinkle 5s ease-in-out infinite alternate;
+}
+
+.dark .stars {
+  opacity: 0.3;
+}
+
+@keyframes twinkle {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -100px 100px;
+  }
+}
+
+/* Light/dark mode transition */
+html.transition,
+html.transition *,
+html.transition *:before,
+html.transition *:after {
+  transition: all 750ms !important;
+  transition-delay: 0 !important;
 }

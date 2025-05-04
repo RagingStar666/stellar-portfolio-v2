@@ -13,20 +13,21 @@ import { SITE } from "@consts"
   <head>
     <BaseHead title={`${title} | ${SITE.TITLE}`} description={description} />
     <script is:inline src="/js/particles.min.js"></script>
+    <script is:inline src="/js/theme.js"></script>
   </head>
   <body class="bg-midnight-black text-white">
     <!-- Particles.js Container -->
     <div id="particles-js" class="fixed inset-0 z-0 pointer-events-none"></div>
     
-    <!-- Hide Light Mode Particles (keeping structure for potential reuse) -->
-    <div class='absolute inset-0 hidden'>
+    <!-- Light Mode Particles -->
+    <div id="light-particles" class='absolute inset-0'>
       <div id='particles1' class='fixed inset-0'></div>
       <div id='particles2' class='fixed inset-0'></div>
       <div id='particles3' class='fixed inset-0'></div>
     </div>
 
-    <!-- Dark Theme: Stars - Also Hidden -->
-    <div class='absolute inset-0 hidden'>
+    <!-- Dark Theme: Stars -->
+    <div id="dark-stars" class='absolute inset-0'>
       <div id='stars1' class='fixed inset-0'></div>
       <div id='stars2' class='fixed inset-0'></div>
       <div id='stars3' class='fixed inset-0'></div>
@@ -46,5 +47,13 @@ import { SITE } from "@consts"
 <style>
   .bg-midnight-black {
     background-color: #000000;
+  }
+  
+  html:not(.dark) #dark-stars {
+    display: none;
+  }
+  
+  html.dark #light-particles {
+    display: none;
   }
 </style>
