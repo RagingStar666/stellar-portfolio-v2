@@ -1,9 +1,8 @@
 ---
 import { getCollection } from "astro:content"
 import PageLayout from "@layouts/PageLayout.astro"
-import TopLayout from "@layouts/TopLayout.astro"
-import BottomLayout from "@layouts/BottomLayout.astro"
 import { WORK } from "@consts"
+import Breadcrumbs from "@components/Breadcrumbs.astro"
 
 const collection = await getCollection("work")
 
@@ -15,6 +14,29 @@ const work = await Promise.all(
     return { ...item, Content }
   })
 )
+
+// Separate work by type
+const professionalExperience = work.filter(item => 
+  item.data.role.toLowerCase().includes('director') || 
+  item.data.role.toLowerCase().includes('founder') || 
+  item.data.role.toLowerCase().includes('leader') || 
+  item.data.role.toLowerCase().includes('manager')
+);
+
+const internships = work.filter(item => 
+  item.data.role.toLowerCase().includes('intern') || 
+  item.data.role.toLowerCase().includes('trainee')
+);
+
+const committees = work.filter(item => 
+  item.data.role.toLowerCase().includes('committee') || 
+  item.data.role.toLowerCase().includes('member')
+);
+
+const links = [
+  { name: "Home", url: "/" },
+  { name: "Experience", url: "/work" }
+];
 
 function formatWorkDate(input: Date | string) {
   if (typeof input === "string") return input
@@ -29,31 +51,176 @@ function formatWorkDate(input: Date | string) {
 ---
 
 <PageLayout title={WORK.TITLE} description={WORK.DESCRIPTION}>
-  <TopLayout>
-    <div class="animate page-heading">
-      {WORK.TITLE}
+  <div class="container mx-auto px-6 py-12">
+    <div class="max-w-6xl mx-auto">
+      <Breadcrumbs links={links} />
+      
+      <!-- Mobile Sidebar Toggle -->
+      <button id="toggle-sidebar" class="md:hidden mb-4 px-4 py-2 bg-[#3be9d1]/10 text-[#3be9d1] rounded-md flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        Toggle Navigation
+      </button>
+      
+      <div class="flex flex-col md:flex-row">
+        <!-- Sidebar Navigation -->
+        <div id="sidebar" class="hidden md:block md:w-64 md:mr-8 flex-shrink-0 mb-8 md:mb-0 transition-all duration-300">
+          <div class="glass-effect rounded-lg p-6 sticky top-24">
+            <h3 class="text-lg font-semibold text-white mb-4 border-b border-white/10 pb-2">
+              Experience
+            </h3>
+            <nav class="space-y-4">
+              <a href="#professional" class="block text-white hover:text-[#3be9d1] transition-colors py-1">
+                Professional Experience
+              </a>
+              <a href="#internships" class="block text-white hover:text-[#3be9d1] transition-colors py-1">
+                Internships
+              </a>
+              <a href="#committees" class="block text-white hover:text-[#3be9d1] transition-colors py-1">
+                Committees
+              </a>
+            </nav>
+          </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1">
+          <div class="glass-effect rounded-lg p-8 mb-8">
+            <h1 class="text-3xl font-bold text-white mb-4">Professional Experience</h1>
+            <p class="text-white/80">
+              A chronological overview of my professional journey, internships, and committee engagements,
+              highlighting my experience in legal practice, operations management, and organizational leadership.
+            </p>
+          </div>
+          
+          <!-- Two-Column Layout -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            <!-- Professional Experience -->
+            <section id="professional" class="relative">
+              <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">P</span>
+                Professional Experience
+              </h2>
+              
+              <!-- Timeline -->
+              <div class="relative ml-4 pl-8 border-l-2 border-[#3be9d1]/30">
+                {professionalExperience.map((entry, index) => (
+                  <div class={`relative mb-10 ${index === professionalExperience.length - 1 ? "" : ""}`}>
+                    <!-- Timeline node -->
+                    <div class="absolute -left-10 w-6 h-6 rounded-full bg-[#3be9d1]/20 border-2 border-[#3be9d1] flex items-center justify-center">
+                      <div class="w-2 h-2 rounded-full bg-[#3be9d1]"></div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="glass-effect rounded-lg p-5 transition-all duration-300 hover:translate-y-[-5px]">
+                      <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
+                        {formatWorkDate(entry.data.dateStart)} - {formatWorkDate(entry.data.dateEnd)}
+                      </div>
+                      
+                      <h3 class="text-lg font-semibold text-white">{entry.data.role}</h3>
+                      <p class="text-white/80 mb-4">{entry.data.company}</p>
+                      
+                      <div class="text-white/70 text-sm prose-sm dark:prose-invert">
+                        <entry.Content />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+            
+            <!-- Internships -->
+            <section id="internships" class="relative">
+              <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">I</span>
+                Internships
+              </h2>
+              
+              <!-- Timeline -->
+              <div class="relative ml-4 pl-8 border-l-2 border-[#3be9d1]/30">
+                {internships.map((entry, index) => (
+                  <div class={`relative mb-10 ${index === internships.length - 1 ? "" : ""}`}>
+                    <!-- Timeline node -->
+                    <div class="absolute -left-10 w-6 h-6 rounded-full bg-[#3be9d1]/20 border-2 border-[#3be9d1] flex items-center justify-center">
+                      <div class="w-2 h-2 rounded-full bg-[#3be9d1]"></div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="glass-effect rounded-lg p-5 transition-all duration-300 hover:translate-y-[-5px]">
+                      <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
+                        {formatWorkDate(entry.data.dateStart)} - {formatWorkDate(entry.data.dateEnd)}
+                      </div>
+                      
+                      <h3 class="text-lg font-semibold text-white">{entry.data.role}</h3>
+                      <p class="text-white/80 mb-4">{entry.data.company}</p>
+                      
+                      <div class="text-white/70 text-sm prose-sm dark:prose-invert">
+                        <entry.Content />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </div>
+          
+          <!-- Committees -->
+          <section id="committees" class="mb-12">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+              <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">C</span>
+              Committees & Organizations
+            </h2>
+            
+            <!-- Timeline -->
+            <div class="relative ml-4 pl-8 border-l-2 border-[#3be9d1]/30">
+              {committees.map((entry, index) => (
+                <div class={`relative mb-10 ${index === committees.length - 1 ? "" : ""}`}>
+                  <!-- Timeline node -->
+                  <div class="absolute -left-10 w-6 h-6 rounded-full bg-[#3be9d1]/20 border-2 border-[#3be9d1] flex items-center justify-center">
+                    <div class="w-2 h-2 rounded-full bg-[#3be9d1]"></div>
+                  </div>
+                  
+                  <!-- Content -->
+                  <div class="glass-effect rounded-lg p-5 transition-all duration-300 hover:translate-y-[-5px]">
+                    <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
+                      {formatWorkDate(entry.data.dateStart)} - {formatWorkDate(entry.data.dateEnd)}
+                    </div>
+                    
+                    <h3 class="text-lg font-semibold text-white">{entry.data.role}</h3>
+                    <p class="text-white/80 mb-4">{entry.data.company}</p>
+                    
+                    <div class="text-white/70 text-sm prose-sm dark:prose-invert">
+                      <entry.Content />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+      </div>
     </div>
-  </TopLayout>
-  <BottomLayout>
-    <ul>
-      { 
-        work.map((entry) => (
-          <li class="animate border-b border-black/10 dark:border-white/25 mt-4 py-8 first-of-type:mt-0 first-of-type:pt-0 last-of-type:border-none">
-            <div class="text-sm uppercase mb-4">
-              {formatWorkDate(entry.data.dateStart)} - {formatWorkDate(entry.data.dateEnd)}
-            </div>
-            <div class="text-black dark:text-white font-semibold">
-              {entry.data.company}
-            </div>
-            <div class="text-sm font-semibold">
-              {entry.data.role}
-            </div>
-            <article class="prose dark:prose-invert">
-              <entry.Content />
-            </article>
-          </li>
-        ))
-      }
-    </ul>
-  </BottomLayout>
+  </div>
 </PageLayout>
+
+<style>
+  /* Updated glass effect for dark background */
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+</style>
+
+<script>
+// Mobile toggle functionality
+document.addEventListener('DOMContentLoaded', () => {
+  const toggleButton = document.getElementById('toggle-sidebar');
+  const sidebar = document.getElementById('sidebar');
+  
+  toggleButton?.addEventListener('click', () => {
+    sidebar?.classList.toggle('hidden');
+  });
+});
+</script>

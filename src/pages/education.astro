@@ -2,6 +2,7 @@
 import PageLayout from "@layouts/PageLayout.astro"
 import { EDUCATION } from "@consts"
 import { certsData } from "@data/certsData"
+import Breadcrumbs from "@components/Breadcrumbs.astro"
 
 // Fetch university data
 const universityData = {
@@ -118,174 +119,182 @@ const skillsData = [
     ]
   }
 ]
+
+const links = [
+  { name: "Home", url: "/" },
+  { name: "Education", url: "/education" }
+];
 ---
 
 <PageLayout title={EDUCATION.TITLE} description={EDUCATION.DESCRIPTION}>
-  <div class="container mx-auto p-6 relative">
-    <h1 class="text-3xl font-bold mb-8 text-black dark:text-white border-b pb-4 pt-6 mt-10 scroll-mt-24">
-      {EDUCATION.TITLE}
-    </h1>
-
-    <!-- Grid layout for sidebar and content -->
-    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-      <!-- Sidebar Navigation (fixed on desktop) -->
-      <div class="lg:col-span-1">
-        <div class="lg:sticky lg:top-24 bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 p-4">
-          <h2 class="text-lg font-semibold mb-4 text-black dark:text-white">Navigation</h2>
-          <ul class="space-y-2">
-            <li>
-              <a href="#education" class="block px-3 py-2 bg-black/5 dark:bg-white/10 rounded-lg hover:bg-black/10 hover:dark:bg-white/20 transition-colors">
-                Education
+  <div class="container mx-auto px-6 py-12">
+    <div class="max-w-6xl mx-auto">
+      <Breadcrumbs links={links} />
+      
+      <!-- Mobile Sidebar Toggle -->
+      <button id="toggle-sidebar" class="md:hidden mb-4 px-4 py-2 bg-[#3be9d1]/10 text-[#3be9d1] rounded-md flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        Toggle Navigation
+      </button>
+      
+      <div class="flex flex-col md:flex-row">
+        <!-- Sidebar Navigation -->
+        <div id="sidebar" class="hidden md:block md:w-64 md:mr-8 flex-shrink-0 mb-8 md:mb-0 transition-all duration-300">
+          <div class="glass-effect rounded-lg p-6 sticky top-24">
+            <h3 class="text-lg font-semibold text-white mb-4 border-b border-white/10 pb-2">
+              Education
+            </h3>
+            <nav class="space-y-4">
+              <a href="#education" class="block text-white hover:text-[#3be9d1] transition-colors py-1">
+                Academic Education
               </a>
-            </li>
-            <li>
-              <a href="#certifications" class="block px-3 py-2 bg-black/5 dark:bg-white/10 rounded-lg hover:bg-black/10 hover:dark:bg-white/20 transition-colors">
+              <a href="#certifications" class="block text-white hover:text-[#3be9d1] transition-colors py-1">
                 Certifications
               </a>
-            </li>
-            <li>
-              <a href="#skills" class="block px-3 py-2 bg-black/5 dark:bg-white/10 rounded-lg hover:bg-black/10 hover:dark:bg-white/20 transition-colors">
+              <a href="#skills" class="block text-white hover:text-[#3be9d1] transition-colors py-1">
                 Skills & Tools
               </a>
-            </li>
-          </ul>
+            </nav>
+          </div>
         </div>
-      </div>
-      
-      <!-- Main Content -->
-      <div class="lg:col-span-3">
-        <!-- Education Section -->
-        <section id="education" class="scroll-mt-32 mb-16">
-          <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
-            Education
-          </h2>
+        
+        <!-- Main Content -->
+        <div class="flex-1">
+          <div class="glass-effect rounded-lg p-8 mb-8">
+            <h1 class="text-3xl font-bold text-white mb-4">Education & Skills</h1>
+            <p class="text-white/80">
+              An overview of my academic qualifications, professional certifications, and specialized skills
+              that I've developed throughout my educational and professional journey.
+            </p>
+          </div>
           
-          <div class="relative">
-            <!-- Timeline line on the left -->
-            <div class="absolute left-24 top-0 bottom-0 w-0.5 bg-black/20 dark:bg-white/20"></div>
+          <!-- Academic Education Section -->
+          <section id="education" class="mb-12">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+              <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">E</span>
+              Academic Education
+            </h2>
             
-            <div class="space-y-8">
-              {educationEntries.map((entry) => (
-                <div class="ml-36 relative">
-                  <!-- Timeline dot -->
-                  <div class="absolute left-[-12px] top-6 w-4 h-4 rounded-full bg-black dark:bg-white"></div>
-                  
-                  <!-- Timeline date -->
-                  <div class="absolute left-[-76px] top-5 text-sm font-medium text-black/70 dark:text-white/70 w-60px text-right">
-                    {entry.dateStart}
+            <!-- Timeline -->
+            <div class="relative ml-4 pl-8 border-l-2 border-[#3be9d1]/30">
+              {educationEntries.map((entry, index) => (
+                <div class={`relative mb-10 ${index === educationEntries.length - 1 ? "" : ""}`}>
+                  <!-- Timeline node -->
+                  <div class="absolute -left-10 w-6 h-6 rounded-full bg-[#3be9d1]/20 border-2 border-[#3be9d1] flex items-center justify-center">
+                    <div class="w-2 h-2 rounded-full bg-[#3be9d1]"></div>
                   </div>
                   
-                  <!-- Content card -->
-                  <a href={`/education/${entry.slug}`} class="block bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300 overflow-hidden">
-                    <div class="p-6">
-                      <div class="flex flex-col md:flex-row gap-6">
-                        <div class="md:w-1/4">
-                          <img src={entry.image} alt={entry.name} class="w-full rounded-lg object-cover aspect-video" />
-                        </div>
-                        <div class="md:w-3/4">
-                          <div class="mb-2">
-                            <span class="inline-block px-2 py-1 bg-black/10 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">
-                              Education
-                            </span>
-                          </div>
-                          <h3 class="text-xl font-semibold text-black dark:text-white">{entry.degree}</h3>
-                          <p class="text-black/70 dark:text-white/70 mb-1">{entry.name}</p>
-                          <p class="text-black/60 dark:text-white/60 mb-3">{entry.years}</p>
-                          <p class="text-black/80 dark:text-white/80 line-clamp-3">{entry.description}</p>
-                          <div class="mt-3">
-                            <span class="text-sm font-medium text-black dark:text-white hover:underline">Read more →</span>
-                          </div>
-                        </div>
-                      </div>
+                  <!-- Content -->
+                  <a href={`/education/${entry.slug}`} class="glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
+                    <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
+                      {entry.dateStart} - Present
+                    </div>
+                    
+                    <h3 class="text-lg font-semibold text-white">{entry.degree}</h3>
+                    <p class="text-white/80 mb-4">{entry.name}</p>
+                    
+                    <p class="text-white/70 text-sm mb-4">{entry.description}</p>
+                    
+                    <div class="flex items-center text-sm">
+                      <span class="text-[#3be9d1] hover:underline">View details →</span>
                     </div>
                   </a>
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-        
-        <!-- Certifications Section -->
-        <section id="certifications" class="scroll-mt-32 mb-16">
-          <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
-            Certifications
-          </h2>
+          </section>
           
-          <div class="relative">
-            <!-- Timeline line on the left -->
-            <div class="absolute left-24 top-0 bottom-0 w-0.5 bg-black/20 dark:bg-white/20"></div>
+          <!-- Certifications Section -->
+          <section id="certifications" class="mb-12">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+              <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">C</span>
+              Certifications
+            </h2>
             
-            <div class="space-y-8">
-              {certificationEntries.map((entry) => (
-                <div class="ml-36 relative">
-                  <!-- Timeline dot -->
-                  <div class="absolute left-[-12px] top-6 w-4 h-4 rounded-full bg-black dark:bg-white"></div>
-                  
-                  <!-- Timeline date -->
-                  <div class="absolute left-[-76px] top-5 text-sm font-medium text-black/70 dark:text-white/70 w-60px text-right">
-                    {entry.dateStart}
+            <!-- Timeline -->
+            <div class="relative ml-4 pl-8 border-l-2 border-[#3be9d1]/30">
+              {certificationEntries.map((entry, index) => (
+                <div class={`relative mb-10 ${index === certificationEntries.length - 1 ? "" : ""}`}>
+                  <!-- Timeline node -->
+                  <div class="absolute -left-10 w-6 h-6 rounded-full bg-[#3be9d1]/20 border-2 border-[#3be9d1] flex items-center justify-center">
+                    <div class="w-2 h-2 rounded-full bg-[#3be9d1]"></div>
                   </div>
                   
-                  <!-- Content card -->
-                  <a href={`/education/certifications/${entry.slug}`} class="block bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300 overflow-hidden">
-                    <div class="p-6">
-                      <div class="flex flex-col md:flex-row gap-6">
-                        <div class="md:w-1/4">
-                          <img src={entry.image} alt={entry.name} class="w-full rounded-lg object-cover aspect-video" />
-                        </div>
-                        <div class="md:w-3/4">
-                          <div class="mb-2">
-                            <span class="inline-block px-2 py-1 bg-black/10 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">
-                              Certification
-                            </span>
-                          </div>
-                          <h3 class="text-xl font-semibold text-black dark:text-white">{entry.name}</h3>
-                          <p class="text-black/70 dark:text-white/70 mb-1">{entry.institution}</p>
-                          <p class="text-black/60 dark:text-white/60 mb-3">{entry.date}</p>
-                          <p class="text-black/80 dark:text-white/80 line-clamp-3">{entry.description}</p>
-                          <div class="mt-3">
-                            <span class="text-sm font-medium text-black dark:text-white hover:underline">Read more →</span>
-                          </div>
-                        </div>
-                      </div>
+                  <!-- Content -->
+                  <a href={`/education/certifications/${entry.slug}`} class="glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
+                    <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
+                      {entry.date}
+                    </div>
+                    
+                    <h3 class="text-lg font-semibold text-white">{entry.name}</h3>
+                    <p class="text-white/80 mb-4">{entry.institution}</p>
+                    
+                    <p class="text-white/70 text-sm mb-4">{entry.description}</p>
+                    
+                    <div class="flex items-center text-sm">
+                      <span class="text-[#3be9d1] hover:underline">View certificate →</span>
                     </div>
                   </a>
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-        
-        <!-- Skills Section -->
-        <section id="skills" class="scroll-mt-32">
-          <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
-            Skills & Tools
-          </h2>
+          </section>
           
-          <div class="space-y-10">
-            {skillsData.map((category) => (
-              <div class="bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 p-6">
-                <h3 class="text-xl font-semibold mb-4 text-black dark:text-white">{category.category}</h3>
-                <p class="text-black/80 dark:text-white/80 mb-4">{category.description}</p>
-                
-                <div class="flex flex-wrap gap-3">
-                  {category.tools.map((tool) => (
-                    <a href={tool.link} target="_blank" rel="noopener noreferrer" 
-                       class="px-3 py-2 bg-black/5 dark:bg-white/10 rounded-lg text-black/70 dark:text-white/70 
-                              hover:bg-black/10 hover:dark:bg-white/20 hover:text-black hover:dark:text-white 
-                              transition-colors flex items-center gap-2">
-                      <span>{tool.name}</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                      </svg>
-                    </a>
-                  ))}
+          <!-- Skills Section -->
+          <section id="skills" class="mb-12">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+              <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">S</span>
+              Skills & Tools
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {skillsData.map((skillCategory) => (
+                <div class="glass-effect rounded-lg p-5 transition-all duration-300 hover:translate-y-[-5px]">
+                  <h3 class="text-lg font-semibold text-white mb-3">{skillCategory.category}</h3>
+                  <p class="text-white/70 text-sm mb-4">{skillCategory.description}</p>
+                  
+                  <div class="flex flex-wrap gap-2">
+                    {skillCategory.tools.map((tool) => (
+                      <a 
+                        href={tool.link} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center px-3 py-1 bg-[#3be9d1]/10 hover:bg-[#3be9d1]/20 
+                              rounded-full text-sm text-[#3be9d1] transition-colors"
+                      >
+                        {tool.name}
+                      </a>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </section>
+              ))}
+            </div>
+          </section>
+        </div>
       </div>
     </div>
   </div>
-</PageLayout> 
+</PageLayout>
+
+<style>
+  /* Updated glass effect for dark background */
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+</style>
+
+<script>
+// Mobile toggle functionality
+document.addEventListener('DOMContentLoaded', () => {
+  const toggleButton = document.getElementById('toggle-sidebar');
+  const sidebar = document.getElementById('sidebar');
+  
+  toggleButton?.addEventListener('click', () => {
+    sidebar?.classList.toggle('hidden');
+  });
+});
+</script> 

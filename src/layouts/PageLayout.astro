@@ -14,19 +14,19 @@ import { SITE } from "@consts"
     <BaseHead title={`${title} | ${SITE.TITLE}`} description={description} />
     <script is:inline src="/js/particles.min.js"></script>
   </head>
-  <body>
+  <body class="bg-midnight-black text-white">
     <!-- Particles.js Container -->
     <div id="particles-js" class="fixed inset-0 z-0 pointer-events-none"></div>
     
-    <!-- Light Mode: Particles -->
-    <div class='absolute inset-0 block dark:hidden'>
+    <!-- Hide Light Mode Particles (keeping structure for potential reuse) -->
+    <div class='absolute inset-0 hidden'>
       <div id='particles1' class='fixed inset-0'></div>
       <div id='particles2' class='fixed inset-0'></div>
       <div id='particles3' class='fixed inset-0'></div>
     </div>
 
-    <!-- Dark Theme: Stars -->
-    <div class='absolute inset-0 dark:block hidden'>
+    <!-- Dark Theme: Stars - Also Hidden -->
+    <div class='absolute inset-0 hidden'>
       <div id='stars1' class='fixed inset-0'></div>
       <div id='stars2' class='fixed inset-0'></div>
       <div id='stars3' class='fixed inset-0'></div>
@@ -42,3 +42,9 @@ import { SITE } from "@consts"
     <script is:inline src="/js/bg.js"></script>
   </body>
 </html>
+
+<style>
+  .bg-midnight-black {
+    background-color: #000000;
+  }
+</style>

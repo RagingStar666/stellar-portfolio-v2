@@ -6,11 +6,11 @@ const subpath = pathname.match(/[^/]+/g)
 import Container from "@components/Container.astro"
 ---
 
-<header id="header" class="fixed top-0 w-full h-16 z-50 ">
+<header id="header" class="fixed top-0 w-full h-16 z-50 bg-midnight-blue dark:bg-midnight-blue">
   <Container size="md">
     <div class="relative h-full w-full">
       <div class="absolute left-0 top-1/2 -translate-y-1/2 flex gap-1 font-semibold">
-        <a href="/" class="flex gap-1 text-current hover:text-black dark:hover:text-[#3be9d1] transition-colors duration-300 ease-in-out">
+        <a href="/" class="flex gap-1 text-white dark:text-white hover:text-[#3be9d1] dark:hover:text-[#3be9d1] transition-colors duration-300 ease-in-out">
           <svg class="size-6 fill-current">
             <use href="/brand.svg#brand"></use>
           </svg>
@@ -21,7 +21,7 @@ import Container from "@components/Container.astro"
       <nav class="hidden md:flex items-center justify-center text-sm gap-1">
         {
           LINKS.map((LINK) => (
-            <a href={LINK.HREF} class={cn("h-8 rounded-full px-3 text-current", "flex items-center justify-center", "transition-colors duration-300 ease-in-out", pathname === LINK.HREF || "/" + subpath?.[0] === LINK.HREF ? "bg-black dark:bg-[#3be9d1] text-white dark:text-black" : "hover:bg-black/5 dark:hover:bg-[#3be9d1]/20 hover:text-black dark:hover:text-[#3be9d1]")}>
+            <a href={LINK.HREF} class={cn("h-8 rounded-full px-3 text-white", "flex items-center justify-center", "transition-colors duration-300 ease-in-out", pathname === LINK.HREF || "/" + subpath?.[0] === LINK.HREF ? "bg-black dark:bg-[#3be9d1] text-white dark:text-black" : "hover:bg-black/5 dark:hover:bg-[#3be9d1]/20 hover:text-[#3be9d1] dark:hover:text-[#3be9d1]")}>
               {LINK.TEXT}
             </a>
           ))
@@ -30,13 +30,13 @@ import Container from "@components/Container.astro"
     </div>
 
     <div class="buttons absolute right-0 top-1/2 -translate-y-1/2 flex gap-1">
-      <a href="/search" aria-label={`Search blog posts and projects on ${SITE.TITLE}`} class={cn("hidden md:flex", "size-9 rounded-full p-2 items-center justify-center", "bg-transparent hover:bg-black/5 dark:hover:bg-[#3be9d1]/20", "stroke-current hover:stroke-black hover:dark:stroke-[#3be9d1]", "border border-black/10 dark:border-[#3be9d1]/25", "transition-colors duration-300 ease-in-out", pathname === "/search" || "/" + subpath?.[0] === "/search" ? "pointer-events-none bg-black dark:bg-[#3be9d1] text-white dark:text-black" : "")}>
+      <a href="/search" aria-label={`Search blog posts and projects on ${SITE.TITLE}`} class={cn("hidden md:flex", "size-9 rounded-full p-2 items-center justify-center", "bg-transparent hover:bg-black/5 dark:hover:bg-[#3be9d1]/20", "stroke-white hover:stroke-[#3be9d1] dark:stroke-white hover:dark:stroke-[#3be9d1]", "border border-white/10 dark:border-[#3be9d1]/25", "transition-colors duration-300 ease-in-out", pathname === "/search" || "/" + subpath?.[0] === "/search" ? "pointer-events-none bg-black dark:bg-[#3be9d1] text-white dark:text-black" : "")}>
         <svg class="size-full">
           <use href="/ui.svg#search"></use>
         </svg>
       </a>
 
-      <button id="header-theme-button" aria-label={`Toggle light and dark theme`} class={cn("hidden md:flex", "size-9 rounded-full p-2 items-center justify-center", "bg-transparent hover:bg-black/5 dark:hover:bg-[#3be9d1]/20", "stroke-current hover:stroke-black hover:dark:stroke-[#3be9d1]", "border border-black/10 dark:border-[#3be9d1]/25", "transition-colors duration-300 ease-in-out")}>
+      <button id="header-theme-button" aria-label={`Toggle light and dark theme`} class={cn("hidden md:flex", "size-9 rounded-full p-2 items-center justify-center", "bg-transparent hover:bg-black/5 dark:hover:bg-[#3be9d1]/20", "stroke-white hover:stroke-[#3be9d1] dark:stroke-white hover:dark:stroke-[#3be9d1]", "border border-white/10 dark:border-[#3be9d1]/25", "transition-colors duration-300 ease-in-out")}>
         <svg class="size-full block dark:hidden">
           <use href="/ui.svg#sun"></use>
         </svg>
@@ -45,7 +45,7 @@ import Container from "@components/Container.astro"
         </svg>
       </button>
 
-      <button id="header-drawer-button" aria-label={`Toggle drawer open and closed`} class={cn("flex md:hidden", "size-9 rounded-full p-2 items-center justify-center", "bg-transparent hover:bg-black/5 dark:hover:bg-[#3be9d1]/20", "stroke-current hover:stroke-black hover:dark:stroke-[#3be9d1]", "border border-black/10 dark:border-[#3be9d1]/25", "transition-colors duration-300 ease-in-out")}>
+      <button id="header-drawer-button" aria-label={`Toggle drawer open and closed`} class={cn("flex md:hidden", "size-9 rounded-full p-2 items-center justify-center", "bg-transparent hover:bg-black/5 dark:hover:bg-[#3be9d1]/20", "stroke-white hover:stroke-[#3be9d1] dark:stroke-white hover:dark:stroke-[#3be9d1]", "border border-white/10 dark:border-[#3be9d1]/25", "transition-colors duration-300 ease-in-out")}>
         <svg id="drawer-open" class="size-full">
           <use href="/ui.svg#menu"></use>
         </svg>
@@ -73,6 +73,10 @@ import Container from "@components/Container.astro"
 
   #header-drawer-button.open > #drawer-close {
     @apply block;
+  }
+  
+  .bg-midnight-blue {
+    background-color: #0d1b2a;
   }
 </style>
 

@@ -61,18 +61,6 @@ const universityDegree = {
   }
 };
 
-const latestCertification = {
-  slug: "adr-mediation-upskill",
-  data: {
-    title: "ADR Mediation Upskill Course",
-    institution: "ADR Board, Department of Law, University of Calcutta",
-    date: new Date("2024-12-01"),
-    type: "certification",
-    description: "Specialized training in mediation techniques and alternative dispute resolution approaches.",
-    tags: ["ADR", "Mediation", "Negotiation", "Conflict Resolution"]
-  }
-};
-
 // Get all work entries
 const allWork = await getCollection("work") as unknown as WorkEntry[];
 const workExperience = allWork
@@ -83,40 +71,18 @@ const workExperience = allWork
     return dateB.getTime() - dateA.getTime();
   });
 
-// Get latest work experience
-const latestWorkExperience = workExperience[0];
-
-// Get internships and committee memberships
-const internships = allWork
-  .filter(work => work.data.type === "internship")
-  .sort((a, b) => {
-    const dateA = a.data.date instanceof Date ? a.data.date : new Date();
-    const dateB = b.data.date instanceof Date ? b.data.date : new Date();
-    return dateB.getTime() - dateA.getTime();
-  });
-
-const committees = allWork
-  .filter(work => work.data.type === "committee")
-  .sort((a, b) => {
-    const dateA = a.data.date instanceof Date ? a.data.date : new Date();
-    const dateB = b.data.date instanceof Date ? b.data.date : new Date();
-    return dateB.getTime() - dateA.getTime();
-  });
-
-// Determine the more recent between latest internship and committee
-const latestInternship = internships[0];
-const latestCommittee = committees[0];
-
-let secondExperience;
-if (latestInternship && latestCommittee) {
-  const internshipDate = latestInternship.data.date instanceof Date ? latestInternship.data.date : new Date();
-  const committeeDate = latestCommittee.data.date instanceof Date ? latestCommittee.data.date : new Date();
-  secondExperience = internshipDate.getTime() > committeeDate.getTime() 
-    ? latestInternship 
-    : latestCommittee;
-} else {
-  secondExperience = latestInternship || latestCommittee;
-}
+// Get latest work experience or use a fallback if no entries exist
+const latestWorkExperience = workExperience.length > 0 ? workExperience[0] : {
+  slug: "default-experience",
+  data: {
+    position: "Operations Manager",
+    role: "Operations Manager",
+    company: "Incenesto Studio",
+    date: new Date("2022-01-01"),
+    description: "Leading operations, management, and strategic initiatives for the studio.",
+    tags: ["Management", "Strategy", "Operations"]
+  }
+};
 
 // Get all projects
 const allProjects = await getCollection("projects") as unknown as ProjectEntry[];
@@ -153,160 +119,83 @@ const positionLabel = "Law Student & Operations Professional";
         </div>
       </div>
       
-      <!-- Profile Card with About Me -->
+      <!-- About Me Card (without profile picture) -->
       <div class="glass-effect rounded-lg mb-12 p-10 relative">
-        <div class="flex flex-col md:flex-row gap-6 items-center md:items-start">
-          <div class="w-32 h-32 rounded-full overflow-hidden shrink-0">
-            <img src="/placeholder-image.svg" alt={SITE.AUTHOR} class="w-full h-full object-cover" />
-          </div>
+        <div class="flex flex-col">
+          <h1 class="text-3xl font-bold text-center md:text-left text-white mb-2">
+            {SITE.AUTHOR}
+          </h1>
           
-          <div class="flex-1">
-            <h1 class="text-3xl font-bold text-center md:text-left text-black dark:text-white mb-2">
-              {SITE.AUTHOR}
-            </h1>
+          <h2 class="text-lg text-center md:text-left text-white/70 mb-4">
+            {positionLabel}
+          </h2>
+          
+          <div class="text-white/80 space-y-4">
+            <p>
+              B.A. LL.B. (Hons.) student at the University of Calcutta, specializing in intellectual property rights, 
+              mergers & acquisitions, and finance law. My academic journey focuses on the intersection of law, 
+              technology, and business strategy.
+            </p>
             
-            <h2 class="text-lg text-center md:text-left text-black/70 dark:text-white/70 mb-4">
-              {positionLabel}
-            </h2>
+            <p>
+              As the founder of Incenesto Studio, I lead operations, management, and strategic initiatives, 
+              developing expertise in organizational leadership and project management. My professional 
+              interests lie in legal technology, intellectual property protection in digital domains, and 
+              alternative dispute resolution mechanisms.
+            </p>
             
-            <div class="text-black/80 dark:text-white/80 space-y-4">
-              <p>
-                Studying law with a focus on intellectual property, M&A, and finance law. Found Incenesto Studio 
-                Gainzing operations, management, and strategy.
-              </p>
-              
-              <div class="flex flex-wrap gap-2 mt-4">
-                <a 
-                  href="/work" 
-                  class="px-3 py-1 rounded-full text-sm bg-black text-white dark:bg-[#3be9d1] dark:text-black 
-                  hover:bg-black/80 dark:hover:bg-[#3be9d1]/80 transition-colors"
-                >
-                  View Experience
-                </a>
-                <a 
-                  href="/about" 
-                  class="px-3 py-1 rounded-full text-sm bg-transparent border border-black/10 dark:border-white/10
-                  hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white transition-colors"
-                >
-                  More About Me
-                </a>
-              </div>
-            </div>
+            <p>
+              I'm passionate about bridging traditional legal frameworks with emerging technologies and business models.
+              My research interests include comparative IP regimes, constitutional interpretations in digital contexts,
+              and the evolving standards of legal practice in a technology-driven world.
+            </p>
           </div>
         </div>
       </div>
       
-      <!-- Education Section -->
+      <!-- Compact Experience Section -->
       <section class="mb-16">
-        <div class="flex justify-between items-center mb-6">
-          <h2 class="text-2xl font-bold text-black dark:text-white">Education</h2>
-          <a href="/education" class="text-sm text-black/70 dark:text-[#3be9d1] hover:underline">View All →</a>
+        <div class="flex justify-between items-baseline mb-6">
+          <h2 class="text-2xl font-bold text-white">Experience & Education</h2>
+          <div class="flex gap-4">
+            <a href="/work" class="text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
+              All Experience →
+            </a>
+            <a href="/education" class="text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
+              All Education →
+            </a>
+          </div>
         </div>
         
+        <!-- Grid for work and education -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {universityDegree && (
-            <a href={`/education/${universityDegree.slug}`} class="glass-effect rounded-lg p-6 block hover:shadow-md transition-all duration-300 card-hover-effect">
-              <div class="flex flex-col h-full">
-                <div class="mb-2 flex items-center justify-between">
-                  <span class="text-xs text-black/60 dark:text-white/60">{new Date(universityDegree.data.date).getFullYear()}-Present</span>
-                  <span class="px-2 py-0.5 bg-black/5 dark:bg-[#3be9d1]/10 rounded-full text-xs text-black/70 dark:text-[#3be9d1]/90">Degree</span>
-                </div>
-                <h3 class="text-xl font-medium text-black dark:text-white mb-1">{universityDegree.data.title}</h3>
-                <p class="text-sm text-black/70 dark:text-white/70 mb-1">{universityDegree.data.institution}</p>
-                <p class="text-sm text-black/60 dark:text-white/60 line-clamp-2 mb-4">{universityDegree.data.description}</p>
-                <div class="mt-auto">
-                  <div class="flex flex-wrap gap-1">
-                    {universityDegree.data.tags.slice(0, 3).map((tag: string) => (
-                      <span class="px-2 py-0.5 bg-black/5 dark:bg-white/5 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </a>
-          )}
+          <!-- Latest Work Experience -->
+          <div class="glass-effect rounded-xl p-6">
+            <span class="text-sm text-[#3be9d1] uppercase tracking-wider mb-3 block">Experience</span>
+            <h3 class="text-xl font-semibold text-white mb-2">{latestWorkExperience.data.position || latestWorkExperience.data.role}</h3>
+            <p class="text-white/70 mb-4">{latestWorkExperience.data.company}</p>
+            <p class="text-white/60 text-sm mb-2">{latestWorkExperience.data.date ? new Date(latestWorkExperience.data.date).getFullYear() : new Date().getFullYear()}-Present</p>
+            <p class="text-white/70 text-sm line-clamp-3 mb-4">{latestWorkExperience.data.description || 'No description available'}</p>
+            <a href={`/work/${latestWorkExperience.slug}`} class="text-sm text-[#3be9d1] hover:underline">View details →</a>
+          </div>
           
-          {latestCertification && (
-            <a href={`/education/${latestCertification.slug}`} class="glass-effect rounded-lg p-6 block hover:shadow-md transition-all duration-300 card-hover-effect">
-              <div class="flex flex-col h-full">
-                <div class="mb-2 flex items-center justify-between">
-                  <span class="text-xs text-black/60 dark:text-white/60">{new Date(latestCertification.data.date).getFullYear()}</span>
-                  <span class="px-2 py-0.5 bg-black/5 dark:bg-[#3be9d1]/10 rounded-full text-xs text-black/70 dark:text-[#3be9d1]/90">Certification</span>
-                </div>
-                <h3 class="text-xl font-medium text-black dark:text-white mb-1">{latestCertification.data.title}</h3>
-                <p class="text-sm text-black/70 dark:text-white/70 mb-1">{latestCertification.data.institution}</p>
-                <p class="text-sm text-black/60 dark:text-white/60 line-clamp-2 mb-4">{latestCertification.data.description}</p>
-                <div class="mt-auto">
-                  <div class="flex flex-wrap gap-1">
-                    {latestCertification.data.tags.slice(0, 3).map((tag: string) => (
-                      <span class="px-2 py-0.5 bg-black/5 dark:bg-white/5 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </a>
-          )}
-        </div>
-      </section>
-      
-      <!-- Experience Section -->
-      <section class="mb-16">
-        <div class="flex justify-between items-center mb-6">
-          <h2 class="text-2xl font-bold text-black dark:text-white">Experience</h2>
-          <a href="/work" class="text-sm text-black/70 dark:text-[#3be9d1] hover:underline">View All →</a>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {latestWorkExperience && (
-            <a href={`/work/${latestWorkExperience.slug}`} class="glass-effect rounded-lg p-6 block hover:shadow-md transition-all duration-300 card-hover-effect">
-              <div class="flex flex-col h-full">
-                <div class="mb-2 flex items-center justify-between">
-                  <span class="text-xs text-black/60 dark:text-white/60">{latestWorkExperience.data.date ? new Date(latestWorkExperience.data.date).getFullYear() : new Date().getFullYear()}-Present</span>
-                  <span class="px-2 py-0.5 bg-black/5 dark:bg-[#3be9d1]/10 rounded-full text-xs text-black/70 dark:text-[#3be9d1]/90">Work</span>
-                </div>
-                <h3 class="text-xl font-medium text-black dark:text-white mb-1">{latestWorkExperience.data.position || latestWorkExperience.data.role}</h3>
-                <p class="text-sm text-black/70 dark:text-white/70 mb-1">{latestWorkExperience.data.company}</p>
-                <p class="text-sm text-black/60 dark:text-white/60 line-clamp-2 mb-4">{latestWorkExperience.data.description || 'No description available'}</p>
-                <div class="mt-auto">
-                  <div class="flex flex-wrap gap-1">
-                    {latestWorkExperience.data.tags && latestWorkExperience.data.tags.slice(0, 3).map((tag: string) => (
-                      <span class="px-2 py-0.5 bg-black/5 dark:bg-white/5 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </a>
-          )}
-          
-          {secondExperience && (
-            <a href={`/work/${secondExperience.slug}`} class="glass-effect rounded-lg p-6 block hover:shadow-md transition-all duration-300 card-hover-effect">
-              <div class="flex flex-col h-full">
-                <div class="mb-2 flex items-center justify-between">
-                  <span class="text-xs text-black/60 dark:text-white/60">{secondExperience.data.date ? new Date(secondExperience.data.date).getFullYear() : new Date().getFullYear()}</span>
-                  <span class="px-2 py-0.5 bg-black/5 dark:bg-[#3be9d1]/10 rounded-full text-xs text-black/70 dark:text-[#3be9d1]/90">
-                    {secondExperience.data.type === "internship" ? "Internship" : "Committee"}
-                  </span>
-                </div>
-                <h3 class="text-xl font-medium text-black dark:text-white mb-1">{secondExperience.data.position || secondExperience.data.role}</h3>
-                <p class="text-sm text-black/70 dark:text-white/70 mb-1">{secondExperience.data.company}</p>
-                <p class="text-sm text-black/60 dark:text-white/60 line-clamp-2 mb-4">{secondExperience.data.description || 'No description available'}</p>
-                <div class="mt-auto">
-                  <div class="flex flex-wrap gap-1">
-                    {secondExperience.data.tags && secondExperience.data.tags.slice(0, 3).map((tag: string) => (
-                      <span class="px-2 py-0.5 bg-black/5 dark:bg-white/5 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </a>
-          )}
+          <!-- Latest Education -->
+          <div class="glass-effect rounded-xl p-6">
+            <span class="text-sm text-[#3be9d1] uppercase tracking-wider mb-3 block">Education</span>
+            <h3 class="text-xl font-semibold text-white mb-2">{universityDegree.data.title}</h3>
+            <p class="text-white/70 mb-4">{universityDegree.data.institution}</p>
+            <p class="text-white/60 text-sm mb-2">{new Date(universityDegree.data.date).getFullYear()}-Present</p>
+            <p class="text-white/70 text-sm line-clamp-3 mb-4">{universityDegree.data.description}</p>
+            <a href="/education" class="text-sm text-[#3be9d1] hover:underline">View details →</a>
+          </div>
         </div>
       </section>
       
       <!-- Projects Section -->
       <section class="mb-16">
         <div class="flex justify-between items-center mb-6">
-          <h2 class="text-2xl font-bold text-black dark:text-white">Projects</h2>
-          <a href="/projects" class="text-sm text-black/70 dark:text-[#3be9d1] hover:underline">View All →</a>
+          <h2 class="text-2xl font-bold text-white">Projects</h2>
+          <a href="/projects" class="text-sm text-[#3be9d1] hover:underline">View All →</a>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -314,16 +203,16 @@ const positionLabel = "Law Student & Operations Professional";
             <a href={`/projects/${project.slug}`} class="glass-effect rounded-lg p-6 block hover:shadow-md transition-all duration-300 card-hover-effect">
               <div class="flex flex-col h-full">
                 <div class="mb-2 flex items-center justify-between">
-                  <span class="text-xs text-black/60 dark:text-white/60">{new Date(project.data.date).getFullYear()}</span>
-                  <span class="px-2 py-0.5 bg-black/5 dark:bg-[#3be9d1]/10 rounded-full text-xs text-black/70 dark:text-[#3be9d1]/90">{project.data.category || project.data.tags[0]}</span>
+                  <span class="text-xs text-white/60">{new Date(project.data.date).getFullYear()}</span>
+                  <span class="px-2 py-0.5 bg-[#3be9d1]/10 rounded-full text-xs text-[#3be9d1]/90">{project.data.category || project.data.tags[0]}</span>
                 </div>
-                <h3 class="text-xl font-medium text-black dark:text-white mb-1">{project.data.title}</h3>
-                <p class="text-sm text-black/70 dark:text-white/70 mb-1">{project.data.client || ''}</p>
-                <p class="text-sm text-black/60 dark:text-white/60 line-clamp-2 mb-4">{project.data.description || project.data.summary}</p>
+                <h3 class="text-xl font-medium text-white mb-1">{project.data.title}</h3>
+                <p class="text-sm text-white/70 mb-1">{project.data.client || ''}</p>
+                <p class="text-sm text-white/60 line-clamp-2 mb-4">{project.data.description || project.data.summary}</p>
                 <div class="mt-auto">
                   <div class="flex flex-wrap gap-1">
                     {project.data.tags && project.data.tags.slice(0, 3).map((tag: string) => (
-                      <span class="px-2 py-0.5 bg-black/5 dark:bg-white/5 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
+                      <span class="px-2 py-0.5 bg-white/5 rounded-full text-xs text-white/70">{tag}</span>
                     ))}
                   </div>
                 </div>
@@ -336,8 +225,8 @@ const positionLabel = "Law Student & Operations Professional";
       <!-- Blog Posts Section -->
       <section class="mb-16">
         <div class="flex justify-between items-center mb-6">
-          <h2 class="text-2xl font-bold text-black dark:text-white">Writing</h2>
-          <a href="/blog" class="text-sm text-black/70 dark:text-[#3be9d1] hover:underline">View All →</a>
+          <h2 class="text-2xl font-bold text-white">Writing</h2>
+          <a href="/blog" class="text-sm text-[#3be9d1] hover:underline">View All →</a>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -345,15 +234,15 @@ const positionLabel = "Law Student & Operations Professional";
             <a href={`/blog/${post.slug}`} class="glass-effect rounded-lg p-6 block hover:shadow-md transition-all duration-300 card-hover-effect">
               <div class="flex flex-col h-full">
                 <div class="mb-2 flex items-center justify-between">
-                  <span class="text-xs text-black/60 dark:text-white/60">{new Date(post.data.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                  <span class="px-2 py-0.5 bg-black/5 dark:bg-[#3be9d1]/10 rounded-full text-xs text-black/70 dark:text-[#3be9d1]/90">{post.data.tags[0]}</span>
+                  <span class="text-xs text-white/60">{new Date(post.data.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                  <span class="px-2 py-0.5 bg-[#3be9d1]/10 rounded-full text-xs text-[#3be9d1]/90">{post.data.tags[0]}</span>
                 </div>
-                <h3 class="text-xl font-medium text-black dark:text-white mb-1">{post.data.title}</h3>
-                <p class="text-sm text-black/60 dark:text-white/60 line-clamp-2 mb-4">{post.data.summary}</p>
+                <h3 class="text-xl font-medium text-white mb-1">{post.data.title}</h3>
+                <p class="text-sm text-white/60 line-clamp-2 mb-4">{post.data.summary}</p>
                 <div class="mt-auto">
                   <div class="flex flex-wrap gap-1">
                     {post.data.tags && post.data.tags.slice(0, 3).map((tag: string) => (
-                      <span class="px-2 py-0.5 bg-black/5 dark:bg-white/5 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
+                      <span class="px-2 py-0.5 bg-white/5 rounded-full text-xs text-white/70">{tag}</span>
                     ))}
                   </div>
                 </div>
@@ -381,5 +270,12 @@ const positionLabel = "Law Student & Operations Professional";
   }
   .card-hover-effect:hover {
     transform: translateY(-5px);
+  }
+  
+  /* Updated glass effect for dark background */
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 </style>

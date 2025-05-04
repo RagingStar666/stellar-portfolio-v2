@@ -15,8 +15,9 @@ export const WORK: Page = {
 
 // Education Page
 export const EDUCATION: Page = {
-  TITLE: "Education",
-  DESCRIPTION: "My academic background, certifications, and skills.",
+  TITLE: "Education & Skills",
+  DESCRIPTION:
+    "Explore my academic background, professional certifications, and specialized skill sets.",
 }
 
 // Blog Page
@@ -88,4 +89,10 @@ export const SOCIALS: Socials = [
     HREF: "tel:+919073773098",
   },
 ]
+
+export const LEGAL: { TITLE: string; DESCRIPTION: string } = {
+  TITLE: "Legal",
+  DESCRIPTION:
+    "Access our legal documents, privacy policy, terms of service, and more.",
+};
 
