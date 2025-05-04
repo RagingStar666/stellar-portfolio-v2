@@ -4,6 +4,19 @@
 
 :root{
   --copy-btn-margin:10px;
+  --dark-bg-color: #0a1929; /* Deep navy blue */
+  --light-bg-color: #fff6f6; /* Pinkish white */
+  --teal-star-color: #3be9d1;
+  --gold-star-color: #ffd700;
+  --accent: 136, 58, 234;
+  --accent-light: 224, 204, 250;
+  --accent-dark: 49, 10, 101;
+  --accent-gradient: linear-gradient(
+    45deg,
+    rgb(var(--accent)),
+    rgb(var(--accent-light)) 30%,
+    white 60%
+  );
 }
 
 @layer base {
@@ -27,21 +40,29 @@
 html {
   overflow-y: scroll;
   color-scheme: light;
-  background-color: white;
+  background-color: var(--light-bg-color);
   font-family: "Atkinson", sans-serif;
-  
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #FFFFFF, #F5F5F5);
 }
 
 html.dark {
   color-scheme: dark;
-  background-color: black;
+  background-color: var(--dark-bg-color);
+  background: linear-gradient(to bottom, #111111, #000000);
 }
 
 html,
 body {
   @apply h-full w-full antialiased;
-  @apply bg-white dark:bg-black;
+  background-color: var(--light-bg-color);
   @apply text-black/75 dark:text-white/75;
+  min-height: 100vh;
+  width: 100%;
+}
+
+html.dark body {
+  background-color: var(--dark-bg-color);
 }
 
 body {
@@ -49,7 +70,8 @@ body {
 }
 
 main {
-  @apply flex flex-col flex-1 bg-white dark:bg-black;
+  @apply flex flex-col flex-1;
+  background-color: transparent;
 }
 
 header {
@@ -62,8 +84,14 @@ header:not(.scrolled) {
 }
 
 header.scrolled {
-  @apply bg-white/75 dark:bg-black/50;
-  @apply border-black/10 dark:border-white/25;
+  background-color: rgba(255, 246, 246, 0.75); /* Light mode header */
+  @apply border-black/10;
+  @apply backdrop-blur-sm saturate-200;
+}
+
+html.dark header.scrolled {
+  background-color: rgba(10, 25, 41, 0.5); /* Dark mode header */
+  @apply dark:border-white/25;
   @apply backdrop-blur-sm saturate-200;
 }
 
@@ -77,6 +105,31 @@ article {
 
 .blend {
   @apply transition-all duration-300 ease-in-out;
+}
+
+/* Project cards and other elements styling */
+.project-card {
+  @apply bg-white/80 dark:bg-opacity-10 backdrop-blur-sm;
+  @apply border border-black/10 dark:border-white/20;
+  @apply hover:shadow-lg transition-all duration-300;
+  @apply rounded-lg overflow-hidden;
+}
+
+.card-hover-effect {
+  @apply transform transition-transform duration-300 hover:scale-[1.02];
+}
+
+.glass-effect {
+  @apply bg-white/30 dark:bg-black/30 backdrop-blur-md border border-black/10 dark:border-white/10 shadow-sm transition-all duration-300;
+}
+
+/* Custom glow effects */
+.teal-glow {
+  text-shadow: 0 0 8px rgba(59, 233, 209, 0.3);
+}
+
+.gold-glow {
+  text-shadow: 0 0 10px var(--gold-star-color), 0 0 20px var(--gold-star-color);
 }
 
 /** Light theme particles on home page */
@@ -94,6 +147,7 @@ article {
   opacity: 0;
   transform: translateY(50px);
   transition: opacity 1s ease, transform 1s ease;
+  animation: float-up-down 3s ease-in-out infinite;
 }
 
 .animate.show {
@@ -112,14 +166,18 @@ article img {
  * TWINKLE STARS
  */
 
- #twinkle-star.template {
+#twinkle-star.template {
   @apply absolute -left-full; /* hide offscreen */
 }
 
 #twinkle-star.twinkle {
   @apply animate-twinkle; /* defined in tailwind.config */
+  color: var(--teal-star-color); /* Dark mode star color */
 }
 
+html:not(.dark) #twinkle-star.twinkle {
+  color: var(--gold-star-color); /* Light mode star color */
+}
 
 /**
  * Meteors
@@ -134,7 +192,11 @@ article img {
 #meteors .meteor {
   @apply animate-meteor; /* defined in tailwind.config */
   @apply absolute top-1/2 left-1/2 w-px h-[75vh];
-  @apply bg-gradient-to-b from-white to-transparent;
+  background: linear-gradient(to bottom, var(--teal-star-color), transparent); /* Dark mode meteor color */
+}
+
+html:not(.dark) #meteors .meteor {
+  background: linear-gradient(to bottom, var(--gold-star-color), transparent); /* Light mode meteor color */
 }
 
 #meteors .shower.ur {
@@ -165,4 +227,37 @@ article img {
 
 .copy-svg {
   @apply w-full aspect-square text-white opacity-70 hover:opacity-90;
+}
+
+/* Add animation for pulse effect */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@layer components {
+  .glass-effect {
+    @apply bg-white/30 dark:bg-black/30 backdrop-blur-md border border-black/10 dark:border-white/10 shadow-sm transition-all duration-300;
+  }
+  
+  .teal-glow {
+    text-shadow: 0 0 8px rgba(59, 233, 209, 0.3);
+  }
+}
+
+@keyframes float-up-down {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
 }

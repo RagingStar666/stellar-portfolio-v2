@@ -2,142 +2,97 @@
 import { getCollection } from "astro:content"
 import PageLayout from "@layouts/PageLayout.astro"
 import { BLOG } from "@consts"
+import Breadcrumbs from "@components/Breadcrumbs.astro"
+
+// Type definition for blog posts
+type BlogPost = {
+  slug: string;
+  data: {
+    title: string;
+    date: Date;
+    summary: string;
+    tags: string[];
+    draft?: boolean;
+    readingTime?: string;
+  };
+};
 
 // Get all blog posts
-const posts = (await getCollection("blog"))
+const posts = (await getCollection("blog") as unknown as BlogPost[])
   .filter(post => !post.data.draft)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-// Categorize posts
-const blogPosts = posts.filter(post => post.data.tags.includes("Legal Analysis") || post.data.tags.includes("ADR"));
-
-// Academic writing data
-const academicWritingData = [
-  {
-    title: "Intellectual Property Rights in India: Current Challenges and Reform Proposals",
-    summary: "An examination of the current state of IP protections in India and recommendations for legal reform.",
-    date: "November 2024",
-    publication: "Journal and Seminar Committee, University of Calcutta",
-    tags: ["Intellectual Property", "Legal Reform", "Indian Law"],
-    image: "/placeholder-image.svg"
-  },
-  {
-    title: "Comparative Analysis of Alternative Dispute Resolution Mechanisms in Common Law Jurisdictions",
-    summary: "A study of ADR practices across various common law systems with recommendations for Indian ADR enhancement.",
-    date: "January 2025",
-    publication: "Legal Research Series, Jus Corpus",
-    tags: ["ADR", "Comparative Law", "Common Law", "Legal Practice"],
-    image: "/placeholder-image.svg"
-  }
+// Categories for sidebar
+const categories = [
+  { name: "Constitutional Law", count: 2 },
+  { name: "IP Law", count: 3 },
+  { name: "Legal Tech", count: 4 },
+  { name: "Comparative Law", count: 1 },
+  { name: "Privacy Law", count: 2 },
+  { name: "Digital Rights", count: 3 },
+  { name: "Legal Systems", count: 2 }
 ];
 
-// Research paper skeleton
-const researchPaperSkeleton = [
-  {
-    title: "The Intersection of Technology and Intellectual Property: Challenges for Emerging Legal Systems",
-    summary: "Research in progress examining how developing legal systems can adapt IP frameworks for technological innovation.",
-    status: "In Progress",
-    tags: ["IP Law", "Technology", "Developing Nations", "Legal Systems"],
-    image: "/placeholder-image.svg"
-  },
-  {
-    title: "Evolving Standards of Alternative Dispute Resolution in Business Law",
-    summary: "Upcoming research on the changing landscape of ADR in commercial disputes.",
-    status: "Planned",
-    tags: ["ADR", "Business Law", "Commercial Disputes", "Legal Practice"],
-    image: "/placeholder-image.svg"
-  }
-];
-
-// Creative writing samples
-const creativeWritingData = [
-  {
-    title: "The Advocate's Dilemma",
-    summary: "A short story exploring ethical complexities in legal practice through fictional narratives.",
-    genre: "Legal Fiction",
-    date: "October 2024",
-    tags: ["Creative Writing", "Legal Ethics", "Fiction"],
-    image: "/placeholder-image.svg"
-  },
-  {
-    title: "Perspectives on Justice",
-    summary: "A collection of reflective essays examining different cultural and philosophical approaches to justice.",
-    genre: "Essays",
-    date: "December 2024",
-    tags: ["Creative Writing", "Philosophy of Law", "Justice Systems"],
-    image: "/placeholder-image.svg"
-  }
+const links = [
+  { name: "Home", url: "/" },
+  { name: "Blog", url: "/blog" }
 ];
 ---
 
 <PageLayout title={BLOG.TITLE} description={BLOG.DESCRIPTION}>
-  <div class="container mx-auto p-6">
-    <h1 class="text-3xl font-bold mb-8 text-black dark:text-white border-b pb-4">
-      {BLOG.TITLE}
-    </h1>
-    
-    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-      <!-- Sidebar with Sections Only -->
-      <div class="lg:col-span-1 bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 p-6">
-        <div class="sticky top-24 space-y-6">
-          <!-- Section Navigation -->
-          <div>
-            <h2 class="text-xl font-semibold mb-4 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">Sections</h2>
-            <nav class="space-y-2">
-              <a href="#blogs" class="block py-2 px-3 rounded hover:bg-black/5 hover:dark:bg-white/10 transition-colors text-black/80 dark:text-white/80 hover:text-black hover:dark:text-white">
-                Blog Posts
-              </a>
-              <a href="#academic" class="block py-2 px-3 rounded hover:bg-black/5 hover:dark:bg-white/10 transition-colors text-black/80 dark:text-white/80 hover:text-black hover:dark:text-white">
-                Academic Writing
-              </a>
-              <a href="#research" class="block py-2 px-3 rounded hover:bg-black/5 hover:dark:bg-white/10 transition-colors text-black/80 dark:text-white/80 hover:text-black hover:dark:text-white">
-                Research Papers
-              </a>
-              <a href="#creative" class="block py-2 px-3 rounded hover:bg-black/5 hover:dark:bg-white/10 transition-colors text-black/80 dark:text-white/80 hover:text-black hover:dark:text-white">
-                Creative Writing
-              </a>
-            </nav>
-          </div>
-          
-          <!-- Toggle Button for Mobile -->
-          <div class="lg:hidden">
-            <button id="toggle-sidebar" class="w-full py-2 px-4 bg-black dark:bg-white text-white dark:text-black rounded hover:opacity-90 transition-opacity">
-              Toggle Sections
-            </button>
-          </div>
-        </div>
-      </div>
+  <div class="container mx-auto px-6 py-12">
+    <div class="max-w-5xl mx-auto">
+      <Breadcrumbs links={links} />
       
-      <!-- Main Content -->
-      <div class="lg:col-span-3 space-y-16">
-        <!-- Blog Posts Section -->
-        <section id="blogs" class="scroll-mt-24">
-          <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
-            Blog Posts
-          </h2>
+      <div class="flex flex-col lg:flex-row gap-8 mt-6">
+        <!-- Main Content -->
+        <div class="lg:w-3/4">
+          <div class="glass-effect rounded-lg p-8 mb-8">
+            <h1 class="text-3xl font-bold text-black dark:text-white mb-4">Blog & Articles</h1>
+            <p class="text-black/80 dark:text-white/80">
+              Exploring the intersections of law, technology, and policy with a focus on intellectual property, 
+              constitutional developments, and the future of legal practice.
+            </p>
+          </div>
           
-          <div class="grid grid-cols-1 gap-6">
-            {blogPosts.map((post) => (
-              <article class="bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300">
-                <a href={`/blog/${post.slug}`} class="block p-6">
-                  <div class="flex flex-col md:flex-row gap-6">
-                    <div class="md:w-1/3">
-                      <img src="/placeholder-image.svg" alt={post.data.title} class="w-full h-auto rounded-lg object-cover" />
+          <!-- Blog Posts -->
+          <div class="space-y-8">
+            {posts.map(post => (
+              <article class="glass-effect rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 card-hover-effect">
+                <a href={`/blog/${post.slug}`} class="block">
+                  <div class="md:flex">
+                    <div class="md:w-1/3 aspect-video">
+                      <img src="/placeholder-image.svg" alt={post.data.title} class="w-full h-full object-cover" />
                     </div>
-                    <div class="md:w-2/3">
-                      <h3 class="text-xl font-semibold text-black dark:text-white">{post.data.title}</h3>
-                      <p class="text-black/60 dark:text-white/60 text-sm mb-2">
-                        {new Date(post.data.date).toLocaleDateString('en-US', {
+                    <div class="p-6 md:w-2/3">
+                      <div class="flex items-center text-sm text-black/60 dark:text-white/60 mb-2">
+                        <span>{new Date(post.data.date).toLocaleDateString('en-US', {
                           year: 'numeric',
                           month: 'long',
                           day: 'numeric'
-                        })}
-                      </p>
-                      <p class="text-black/80 dark:text-white/80 mb-4">{post.data.summary}</p>
-                      <div class="flex flex-wrap gap-2">
-                        {post.data.tags.map(tag => (
-                          <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
+                        })}</span>
+                        <span class="mx-2">•</span>
+                        <span>{post.data.readingTime || "5 min read"}</span>
+                      </div>
+                      
+                      <h2 class="text-xl font-semibold text-black dark:text-white mb-2">{post.data.title}</h2>
+                      <p class="text-black/80 dark:text-white/80 mb-4 line-clamp-2">{post.data.summary}</p>
+                      
+                      <div class="flex flex-wrap gap-2 mb-3">
+                        {post.data.tags.slice(0, 3).map(tag => (
+                          <span class="px-2 py-0.5 bg-black/5 dark:bg-[#3be9d1]/10 rounded-full text-xs text-black/70 dark:text-[#3be9d1]/90">
+                            {tag}
+                          </span>
                         ))}
+                        {post.data.tags.length > 3 && (
+                          <span class="px-2 py-0.5 bg-black/5 dark:bg-white/5 rounded-full text-xs text-black/70 dark:text-white/70">
+                            +{post.data.tags.length - 3} more
+                          </span>
+                        )}
+                      </div>
+                      
+                      <div class="flex items-center text-sm">
+                        <span class="text-black/80 dark:text-[#3be9d1] hover:underline">Read article →</span>
                       </div>
                     </div>
                   </div>
@@ -145,106 +100,79 @@ const creativeWritingData = [
               </article>
             ))}
           </div>
-        </section>
-        
-        <!-- Academic Writing Section -->
-        <section id="academic" class="scroll-mt-24">
-          <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
-            Academic Writing
-          </h2>
           
-          <div class="grid grid-cols-1 gap-6">
-            {academicWritingData.map((paper) => (
-              <article class="bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300">
-                <a href={`/blog/academic/${paper.title.toLowerCase().replace(/ /g, '-')}`} class="block p-6">
-                  <div class="flex flex-col md:flex-row gap-6">
-                    <div class="md:w-1/3">
-                      <img src={paper.image} alt={paper.title} class="w-full h-auto rounded-lg object-cover" />
-                    </div>
-                    <div class="md:w-2/3">
-                      <h3 class="text-xl font-semibold text-black dark:text-white">{paper.title}</h3>
-                      <p class="text-black/60 dark:text-white/60 text-sm mb-2">
-                        {paper.date} • {paper.publication}
-                      </p>
-                      <p class="text-black/80 dark:text-white/80 mb-4">{paper.summary}</p>
-                      <div class="flex flex-wrap gap-2">
-                        {paper.tags.map(tag => (
-                          <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </article>
-            ))}
+          <!-- Pagination -->
+          <div class="flex justify-center mt-12">
+            <div class="flex space-x-1">
+              <button disabled class="px-3 py-1 rounded bg-black/5 dark:bg-white/5 text-black/40 dark:text-white/40">
+                Previous
+              </button>
+              <button class="px-3 py-1 rounded bg-black/10 dark:bg-[#3be9d1]/20 text-black dark:text-[#3be9d1]">
+                1
+              </button>
+              <button class="px-3 py-1 rounded hover:bg-black/5 hover:dark:bg-white/10 text-black/70 dark:text-white/70">
+                2
+              </button>
+              <button class="px-3 py-1 rounded hover:bg-black/5 hover:dark:bg-white/10 text-black/70 dark:text-white/70">
+                Next
+              </button>
+            </div>
           </div>
-        </section>
+        </div>
         
-        <!-- Research Papers Section -->
-        <section id="research" class="scroll-mt-24">
-          <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
-            Research Papers (In Progress)
-          </h2>
-          
-          <div class="grid grid-cols-1 gap-6">
-            {researchPaperSkeleton.map((paper) => (
-              <article class="bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300">
-                <a href={`/blog/research/${paper.title.toLowerCase().replace(/ /g, '-')}`} class="block p-6">
-                  <div class="flex flex-col md:flex-row gap-6">
-                    <div class="md:w-1/3">
-                      <img src={paper.image} alt={paper.title} class="w-full h-auto rounded-lg object-cover" />
-                      <div class="mt-2 inline-block px-3 py-1 bg-black/10 dark:bg-white/10 rounded text-sm text-black/70 dark:text-white/70">
-                        Status: {paper.status}
-                      </div>
-                    </div>
-                    <div class="md:w-2/3">
-                      <h3 class="text-xl font-semibold text-black dark:text-white">{paper.title}</h3>
-                      <p class="text-black/80 dark:text-white/80 mt-2 mb-4">{paper.summary}</p>
-                      <div class="flex flex-wrap gap-2">
-                        {paper.tags.map(tag => (
-                          <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </article>
-            ))}
+        <!-- Sidebar -->
+        <div class="lg:w-1/4">
+          <!-- Categories -->
+          <div class="glass-effect rounded-lg p-6 mb-8">
+            <h3 class="text-lg font-semibold text-black dark:text-white mb-4 border-b border-black/10 dark:border-white/10 pb-2">
+              Categories
+            </h3>
+            <ul class="space-y-2">
+              {categories.map(category => (
+                <li>
+                  <a href={`/blog/category/${category.name.toLowerCase().replace(/\s+/g, '-')}`} class="flex justify-between items-center text-black/80 dark:text-white/80 hover:text-black hover:dark:text-[#3be9d1] transition-colors">
+                    <span>{category.name}</span>
+                    <span class="px-2 py-0.5 bg-black/5 dark:bg-[#3be9d1]/10 rounded-full text-xs text-black/70 dark:text-[#3be9d1]/90">
+                      {category.count}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
-        </section>
-        
-        <!-- Creative Writing Section -->
-        <section id="creative" class="scroll-mt-24">
-          <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
-            Creative Writing
-          </h2>
           
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {creativeWritingData.map((work) => (
-              <article class="bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300">
-                <a href={`/blog/creative/${work.title.toLowerCase().replace(/ /g, '-')}`} class="block p-6">
-                  <div>
-                    <img src={work.image} alt={work.title} class="w-full h-48 object-cover rounded-lg mb-4" />
-                    <h3 class="text-xl font-semibold text-black dark:text-white">{work.title}</h3>
-                    <p class="text-black/60 dark:text-white/60 text-sm mb-2">
-                      {work.genre} • {work.date}
-                    </p>
-                    <p class="text-black/80 dark:text-white/80 mb-4">{work.summary}</p>
-                    <div class="flex flex-wrap gap-2">
-                      {work.tags.map(tag => (
-                        <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
-                      ))}
-                    </div>
-                  </div>
-                </a>
-              </article>
-            ))}
+          <!-- About the Author -->
+          <div class="glass-effect rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-black dark:text-white mb-4 border-b border-black/10 dark:border-white/10 pb-2">
+              About the Author
+            </h3>
+            <div class="flex flex-col items-center">
+              <div class="w-24 h-24 rounded-full overflow-hidden mb-4">
+                <img src="/placeholder-image.svg" alt="Prodipta Roy" class="w-full h-full object-cover" />
+              </div>
+              <h4 class="text-base font-medium text-black dark:text-white mb-2">Prodipta Roy</h4>
+              <p class="text-black/70 dark:text-white/70 text-sm text-center mb-4">
+                Law student at University of Calcutta with interests in IP Rights, ADR, and legal technology.
+              </p>
+              <a href="/about" class="text-sm text-black/80 dark:text-[#3be9d1] hover:underline">
+                Learn more →
+              </a>
+            </div>
           </div>
-        </section>
+        </div>
       </div>
     </div>
   </div>
 </PageLayout>
+
+<style>
+.card-hover-effect {
+  transition: all 0.3s ease;
+}
+.card-hover-effect:hover {
+  transform: translateY(-5px);
+}
+</style>
 
 <script>
 // Mobile toggle functionality

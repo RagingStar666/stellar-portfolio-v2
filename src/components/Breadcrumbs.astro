@@ -1,0 +1,25 @@
+---
+interface Link {
+  name: string;
+  url: string;
+}
+
+export interface Props {
+  links: Link[];
+}
+
+const { links } = Astro.props;
+---
+
+<nav class="flex items-center text-sm space-x-1 text-black/60 dark:text-white/60 mb-4">
+  {links.map((link, index) => (
+    <>
+      <a href={link.url} class="hover:text-black hover:dark:text-[#3be9d1] transition-colors">
+        {link.name}
+      </a>
+      {index < links.length - 1 && (
+        <span class="px-1">/</span>
+      )}
+    </>
+  ))}
+</nav> 
