@@ -1,0 +1,217 @@
+---
+import PageLayout from "@layouts/PageLayout.astro"
+import { EDUCATION } from "@consts"
+import { certsData } from "@data/certsData"
+
+// Fetch university data
+const universityData = {
+  name: "University of Calcutta",
+  degree: "B.A. LL.B. (Hons.)",
+  years: "2024-2029 (Expected)",
+  description: "Currently a first-year student at the Department of Law, focusing on intellectual property rights, alternative dispute resolution, and business law.",
+  image: "/placeholder-image.svg",
+  link: "#"
+}
+
+// Skills data
+const skillsData = [
+  {
+    category: "Legal Skills",
+    skills: [
+      {
+        name: "Legal Research & Writing",
+        description: "Experienced in doctrinal and interdisciplinary research methodologies. Skilled in case law analysis, policy evaluation, and structured legal writing.",
+        level: 80
+      },
+      {
+        name: "Editorial Precision",
+        description: "Strong command over grammar, syntax, and tone adaptation. Adept at transforming translated or technical text into natural, polished English.",
+        level: 90
+      }
+    ]
+  },
+  {
+    category: "Operations & Management",
+    skills: [
+      {
+        name: "Team Coordination",
+        description: "Led diverse teams across time zones using Slack, Notion, and Google Workspace. Managed onboarding, performance tracking, and internal conflict resolution.",
+        level: 85
+      },
+      {
+        name: "Process Optimization",
+        description: "Familiar with KPI tracking, task automation, and documentation systems. Applied productivity methodologies to creative workflows.",
+        level: 75
+      }
+    ]
+  },
+  {
+    category: "Communication & Collaboration",
+    skills: [
+      {
+        name: "Formal Communication",
+        description: "Background in competitive debating, structured writing, and argument construction. Experienced in professional email and documentation drafting.",
+        level: 85
+      },
+      {
+        name: "Cross-functional Dialogue",
+        description: "Skilled in translating between technical and creative teams. Comfortable navigating interdisciplinary conversations.",
+        level: 80
+      }
+    ]
+  },
+  {
+    category: "Technical & Tool Proficiency",
+    skills: [
+      {
+        name: "Legal & Research Tools",
+        description: "Zotero, Google Scholar, JSTOR, HeinOnline, SSRN, Statista",
+        level: 80
+      },
+      {
+        name: "Productivity & Collaboration",
+        description: "Microsoft Office, Google Workspace, Notion, Trello, Slack, ClickUp",
+        level: 90
+      },
+      {
+        name: "Design & Multimedia",
+        description: "Adobe Photoshop, Illustrator, Canva, Figma, Balsamiq",
+        level: 70
+      },
+      {
+        name: "Programming & Web",
+        description: "Basic Python, HTML, CSS, JavaScript",
+        level: 60
+      }
+    ]
+  }
+]
+---
+
+<PageLayout title={EDUCATION.TITLE} description={EDUCATION.DESCRIPTION}>
+  <div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-8 text-black dark:text-white border-b pb-4">
+      {EDUCATION.TITLE}
+    </h1>
+
+    <!-- Timeline sidebar -->
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <!-- Timeline Navigation -->
+      <div class="lg:col-span-1 hidden lg:block">
+        <div class="sticky top-24 space-y-4">
+          <div class="text-sm font-semibold uppercase mb-4 text-black dark:text-white">Timeline</div>
+          <nav class="space-y-2 relative">
+            <!-- Timeline vertical line -->
+            <div class="absolute left-2.5 top-2 h-full w-0.5 bg-black/20 dark:bg-white/20"></div>
+            
+            <a href="#university" class="flex items-center py-2 pl-6 relative focus:outline-none group">
+              <div class="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-5 rounded-full bg-black/10 dark:bg-white/10 border border-black/20 dark:border-white/20 group-hover:bg-black/20 group-hover:dark:bg-white/30"></div>
+              <span class="text-black/70 dark:text-white/70 group-hover:text-black group-hover:dark:text-white">
+                University
+              </span>
+            </a>
+            
+            <a href="#certifications" class="flex items-center py-2 pl-6 relative focus:outline-none group">
+              <div class="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-5 rounded-full bg-black/10 dark:bg-white/10 border border-black/20 dark:border-white/20 group-hover:bg-black/20 group-hover:dark:bg-white/30"></div>
+              <span class="text-black/70 dark:text-white/70 group-hover:text-black group-hover:dark:text-white">
+                Certifications
+              </span>
+            </a>
+            
+            <a href="#skills" class="flex items-center py-2 pl-6 relative focus:outline-none group">
+              <div class="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-5 rounded-full bg-black/10 dark:bg-white/10 border border-black/20 dark:border-white/20 group-hover:bg-black/20 group-hover:dark:bg-white/30"></div>
+              <span class="text-black/70 dark:text-white/70 group-hover:text-black group-hover:dark:text-white">
+                Skills
+              </span>
+            </a>
+          </nav>
+        </div>
+      </div>
+      
+      <!-- Main Content -->
+      <div class="lg:col-span-3 space-y-16">
+        <!-- University Section -->
+        <section id="university" class="scroll-mt-24">
+          <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
+            University Education
+          </h2>
+          
+          <div class="bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 p-6 hover:shadow-md transition-all duration-300">
+            <div class="flex flex-col md:flex-row gap-6">
+              <div class="md:w-1/4">
+                <img src={universityData.image} alt={universityData.name} class="w-full h-auto rounded-lg object-cover" />
+              </div>
+              <div class="md:w-3/4">
+                <h3 class="text-xl font-semibold text-black dark:text-white">{universityData.name}</h3>
+                <p class="text-black/70 dark:text-white/70 mb-2">{universityData.degree}</p>
+                <p class="text-black/60 dark:text-white/60 mb-4">{universityData.years}</p>
+                <p class="text-black/80 dark:text-white/80">{universityData.description}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Certifications Section -->
+        <section id="certifications" class="scroll-mt-24">
+          <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
+            Certifications
+          </h2>
+          
+          <div class="grid grid-cols-1 gap-6">
+            {certsData.map((cert) => (
+              <details class="group bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300">
+                <summary class="flex flex-col md:flex-row gap-4 p-4 cursor-pointer list-none">
+                  <div class="md:w-1/4">
+                    <img src={cert.image} alt={cert.title} class="w-full h-auto rounded-lg object-cover" />
+                  </div>
+                  <div class="md:w-3/4">
+                    <h3 class="text-lg font-semibold text-black dark:text-white">{cert.title}</h3>
+                    <p class="text-black/70 dark:text-white/70">{cert.description}</p>
+                    <p class="text-black/60 dark:text-white/60 mt-1">{cert.date}</p>
+                  </div>
+                </summary>
+                <div class="p-4 pt-0 border-t border-black/10 dark:border-white/10 mt-4">
+                  <p class="text-black/80 dark:text-white/80 mb-3">
+                    Further details about this certification and its relevance to your professional and academic journey.
+                  </p>
+                  <a href={cert.link} class="inline-block bg-black dark:bg-white text-white dark:text-black py-1 px-3 rounded text-sm hover:opacity-80 transition-opacity">
+                    View Certificate
+                  </a>
+                </div>
+              </details>
+            ))}
+          </div>
+        </section>
+        
+        <!-- Skills Section -->
+        <section id="skills" class="scroll-mt-24">
+          <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
+            Skills
+          </h2>
+          
+          <div class="space-y-10">
+            {skillsData.map((category) => (
+              <div class="bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 p-6">
+                <h3 class="text-xl font-semibold mb-4 text-black dark:text-white">{category.category}</h3>
+                <div class="space-y-6">
+                  {category.skills.map((skill) => (
+                    <div>
+                      <div class="flex justify-between mb-1">
+                        <span class="text-base font-medium text-black dark:text-white">{skill.name}</span>
+                        <span class="text-sm text-black/60 dark:text-white/60">{skill.level}%</span>
+                      </div>
+                      <div class="w-full bg-black/10 dark:bg-white/10 rounded-full h-2.5">
+                        <div class="bg-black dark:bg-white h-2.5 rounded-full" style={`width: ${skill.level}%`}></div>
+                      </div>
+                      <p class="mt-2 text-sm text-black/70 dark:text-white/70">{skill.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</PageLayout> 

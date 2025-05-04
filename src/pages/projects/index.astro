@@ -1,28 +1,167 @@
 ---
 import { getCollection } from "astro:content"
 import PageLayout from "@layouts/PageLayout.astro"
-import TopLayout from "@layouts/TopLayout.astro"
-import BottomLayout from "@layouts/BottomLayout.astro"
-import Projects from "@components/Projects"
 import { PROJECTS } from "@consts"
 
-const projects = (await getCollection("projects"))
-  .filter(project => !project.data.draft)
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+// Get all projects
+const allProjects = await getCollection("projects");
 
-const tags = [...new Set(projects.flatMap(project => project.data.tags))]
-  .sort((a, b) => a.localeCompare(b))
+// Organize projects by category
+const ipProjects = allProjects.filter(project => 
+  project.slug.includes("ip-certificate")
+);
+
+const adrProjects = allProjects.filter(project => 
+  project.slug.includes("adr-mediation")
+);
+
+const writingProjects = allProjects.filter(project => 
+  project.slug.includes("legal-writing")
+);
+
+const internshipProjects = allProjects.filter(project => 
+  project.slug.includes("internship-research")
+);
 ---
 
 <PageLayout title={PROJECTS.TITLE} description={PROJECTS.DESCRIPTION}>
-  <TopLayout>
-    <div class="animate page-heading">
+  <div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-8 text-black dark:text-white border-b pb-4">
       {PROJECTS.TITLE}
+    </h1>
+    
+    <div class="space-y-16">
+      <!-- IP Projects Section -->
+      <section class="scroll-mt-24">
+        <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
+          Intellectual Property Projects
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {ipProjects.map((project) => (
+            <details class="group bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300 overflow-hidden">
+              <summary class="cursor-pointer list-none">
+                <div class="p-6">
+                  <div class="aspect-video mb-4 overflow-hidden rounded-lg">
+                    <img src="/placeholder-image.svg" alt={project.data.title} class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                  </div>
+                  <h3 class="text-xl font-semibold text-black dark:text-white mb-2">{project.data.title}</h3>
+                  <p class="text-black/80 dark:text-white/80">{project.data.summary}</p>
+                </div>
+              </summary>
+              <div class="px-6 pb-6 pt-0 border-t border-black/10 dark:border-white/10">
+                <div class="prose prose-sm dark:prose-invert max-w-none mt-4">
+                  <Fragment set:html={project.body} />
+                </div>
+                <div class="flex flex-wrap gap-2 mt-4">
+                  {project.data.tags.map(tag => (
+                    <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+      
+      <!-- ADR Projects Section -->
+      <section class="scroll-mt-24">
+        <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
+          Alternative Dispute Resolution Projects
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {adrProjects.map((project) => (
+            <details class="group bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300 overflow-hidden">
+              <summary class="cursor-pointer list-none">
+                <div class="p-6">
+                  <div class="aspect-video mb-4 overflow-hidden rounded-lg">
+                    <img src="/placeholder-image.svg" alt={project.data.title} class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                  </div>
+                  <h3 class="text-xl font-semibold text-black dark:text-white mb-2">{project.data.title}</h3>
+                  <p class="text-black/80 dark:text-white/80">{project.data.summary}</p>
+                </div>
+              </summary>
+              <div class="px-6 pb-6 pt-0 border-t border-black/10 dark:border-white/10">
+                <div class="prose prose-sm dark:prose-invert max-w-none mt-4">
+                  <Fragment set:html={project.body} />
+                </div>
+                <div class="flex flex-wrap gap-2 mt-4">
+                  {project.data.tags.map(tag => (
+                    <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+      
+      <!-- Legal Writing Projects Section -->
+      <section class="scroll-mt-24">
+        <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
+          Legal Writing Projects
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {writingProjects.map((project) => (
+            <details class="group bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300 overflow-hidden">
+              <summary class="cursor-pointer list-none">
+                <div class="p-6">
+                  <div class="aspect-video mb-4 overflow-hidden rounded-lg">
+                    <img src="/placeholder-image.svg" alt={project.data.title} class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                  </div>
+                  <h3 class="text-xl font-semibold text-black dark:text-white mb-2">{project.data.title}</h3>
+                  <p class="text-black/80 dark:text-white/80">{project.data.summary}</p>
+                </div>
+              </summary>
+              <div class="px-6 pb-6 pt-0 border-t border-black/10 dark:border-white/10">
+                <div class="prose prose-sm dark:prose-invert max-w-none mt-4">
+                  <Fragment set:html={project.body} />
+                </div>
+                <div class="flex flex-wrap gap-2 mt-4">
+                  {project.data.tags.map(tag => (
+                    <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+      
+      <!-- Internship Research Projects Section -->
+      <section class="scroll-mt-24">
+        <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
+          Internship Research Projects
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {internshipProjects.map((project) => (
+            <details class="group bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300 overflow-hidden">
+              <summary class="cursor-pointer list-none">
+                <div class="p-6">
+                  <div class="aspect-video mb-4 overflow-hidden rounded-lg">
+                    <img src="/placeholder-image.svg" alt={project.data.title} class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                  </div>
+                  <h3 class="text-xl font-semibold text-black dark:text-white mb-2">{project.data.title}</h3>
+                  <p class="text-black/80 dark:text-white/80">{project.data.summary}</p>
+                </div>
+              </summary>
+              <div class="px-6 pb-6 pt-0 border-t border-black/10 dark:border-white/10">
+                <div class="prose prose-sm dark:prose-invert max-w-none mt-4">
+                  <Fragment set:html={project.body} />
+                </div>
+                <div class="flex flex-wrap gap-2 mt-4">
+                  {project.data.tags.map(tag => (
+                    <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
     </div>
-  </TopLayout>
-  <BottomLayout>
-    <div class="animate">
-      <Projects client:load tags={tags} data={projects} />
-    </div>
-  </BottomLayout>
+  </div>
 </PageLayout>

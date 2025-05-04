@@ -13,6 +13,12 @@ export const WORK: Page = {
   DESCRIPTION: "My professional experience and internships.",
 }
 
+// Education Page
+export const EDUCATION: Page = {
+  TITLE: "Education",
+  DESCRIPTION: "My academic background, certifications, and skills.",
+}
+
 // Blog Page
 export const BLOG: Page = {
   TITLE: "Writing",
@@ -40,6 +46,10 @@ export const LINKS: Links = [
   { 
     TEXT: "Experience", 
     HREF: "/work", 
+  },
+  { 
+    TEXT: "Education", 
+    HREF: "/education", 
   },
   { 
     TEXT: "Writing", 

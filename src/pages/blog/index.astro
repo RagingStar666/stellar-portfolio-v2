@@ -1,30 +1,326 @@
 ---
 import { getCollection } from "astro:content"
 import PageLayout from "@layouts/PageLayout.astro"
-import TopLayout from "@layouts/TopLayout.astro"
-import BottomLayout from "@layouts/BottomLayout.astro"
-import Blog from "@components/Blog"
 import { BLOG } from "@consts"
 
+// Get all blog posts
 const posts = (await getCollection("blog"))
   .filter(post => !post.data.draft)
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-const tags = [...new Set(posts.flatMap(post => post.data.tags))]
-  .sort((a, b) => a.localeCompare(b))
+// Extract all unique tags
+const allTags = [...new Set(posts.flatMap(post => post.data.tags))].sort();
+
+// Categorize posts
+const blogPosts = posts.filter(post => post.data.tags.includes("Legal Analysis") || post.data.tags.includes("ADR"));
+
+// Academic writing data
+const academicWritingData = [
+  {
+    title: "Intellectual Property Rights in India: Current Challenges and Reform Proposals",
+    summary: "An examination of the current state of IP protections in India and recommendations for legal reform.",
+    date: "November 2024",
+    publication: "Journal and Seminar Committee, University of Calcutta",
+    tags: ["Intellectual Property", "Legal Reform", "Indian Law"],
+    image: "/placeholder-image.svg"
+  },
+  {
+    title: "Comparative Analysis of Alternative Dispute Resolution Mechanisms in Common Law Jurisdictions",
+    summary: "A study of ADR practices across various common law systems with recommendations for Indian ADR enhancement.",
+    date: "January 2025",
+    publication: "Legal Research Series, Jus Corpus",
+    tags: ["ADR", "Comparative Law", "Common Law", "Legal Practice"],
+    image: "/placeholder-image.svg"
+  }
+];
+
+// Research paper skeleton
+const researchPaperSkeleton = [
+  {
+    title: "The Intersection of Technology and Intellectual Property: Challenges for Emerging Legal Systems",
+    summary: "Research in progress examining how developing legal systems can adapt IP frameworks for technological innovation.",
+    status: "In Progress",
+    tags: ["IP Law", "Technology", "Developing Nations", "Legal Systems"],
+    image: "/placeholder-image.svg"
+  },
+  {
+    title: "Evolving Standards of Alternative Dispute Resolution in Business Law",
+    summary: "Upcoming research on the changing landscape of ADR in commercial disputes.",
+    status: "Planned",
+    tags: ["ADR", "Business Law", "Commercial Disputes", "Legal Practice"],
+    image: "/placeholder-image.svg"
+  }
+];
+
+// Creative writing samples
+const creativeWritingData = [
+  {
+    title: "The Advocate's Dilemma",
+    summary: "A short story exploring ethical complexities in legal practice through fictional narratives.",
+    genre: "Legal Fiction",
+    date: "October 2024",
+    tags: ["Creative Writing", "Legal Ethics", "Fiction"],
+    image: "/placeholder-image.svg"
+  },
+  {
+    title: "Perspectives on Justice",
+    summary: "A collection of reflective essays examining different cultural and philosophical approaches to justice.",
+    genre: "Essays",
+    date: "December 2024",
+    tags: ["Creative Writing", "Philosophy of Law", "Justice Systems"],
+    image: "/placeholder-image.svg"
+  }
+];
 ---
 
 <PageLayout title={BLOG.TITLE} description={BLOG.DESCRIPTION}>
-  <TopLayout>
-    <div class="animate page-heading">
+  <div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-8 text-black dark:text-white border-b pb-4">
       {BLOG.TITLE}
+    </h1>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <!-- Toggleable Sidebar -->
+      <div class="lg:col-span-1 bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 p-6">
+        <div class="sticky top-24 space-y-6">
+          <!-- Section Navigation -->
+          <div>
+            <h2 class="text-xl font-semibold mb-4 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">Sections</h2>
+            <nav class="space-y-2">
+              <a href="#blogs" class="block py-2 px-3 rounded hover:bg-black/5 hover:dark:bg-white/10 transition-colors text-black/80 dark:text-white/80 hover:text-black hover:dark:text-white">
+                Blog Posts
+              </a>
+              <a href="#academic" class="block py-2 px-3 rounded hover:bg-black/5 hover:dark:bg-white/10 transition-colors text-black/80 dark:text-white/80 hover:text-black hover:dark:text-white">
+                Academic Writing
+              </a>
+              <a href="#research" class="block py-2 px-3 rounded hover:bg-black/5 hover:dark:bg-white/10 transition-colors text-black/80 dark:text-white/80 hover:text-black hover:dark:text-white">
+                Research Papers
+              </a>
+              <a href="#creative" class="block py-2 px-3 rounded hover:bg-black/5 hover:dark:bg-white/10 transition-colors text-black/80 dark:text-white/80 hover:text-black hover:dark:text-white">
+                Creative Writing
+              </a>
+            </nav>
+          </div>
+          
+          <!-- Filter By Tags -->
+          <div>
+            <h2 class="text-xl font-semibold mb-4 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">Filter by Tags</h2>
+            <div class="space-y-2 max-h-64 overflow-y-auto pr-2">
+              {allTags.map(tag => (
+                <label class="flex items-center gap-2 cursor-pointer group">
+                  <input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-black focus:ring-black dark:border-gray-600 dark:bg-gray-700 dark:focus:ring-offset-gray-800" data-tag={tag} />
+                  <span class="text-black/70 dark:text-white/70 group-hover:text-black group-hover:dark:text-white">{tag}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+          
+          <!-- Toggle Button for Mobile -->
+          <div class="lg:hidden">
+            <button id="toggle-filters" class="w-full py-2 px-4 bg-black dark:bg-white text-white dark:text-black rounded hover:opacity-90 transition-opacity">
+              Toggle Filters
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Main Content -->
+      <div class="lg:col-span-3 space-y-16">
+        <!-- Blog Posts Section -->
+        <section id="blogs" class="scroll-mt-24">
+          <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
+            Blog Posts
+          </h2>
+          
+          <div class="grid grid-cols-1 gap-6">
+            {blogPosts.map((post) => (
+              <article class="bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300">
+                <a href={`/blog/${post.slug}`} class="block p-6">
+                  <div class="flex flex-col md:flex-row gap-6">
+                    <div class="md:w-1/3">
+                      <img src="/placeholder-image.svg" alt={post.data.title} class="w-full h-auto rounded-lg object-cover" />
+                    </div>
+                    <div class="md:w-2/3">
+                      <h3 class="text-xl font-semibold text-black dark:text-white">{post.data.title}</h3>
+                      <p class="text-black/60 dark:text-white/60 text-sm mb-2">
+                        {new Date(post.data.date).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
+                      </p>
+                      <p class="text-black/80 dark:text-white/80 mb-4">{post.data.summary}</p>
+                      <div class="flex flex-wrap gap-2">
+                        {post.data.tags.map(tag => (
+                          <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </article>
+            ))}
+          </div>
+        </section>
+        
+        <!-- Academic Writing Section -->
+        <section id="academic" class="scroll-mt-24">
+          <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
+            Academic Writing
+          </h2>
+          
+          <div class="grid grid-cols-1 gap-6">
+            {academicWritingData.map((paper) => (
+              <details class="group bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300">
+                <summary class="p-6 cursor-pointer list-none">
+                  <div class="flex flex-col md:flex-row gap-6">
+                    <div class="md:w-1/3">
+                      <img src={paper.image} alt={paper.title} class="w-full h-auto rounded-lg object-cover" />
+                    </div>
+                    <div class="md:w-2/3">
+                      <h3 class="text-xl font-semibold text-black dark:text-white">{paper.title}</h3>
+                      <p class="text-black/60 dark:text-white/60 text-sm mb-2">
+                        {paper.date} • {paper.publication}
+                      </p>
+                      <p class="text-black/80 dark:text-white/80">{paper.summary}</p>
+                    </div>
+                  </div>
+                </summary>
+                <div class="px-6 pb-6 pt-0 border-t border-black/10 dark:border-white/10 mt-4">
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    {paper.tags.map(tag => (
+                      <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
+                    ))}
+                  </div>
+                  <div class="flex justify-end">
+                    <a href="#" class="inline-block bg-black dark:bg-white text-white dark:text-black py-1 px-3 rounded text-sm hover:opacity-80 transition-opacity">
+                      View Full Paper
+                    </a>
+                  </div>
+                </div>
+              </details>
+            ))}
+          </div>
+        </section>
+        
+        <!-- Research Papers Section -->
+        <section id="research" class="scroll-mt-24">
+          <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
+            Research Papers (In Progress)
+          </h2>
+          
+          <div class="grid grid-cols-1 gap-6">
+            {researchPaperSkeleton.map((paper) => (
+              <article class="bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 p-6">
+                <div class="flex flex-col md:flex-row gap-6">
+                  <div class="md:w-1/3">
+                    <img src={paper.image} alt={paper.title} class="w-full h-auto rounded-lg object-cover" />
+                    <div class="mt-2 inline-block px-3 py-1 bg-black/10 dark:bg-white/10 rounded text-sm text-black/70 dark:text-white/70">
+                      Status: {paper.status}
+                    </div>
+                  </div>
+                  <div class="md:w-2/3">
+                    <h3 class="text-xl font-semibold text-black dark:text-white">{paper.title}</h3>
+                    <p class="text-black/80 dark:text-white/80 mt-2">{paper.summary}</p>
+                    <div class="flex flex-wrap gap-2 mt-4">
+                      {paper.tags.map(tag => (
+                        <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+        
+        <!-- Creative Writing Section -->
+        <section id="creative" class="scroll-mt-24">
+          <h2 class="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-black/10 dark:border-white/10 pb-2">
+            Creative Writing
+          </h2>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {creativeWritingData.map((work) => (
+              <details class="group bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 hover:shadow-md transition-all duration-300">
+                <summary class="p-6 cursor-pointer list-none">
+                  <div>
+                    <img src={work.image} alt={work.title} class="w-full h-48 object-cover rounded-lg mb-4" />
+                    <h3 class="text-xl font-semibold text-black dark:text-white">{work.title}</h3>
+                    <p class="text-black/60 dark:text-white/60 text-sm mb-2">
+                      {work.genre} • {work.date}
+                    </p>
+                  </div>
+                </summary>
+                <div class="px-6 pb-6 pt-0 border-t border-black/10 dark:border-white/10 mt-4">
+                  <p class="text-black/80 dark:text-white/80 mb-4">{work.summary}</p>
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    {work.tags.map(tag => (
+                      <span class="px-2 py-1 bg-black/5 dark:bg-white/10 rounded-full text-xs text-black/70 dark:text-white/70">{tag}</span>
+                    ))}
+                  </div>
+                  <div class="flex justify-end">
+                    <a href="#" class="inline-block bg-black dark:bg-white text-white dark:text-black py-1 px-3 rounded text-sm hover:opacity-80 transition-opacity">
+                      Read Sample
+                    </a>
+                  </div>
+                </div>
+              </details>
+            ))}
+          </div>
+        </section>
+      </div>
     </div>
-  </TopLayout>
-  <BottomLayout>
-    <div class="animate">
-      <Blog client:load tags={tags} data={posts} />
-    </div>
-  </BottomLayout>
+  </div>
 </PageLayout>
+
+<script>
+// Mobile toggle functionality
+document.addEventListener('DOMContentLoaded', () => {
+  const toggleButton = document.getElementById('toggle-filters');
+  const sidebar = document.querySelector('.lg\\:col-span-1');
+  
+  toggleButton?.addEventListener('click', () => {
+    if (sidebar) {
+      if (sidebar.classList.contains('lg:col-span-1')) {
+        // Only hide on mobile, lg:hidden keeps it visible on desktop
+        sidebar.classList.toggle('hidden');
+      }
+    }
+  });
+  
+  // Tag filtering
+  const tagCheckboxes = document.querySelectorAll('input[data-tag]');
+  const articles = document.querySelectorAll('article');
+  
+  tagCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', updateFilters);
+  });
+  
+  function updateFilters() {
+    const selectedTags = Array.from(tagCheckboxes)
+      .filter(checkbox => checkbox.checked)
+      .map(checkbox => checkbox.getAttribute('data-tag'));
+    
+    if (selectedTags.length === 0) {
+      // If no tags selected, show all
+      articles.forEach(article => {
+        article.style.display = 'block';
+      });
+      return;
+    }
+    
+    // Filter articles based on selected tags
+    articles.forEach(article => {
+      const articleTags = Array.from(article.querySelectorAll('span'))
+        .map(span => span.textContent?.trim());
+      
+      const hasSelectedTag = selectedTags.some(tag => articleTags.includes(tag));
+      
+      article.style.display = hasSelectedTag ? 'block' : 'none';
+    });
+  }
+});
+</script>
 
 
