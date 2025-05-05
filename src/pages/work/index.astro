@@ -134,7 +134,7 @@ function formatWorkDate(input: Date | string) {
             </div>
           ))}
         </div>
-      </div>
+    </div>
       
       <!-- Committees Section -->
       <div id="committees" class="mb-12 md:mb-16 scroll-mt-24">
@@ -152,7 +152,7 @@ function formatWorkDate(input: Date | string) {
               <div class="timeline-node"></div>
               <a href={`/work/committees/${entry.slug}`} class="timeline-content glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
                 <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
-                  {formatWorkDate(entry.data.dateStart)} - {formatWorkDate(entry.data.dateEnd)}
+              {formatWorkDate(entry.data.dateStart)} - {formatWorkDate(entry.data.dateEnd)}
                 </div>
                 
                 <h3 class="text-lg font-semibold text-white">{entry.data.role}</h3>

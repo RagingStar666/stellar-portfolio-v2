@@ -28,6 +28,9 @@ function changeTheme() {
   localStorage.theme = theme
 }
 
+// Make changeTheme globally accessible
+window.changeTheme = changeTheme;
+
 function preloadTheme() {
   const theme = (() => {
     const userTheme = localStorage.theme
@@ -54,8 +57,11 @@ window.onload = () => {
   function initializeThemeButtons() {
     const headerThemeButton = document.getElementById("header-theme-button")
     const drawerThemeButton = document.getElementById("drawer-theme-button")
+    const themeToggleButton = document.getElementById("theme-toggle")
+    
     headerThemeButton?.addEventListener("click", changeTheme)
     drawerThemeButton?.addEventListener("click", changeTheme)
+    themeToggleButton?.addEventListener("click", changeTheme)
   } 
   
   document.addEventListener("astro:after-swap", initializeThemeButtons)

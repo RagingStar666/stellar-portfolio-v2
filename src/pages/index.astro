@@ -231,7 +231,7 @@ const positionLabel = "Law Student & Operations Professional";
             mergers & acquisitions, and finance law. Passionate about bridging traditional legal frameworks with 
             emerging technologies and business models.
           </p>
-        </div>
+  </div>
       </section>
       
       <!-- Professional Experience Section -->
@@ -241,8 +241,8 @@ const positionLabel = "Law Student & Operations Professional";
           <a href="/work#professional" class="text-xs md:text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
             View all →
           </a>
-        </div>
-        
+  </div>
+
         <div class="timeline-container">
           <div class="timeline-line"></div>
           
@@ -252,8 +252,8 @@ const positionLabel = "Law Student & Operations Professional";
               <a href={`/work/${entry.slug}`} class="timeline-content glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
                 <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
                   {formatDate(entry.data.dateStart)} - {formatDate(entry.data.dateEnd)}
-                </div>
-                
+  </div>
+
                 <h3 class="text-lg font-semibold text-white">{entry.data.role}</h3>
                 <p class="text-white/80 mb-2">{entry.data.company}</p>
                 
@@ -271,7 +271,7 @@ const positionLabel = "Law Student & Operations Professional";
           <a href="/work#internships" class="text-xs md:text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
             View all →
           </a>
-        </div>
+      </div>
         
         <div class="timeline-container">
           <div class="timeline-line"></div>
@@ -282,18 +282,18 @@ const positionLabel = "Law Student & Operations Professional";
               <a href={`/work/internships/${entry.slug}`} class="timeline-content glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
                 <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
                   {formatDate(entry.data.dateStart)} - {formatDate(entry.data.dateEnd)}
-                </div>
+    </div>
                 
                 <h3 class="text-lg font-semibold text-white">{entry.data.role}</h3>
                 <p class="text-white/80 mb-2">{entry.data.company}</p>
                 
                 <p class="text-white/70 text-sm line-clamp-2 mb-2">{entry.data.description || ''}</p>
-              </a>
-            </div>
+            </a>
+          </div>
           ))}
-        </div>
-      </section>
-      
+    </div>
+  </section>
+
       <!-- Committees Section -->
       <section class="mb-8 md:mb-12">
         <div class="flex justify-between items-baseline mb-4 md:mb-6">
@@ -323,7 +323,7 @@ const positionLabel = "Law Student & Operations Professional";
           ))}
         </div>
       </section>
-      
+
       <!-- Extracurricular Section -->
       <section class="mb-8 md:mb-12">
         <div class="flex justify-between items-baseline mb-4 md:mb-6">
@@ -348,7 +348,7 @@ const positionLabel = "Law Student & Operations Professional";
           ))}
         </div>
       </section>
-      
+
       <!-- Education Section -->
       <section class="mb-8 md:mb-12">
         <div class="flex justify-between items-baseline mb-4 md:mb-6">
@@ -366,7 +366,7 @@ const positionLabel = "Law Student & Operations Professional";
             <a href={`/education/${universityDegree.slug}`} class="timeline-content glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
               <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
                 {formatDate(universityDegree.data.date)} - Present
-              </div>
+          </div>
               
               <h3 class="text-lg font-semibold text-white">{universityDegree.data.title}</h3>
               <p class="text-white/80 mb-2">{universityDegree.data.institution}</p>
@@ -376,7 +376,7 @@ const positionLabel = "Law Student & Operations Professional";
           </div>
         </div>
       </section>
-      
+
       <!-- Certifications Section -->
       <section class="mb-8 md:mb-12">
         <div class="flex justify-between items-baseline mb-4 md:mb-6">
@@ -401,12 +401,12 @@ const positionLabel = "Law Student & Operations Professional";
                 <p class="text-white/80 mb-2">{cert.institution}</p>
                 
                 <p class="text-white/70 text-sm line-clamp-2 mb-2">{cert.description}</p>
-              </a>
-            </div>
-          ))}
+            </a>
+          </div>
+            ))}
         </div>
       </section>
-      
+
       <!-- Skills Section -->
       <section class="mb-8 md:mb-12">
         <div class="flex justify-between items-baseline mb-4 md:mb-6">
@@ -414,7 +414,7 @@ const positionLabel = "Law Student & Operations Professional";
           <a href="/education#skills" class="text-xs md:text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
             View all →
           </a>
-        </div>
+              </div>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
           {skillsData.map((skill) => (
@@ -456,7 +456,7 @@ const positionLabel = "Law Student & Operations Professional";
               <p class="text-white/60 text-sm line-clamp-2 mb-2">{post.data.summary}</p>
               <span class="text-xs text-[#3be9d1] hover:underline">Read paper →</span>
             </a>
-          ))}
+            ))}
         </div>
       </section>
       
