@@ -7,78 +7,181 @@ public_folder: "/images/uploads"
 
 local_backend: true
 site_url: https://prodiptaroy.space
+display_url: https://prodiptaroy.space
+
+# Optional - enables previews from deploy URLs
+# publish_mode: editorial_workflow
 
 collections:
+  # Main Navigation Pages
+  - name: "main-pages"
+    label: "Main Pages"
+    files:
+      - name: "home"
+        label: "Home Page"
+        file: "src/data/homeContent.js"
+        format: "javascript"
+        fields:
+          - { label: "Hero Title", name: "heroTitle", widget: "string", default: "Prodipta Roy" }
+          - { label: "Hero Subtitle", name: "heroSubtitle", widget: "string", default: "Law Student & Aspiring Legal Professional" }
+          - { label: "Hero Description", name: "heroDescription", widget: "text", default: "Focused on intellectual property rights, alternative dispute resolution, and legal technology." }
+          - { label: "About Me", name: "aboutMe", widget: "markdown" }
+          - label: "Skills Categories"
+            name: "skillsCategories"
+            widget: "list"
+            fields:
+              - { label: "Category", name: "category", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Tools", name: "tools", widget: "list" }
+
+      - name: "work"
+        label: "Work Experience Page"
+        file: "src/data/workContent.js"
+        format: "javascript"
+        fields:
+          - { label: "Page Title", name: "title", widget: "string", default: "Professional Experience" }
+          - { label: "Page Description", name: "description", widget: "text", default: "An overview of my professional experience, internships, and leadership roles that showcase my growth as a legal professional and team collaborator." }
+
+      - name: "education"
+        label: "Education Page"
+        file: "src/data/educationContent.js"
+        format: "javascript"
+        fields:
+          - { label: "Page Title", name: "title", widget: "string", default: "Education & Qualifications" }
+          - { label: "Page Description", name: "description", widget: "text" }
+          - label: "Skills Categories"
+            name: "skillsCategories"
+            widget: "list"
+            fields:
+              - { label: "Category", name: "category", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - label: "Tools"
+                name: "tools"
+                widget: "list"
+                fields:
+                  - { label: "Name", name: "name", widget: "string" }
+                  - { label: "Link", name: "link", widget: "string" }
+
+  # Content Collections (Markdown)
   - name: "blog"
-    label: "Blog"
+    label: "Blog Posts"
+    label_singular: "Blog Post"
     folder: "src/content/blog"
     create: true
     slug: "{{slug}}"
+    preview_path: "blog/{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Summary", name: "summary", widget: "text" }
-      - { label: "Publication Date", name: "date", widget: "datetime" }
+      - { label: "Publication Date", name: "date", widget: "string", hint: "Format as 'Month DD YYYY' (e.g., 'Dec 15 2024')" }
+      - { label: "Featured Image", name: "image", widget: "image", required: false, allow_multiple: false }
       - { label: "Tags", name: "tags", widget: "list" }
-      - { label: "Draft", name: "draft", widget: "boolean", default: false, required: false }
+      - { label: "Draft", name: "draft", widget: "boolean", default: false }
       - { label: "Content", name: "body", widget: "markdown" }
 
   - name: "projects"
     label: "Projects"
+    label_singular: "Project"
     folder: "src/content/projects"
     create: true
     slug: "{{slug}}"
+    preview_path: "projects/{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Summary", name: "summary", widget: "text" }
-      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Date", name: "date", widget: "string", hint: "Format as 'Mon YYYY' (e.g., 'Nov 2024')" }
+      - { label: "Featured Image", name: "image", widget: "image", required: false, allow_multiple: false }
       - { label: "Tags", name: "tags", widget: "list" }
-      - { label: "Draft", name: "draft", widget: "boolean", default: false, required: false }
+      - { label: "Draft", name: "draft", widget: "boolean", default: false }
       - { label: "Demo URL", name: "demoUrl", widget: "string", required: false }
       - { label: "Repository URL", name: "repoUrl", widget: "string", required: false }
       - { label: "Content", name: "body", widget: "markdown" }
 
-  - name: "work"
+  - name: "work-experience"
     label: "Work Experience"
+    label_singular: "Work Experience Entry"
     folder: "src/content/work"
     create: true
     slug: "{{slug}}"
+    preview_path: "work/{{slug}}"
     fields:
       - { label: "Company", name: "company", widget: "string" }
       - { label: "Role", name: "role", widget: "string" }
-      - { label: "Start Date", name: "dateStart", widget: "datetime" }
-      - { label: "End Date", name: "dateEnd", widget: "string" }
+      - { label: "Start Date", name: "dateStart", widget: "string", hint: "Format as 'MM/DD/YYYY' or 'Aug 2023'" }
+      - { label: "End Date", name: "dateEnd", widget: "string", hint: "Format as 'MM/DD/YYYY', 'Present', or 'Now'" }
+      - { label: "Featured Image", name: "image", widget: "image", required: false, allow_multiple: false }
+      - { label: "Type", name: "type", widget: "select", options: ["professional", "internship", "committee", "other"], required: false }
+      - { label: "Description", name: "body", widget: "markdown" }
+
+  - name: "education-entries"
+    label: "Education Entries"
+    label_singular: "Education Entry"
+    folder: "src/content/education"
+    create: true
+    slug: "{{slug}}"
+    preview_path: "education/{{slug}}"
+    fields:
+      - { label: "Institution", name: "institution", widget: "string" }
+      - { label: "Degree", name: "degree", widget: "string" }
+      - { label: "Start Date", name: "dateStart", widget: "string", hint: "Format as 'Mon YYYY' (e.g., 'Jun 2024')" }
+      - { label: "End Date", name: "dateEnd", widget: "string", hint: "Format as 'YYYY (Expected)' or similar" }
+      - { label: "Featured Image", name: "image", widget: "image", required: false, allow_multiple: false }
+      - { label: "Description", name: "description", widget: "text" }
       - { label: "Content", name: "body", widget: "markdown" }
 
-  - name: "certifications"
-    label: "Certifications"
-    folder: "src/content/certs"
+  - name: "extracurricular-activities"
+    label: "Extracurricular Activities"
+    label_singular: "Extracurricular Activity"
+    folder: "src/content/extracurricular"
     create: true
+    slug: "{{slug}}"
+    preview_path: "extracurricular/{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
+      - { label: "Organizer", name: "organizer", widget: "string" }
+      - { label: "Role", name: "role", widget: "string" }
+      - { label: "Date", name: "date", widget: "string", hint: "Format as 'Mon YYYY' (e.g., 'Dec 2024')" }
+      - { label: "Period", name: "period", widget: "string", hint: "Format as 'Month YYYY' (e.g., 'December 2024')" }
+      - { label: "Featured Image", name: "image", widget: "image", required: false, allow_multiple: false }
       - { label: "Description", name: "description", widget: "text" }
-      - { label: "Image", name: "image", widget: "string", required: false }
-      - { label: "Link", name: "link", widget: "string", required: false }
-      - { label: "Featured", name: "featured", widget: "boolean", default: false }
+      - { label: "Content", name: "body", widget: "markdown" }
 
-  # Legal Pages collection
   - name: "legal"
     label: "Legal Pages"
+    label_singular: "Legal Page"
     folder: "src/content/legal"
     create: true
     slug: "{{slug}}"
+    preview_path: "legal/{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
       - { label: "Content", name: "body", widget: "markdown" }
 
-  # Data Files
-  - name: "data"
-    label: "Website Data"
+  # Data Files (JS)
+  - name: "data-collections"
+    label: "Data Collections"
     files:
-      - name: "projects-list"
+      - name: "certifications"
+        label: "Certifications"
+        file: "src/data/certsData.js"
+        format: "javascript"
+        fields:
+          - label: "Certifications"
+            name: "certsData"
+            widget: "list"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Image", name: "image", widget: "image", required: false }
+              - { label: "Link", name: "link", widget: "string", required: false }
+              - { label: "Date", name: "date", widget: "string", hint: "Format as 'Mon - Mon YYYY' (e.g., 'Aug - Sept 2023')" }
+              - { label: "Featured", name: "featured", widget: "boolean", default: false }
+
+      - name: "project-list"
         label: "Projects List"
         file: "src/data/projectsData.js"
-        format: "js-frontmatter"
+        format: "javascript"
         fields:
           - label: "Projects"
             name: "projectsData"
@@ -94,7 +197,7 @@ collections:
       - name: "writing-samples"
         label: "Writing Samples"
         file: "src/data/writingData.js"
-        format: "js-frontmatter"
+        format: "javascript"
         fields:
           - label: "Writing Samples"
             name: "writingData"
@@ -104,14 +207,15 @@ collections:
               - { label: "Description", name: "description", widget: "text" }
               - { label: "Image", name: "image", widget: "image", required: false }
               - { label: "Link", name: "link", widget: "string", required: false }
+              - { label: "GitHub", name: "github", widget: "string", required: false }
               - { label: "Featured", name: "featured", widget: "boolean", default: false }
 
       - name: "web-development"
-        label: "Web Development"
+        label: "Web Development Projects"
         file: "src/data/webDevData.js"
-        format: "js-frontmatter"
+        format: "javascript"
         fields:
-          - label: "Web Development"
+          - label: "Web Development Projects"
             name: "webDevData"
             widget: "list"
             fields:
@@ -120,4 +224,78 @@ collections:
               - { label: "Image", name: "image", widget: "image", required: false }
               - { label: "Link", name: "link", widget: "string", required: false }
               - { label: "GitHub", name: "github", widget: "string", required: false }
-              - { label: "Featured", name: "featured", widget: "boolean", default: false } 
+              - { label: "Featured", name: "featured", widget: "boolean", default: false }
+
+  # Site Configuration
+  - name: "configuration"
+    label: "Site Configuration"
+    files:
+      - name: "site-settings"
+        label: "Site Settings"
+        file: "src/consts.ts"
+        fields:
+          - label: "Site"
+            name: "SITE"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "TITLE", widget: "string" }
+              - { label: "Description", name: "DESCRIPTION", widget: "text" }
+              - { label: "Author", name: "AUTHOR", widget: "string" }
+          
+          - label: "Work Page"
+            name: "WORK"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "TITLE", widget: "string" }
+              - { label: "Description", name: "DESCRIPTION", widget: "text" }
+          
+          - label: "Education Page"
+            name: "EDUCATION"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "TITLE", widget: "string" }
+              - { label: "Description", name: "DESCRIPTION", widget: "text" }
+          
+          - label: "Blog Page"
+            name: "BLOG"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "TITLE", widget: "string" }
+              - { label: "Description", name: "DESCRIPTION", widget: "text" }
+          
+          - label: "Projects Page"
+            name: "PROJECTS"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "TITLE", widget: "string" }
+              - { label: "Description", name: "DESCRIPTION", widget: "text" }
+          
+          - label: "Search Page"
+            name: "SEARCH"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "TITLE", widget: "string" }
+              - { label: "Description", name: "DESCRIPTION", widget: "text" }
+          
+          - label: "Navigation Links"
+            name: "LINKS"
+            widget: "list"
+            fields:
+              - { label: "Text", name: "TEXT", widget: "string" }
+              - { label: "URL", name: "HREF", widget: "string" }
+          
+          - label: "Social Links"
+            name: "SOCIALS"
+            widget: "list"
+            fields:
+              - { label: "Name", name: "NAME", widget: "string" }
+              - { label: "Icon", name: "ICON", widget: "string", hint: "Icon name from your icon library (e.g., 'email', 'linkedin')" }
+              - { label: "Text", name: "TEXT", widget: "string" }
+              - { label: "URL", name: "HREF", widget: "string" }
+              
+          - label: "Legal Pages"
+            name: "LEGAL"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "TITLE", widget: "string" }
+              - { label: "Description", name: "DESCRIPTION", widget: "text" } 
