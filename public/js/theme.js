@@ -59,13 +59,31 @@ window.onload = () => {
     const drawerThemeButton = document.getElementById("drawer-theme-button")
     const themeToggleButton = document.getElementById("theme-toggle")
     
-    headerThemeButton?.addEventListener("click", changeTheme)
-    drawerThemeButton?.addEventListener("click", changeTheme)
-    themeToggleButton?.addEventListener("click", changeTheme)
+    // Add event listeners for click on desktop
+    if (headerThemeButton) headerThemeButton.addEventListener("click", changeTheme)
+    if (drawerThemeButton) drawerThemeButton.addEventListener("click", changeTheme)
+    if (themeToggleButton) themeToggleButton.addEventListener("click", changeTheme)
+    
+    // Add touch event listeners for mobile devices
+    if (headerThemeButton) headerThemeButton.addEventListener("touchend", (e) => {
+      e.preventDefault()
+      changeTheme()
+    })
+    if (drawerThemeButton) drawerThemeButton.addEventListener("touchend", (e) => {
+      e.preventDefault()
+      changeTheme()
+    })
+    if (themeToggleButton) themeToggleButton.addEventListener("touchend", (e) => {
+      e.preventDefault()
+      changeTheme()
+    })
   } 
   
-  document.addEventListener("astro:after-swap", initializeThemeButtons)
+  // Initialize theme after DOM content is loaded
   initializeThemeButtons()
+  
+  // Re-initialize when Astro dynamic page loads occur
+  document.addEventListener('astro:page-load', initializeThemeButtons)
 }
 
 document.addEventListener("astro:after-swap", preloadTheme)

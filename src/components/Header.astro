@@ -8,7 +8,7 @@ import Container from "@components/Container.astro"
 
 <header id="header" class="fixed top-0 w-full z-50 bg-transparent dark:bg-transparent transition-colors duration-300 ease-in-out backdrop-blur-sm">
   <Container size="md">
-    <!-- First row: Logo and action buttons -->
+    <!-- First row: Logo and action buttons (Desktop & Mobile) -->
     <div class="flex justify-between items-center h-16 w-full">
       <!-- Logo -->
       <div class="flex-shrink-0 flex gap-1 font-semibold">
@@ -38,8 +38,21 @@ import Container from "@components/Container.astro"
       </div>
     </div>
     
-    <!-- Second row: Navigation (centered on desktop, full-width on mobile) -->
-    <div class="md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 pb-2 md:pb-0">
+    <!-- Navigation - Desktop version (Centered in header) -->
+    <div class="hidden md:block md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2">
+      <nav class="flex items-center justify-center text-xs sm:text-sm gap-0.5 sm:gap-1 overflow-x-auto max-w-full">
+        {
+          LINKS.map((LINK) => (
+            <a href={LINK.HREF} class={cn("h-8 rounded-full px-2 sm:px-3 whitespace-nowrap", "flex items-center justify-center", "transition-colors duration-300 ease-in-out", pathname === LINK.HREF || "/" + subpath?.[0] === LINK.HREF ? "bg-[#d8936a] dark:bg-[#3be9d1] text-white dark:text-black" : "text-[#3a3a3a] dark:text-white hover:bg-[#d8936a]/20 dark:hover:bg-[#3be9d1]/20 hover:text-[#d8936a] dark:hover:text-[#3be9d1]")}>
+              {LINK.TEXT}
+            </a>
+          ))
+        }
+      </nav>
+    </div>
+    
+    <!-- Navigation - Mobile version (Below logo and buttons) -->
+    <div class="block md:hidden pb-2">
       <nav class="flex items-center justify-center text-xs sm:text-sm gap-0.5 sm:gap-1 overflow-x-auto max-w-full">
         {
           LINKS.map((LINK) => (
@@ -57,7 +70,7 @@ import Container from "@components/Container.astro"
   /* Additional top margin for page content to account for two-row header on mobile */
   @media (max-width: 768px) {
     :global(main) {
-      margin-top: 1.75rem;
+      margin-top: 6rem;
     }
   }
 
@@ -79,7 +92,7 @@ import Container from "@components/Container.astro"
   document.addEventListener('astro:page-load', () => {
     const themeToggle = document.getElementById('theme-toggle');
     if (themeToggle) {
-      themeToggle.addEventListener('click', () => {
+      const handleThemeToggle = () => {
         if (typeof window.changeTheme === 'function') {
           window.changeTheme();
         } else {
@@ -93,6 +106,13 @@ import Container from "@components/Container.astro"
             localStorage.setItem('theme', 'dark');
           }
         }
+      };
+      
+      // Add both click and touch events for better mobile support
+      themeToggle.addEventListener('click', handleThemeToggle);
+      themeToggle.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        handleThemeToggle();
       });
     }
 
