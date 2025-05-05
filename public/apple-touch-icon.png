@@ -1,5 +1,8 @@
-# Apple Touch Icon Placeholder
+# Apple Touch Icon
 
-Note: This is a placeholder. You should generate a proper apple-touch-icon.png file from the favicon.svg using an image conversion tool.
+This file has been replaced with an SVG version (apple-touch-icon.svg) for better quality rendering.
+
+If you want to convert this to a PNG for older device support, use a tool like ImageMagick:
+`convert -background none -size 180x180 public/apple-touch-icon.svg public/apple-touch-icon.png`
 
 Recommended size: 180x180 pixels 
