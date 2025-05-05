@@ -1,0 +1,123 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+local_backend: true
+site_url: https://prodiptaroy.space
+
+collections:
+  - name: "blog"
+    label: "Blog"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Summary", name: "summary", widget: "text" }
+      - { label: "Publication Date", name: "date", widget: "datetime" }
+      - { label: "Tags", name: "tags", widget: "list" }
+      - { label: "Draft", name: "draft", widget: "boolean", default: false, required: false }
+      - { label: "Content", name: "body", widget: "markdown" }
+
+  - name: "projects"
+    label: "Projects"
+    folder: "src/content/projects"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Summary", name: "summary", widget: "text" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Tags", name: "tags", widget: "list" }
+      - { label: "Draft", name: "draft", widget: "boolean", default: false, required: false }
+      - { label: "Demo URL", name: "demoUrl", widget: "string", required: false }
+      - { label: "Repository URL", name: "repoUrl", widget: "string", required: false }
+      - { label: "Content", name: "body", widget: "markdown" }
+
+  - name: "work"
+    label: "Work Experience"
+    folder: "src/content/work"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Company", name: "company", widget: "string" }
+      - { label: "Role", name: "role", widget: "string" }
+      - { label: "Start Date", name: "dateStart", widget: "datetime" }
+      - { label: "End Date", name: "dateEnd", widget: "string" }
+      - { label: "Content", name: "body", widget: "markdown" }
+
+  - name: "certifications"
+    label: "Certifications"
+    folder: "src/content/certs"
+    create: true
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Image", name: "image", widget: "string", required: false }
+      - { label: "Link", name: "link", widget: "string", required: false }
+      - { label: "Featured", name: "featured", widget: "boolean", default: false }
+
+  # Legal Pages collection
+  - name: "legal"
+    label: "Legal Pages"
+    folder: "src/content/legal"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Content", name: "body", widget: "markdown" }
+
+  # Data Files
+  - name: "data"
+    label: "Website Data"
+    files:
+      - name: "projects-list"
+        label: "Projects List"
+        file: "src/data/projectsData.js"
+        format: "js-frontmatter"
+        fields:
+          - label: "Projects"
+            name: "projectsData"
+            widget: "list"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Image", name: "image", widget: "image", required: false }
+              - { label: "Link", name: "link", widget: "string", required: false }
+              - { label: "GitHub", name: "github", widget: "string", required: false }
+              - { label: "Featured", name: "featured", widget: "boolean", default: false }
+
+      - name: "writing-samples"
+        label: "Writing Samples"
+        file: "src/data/writingData.js"
+        format: "js-frontmatter"
+        fields:
+          - label: "Writing Samples"
+            name: "writingData"
+            widget: "list"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Image", name: "image", widget: "image", required: false }
+              - { label: "Link", name: "link", widget: "string", required: false }
+              - { label: "Featured", name: "featured", widget: "boolean", default: false }
+
+      - name: "web-development"
+        label: "Web Development"
+        file: "src/data/webDevData.js"
+        format: "js-frontmatter"
+        fields:
+          - label: "Web Development"
+            name: "webDevData"
+            widget: "list"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Image", name: "image", widget: "image", required: false }
+              - { label: "Link", name: "link", widget: "string", required: false }
+              - { label: "GitHub", name: "github", widget: "string", required: false }
+              - { label: "Featured", name: "featured", widget: "boolean", default: false } 

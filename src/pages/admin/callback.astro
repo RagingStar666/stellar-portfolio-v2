@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Authenticating...</title>
+  </head>
+  <body>
+    <h2>Authenticating, please wait...</h2>
+    
+    <script is:inline>
+      // This script handles the OAuth callback
+      (function() {
+        try {
+          // Parse the hash parameters from GitHub OAuth
+          const hash = window.location.hash.substring(1);
+          
+          if (hash) {
+            const result = {};
+            
+            hash.split('&').forEach(function(item) {
+              if (item) {
+                const parts = item.split('=');
+                if (parts.length === 2) {
+                  result[parts[0]] = parts[1];
+                }
+              }
+            });
+
+            // Store the auth token
+            if (result && 'access_token' in result) {
+              window.localStorage.setItem('staticcms.user', JSON.stringify({
+                token: result.access_token,
+                provider: 'github'
+              }));
+              // Redirect back to the admin page
+              window.location.href = '/admin';
+            } else {
+              document.body.innerHTML += '<p style="color: red;">Error: No access token found in the response.</p>';
+            }
+          } else {
+            document.body.innerHTML += '<p style="color: red;">Error: No authentication data received.</p>';
+          }
+        } catch (error) {
+          console.error('Authentication error:', error);
+          document.body.innerHTML += `<p style="color: red;">Authentication error: ${error.message}</p>`;
+        }
+      })();
+    </script>
+  </body>
+</html> 

@@ -1,7 +1,7 @@
 {
-  "name": "astro-sphere",
+  "name": "stellar-portfolio",
   "type": "module",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "scripts": {
     "dev": "astro dev",
     "dev:network": "astro dev --host",
@@ -11,7 +11,11 @@
     "preview:network": "astro dev --host",
     "astro": "astro",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "cms": "npx @staticcms/proxy-server -p 8081",
+    "dev:cms": "npx concurrently \"npm run dev\" \"npm run cms\"",
+    "clear-port": "npx kill-port 8081",
+    "dev:cms:safe": "npm run clear-port && npm run dev:cms"
   },
   "dependencies": {
     "@astrojs/check": "^0.5.6",
@@ -29,5 +33,10 @@
     "tailwind-merge": "^2.2.1",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@staticcms/proxy-server": "^4.0.4",
+    "concurrently": "^9.1.2",
+    "kill-port": "^2.0.1"
   }
 }
