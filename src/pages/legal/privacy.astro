@@ -1,0 +1,68 @@
+---
+import PageLayout from "@layouts/PageLayout.astro";
+import Breadcrumbs from "@components/Breadcrumbs.astro";
+
+const links = [
+  { name: "Home", url: "/" },
+  { name: "Legal", url: "/legal" },
+  { name: "Privacy Policy", url: "/legal/privacy" }
+];
+---
+
+<PageLayout title="Privacy Policy" description="Privacy Policy for Prodipta Roy's Website">
+  <div class="container mx-auto px-6 py-12">
+    <div class="max-w-4xl mx-auto">
+      <Breadcrumbs links={links} />
+      
+      <div class="glass-effect rounded-lg p-8 mt-6">
+        <h1 class="text-3xl font-bold text-black dark:text-white mb-6">Privacy Policy</h1>
+        
+        <div class="space-y-6 text-black/80 dark:text-white/80">
+          <section>
+            <h2 class="text-xl font-semibold text-black dark:text-white mb-3">1. Introduction</h2>
+            <p>This Privacy Policy describes how your personal information is collected, used, and shared when you visit this website. I respect your privacy and am committed to protecting it through my compliance with this policy.</p>
+          </section>
+          
+          <section>
+            <h2 class="text-xl font-semibold text-black dark:text-white mb-3">2. Information Collection</h2>
+            <p>When you visit the website, I automatically collect certain information about your device, including information about your web browser, IP address, time zone, and some of the cookies that are installed on your device.</p>
+          </section>
+          
+          <section>
+            <h2 class="text-xl font-semibold text-black dark:text-white mb-3">3. How I Use Your Information</h2>
+            <p>I use the information collected to improve and optimize the website (for example, by generating analytics about how visitors browse and interact with the site, and to assess the success of my marketing and advertising campaigns).</p>
+          </section>
+          
+          <section>
+            <h2 class="text-xl font-semibold text-black dark:text-white mb-3">4. Sharing Your Information</h2>
+            <p>I do not share your Personal Information with third parties, except as described in this Privacy Policy. I may share your Personal Information with service providers to help me analyze how the website is used.</p>
+          </section>
+          
+          <section>
+            <h2 class="text-xl font-semibold text-black dark:text-white mb-3">5. Your Rights</h2>
+            <p>If you are a European resident, you have the right to access personal information I hold about you and to ask that your personal information be corrected, updated, or deleted. If you would like to exercise this right, please contact me through the contact information below.</p>
+          </section>
+          
+          <section>
+            <h2 class="text-xl font-semibold text-black dark:text-white mb-3">6. Data Retention</h2>
+            <p>When you contact me through the website, I will maintain your message information for my records unless and until you ask me to delete this information.</p>
+          </section>
+          
+          <section>
+            <h2 class="text-xl font-semibold text-black dark:text-white mb-3">7. Changes</h2>
+            <p>I may update this privacy policy from time to time in order to reflect, for example, changes to my practices or for other operational, legal or regulatory reasons.</p>
+          </section>
+          
+          <section>
+            <h2 class="text-xl font-semibold text-black dark:text-white mb-3">8. Contact Me</h2>
+            <p>For more information about my privacy practices, if you have questions, or if you would like to make a complaint, please contact me via email or through the contact information provided on the website.</p>
+          </section>
+          
+          <section class="pt-4">
+            <p class="text-sm text-black/60 dark:text-white/60">Last Updated: May 2025</p>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+</PageLayout> 

@@ -12,13 +12,48 @@ import { SITE } from "@consts"
 <html lang="en">
   <head>
     <BaseHead title={`${title} | ${SITE.TITLE}`} description={description} />
+    <script is:inline src="/js/particles.min.js"></script>
+    <script is:inline src="/js/theme.js"></script>
   </head>
-  <body>
+  <body class="bg-rose-100 text-black dark:bg-midnight-black dark:text-white">
+    <!-- Particles.js Container -->
+    <div id="particles-js" class="fixed inset-0 z-0 pointer-events-none"></div>
+    
+    <!-- Light Mode Particles -->
+    <div id="light-particles" class='absolute inset-0'>
+      <div id='particles1' class='fixed inset-0'></div>
+      <div id='particles2' class='fixed inset-0'></div>
+      <div id='particles3' class='fixed inset-0'></div>
+    </div>
+
+    <!-- Dark Theme: Stars -->
+    <div id="dark-stars" class='absolute inset-0'>
+      <div id='stars1' class='fixed inset-0'></div>
+      <div id='stars2' class='fixed inset-0'></div>
+      <div id='stars3' class='fixed inset-0'></div>
+    </div>
+    
     <Header />
     <Drawer />
-    <main>
+    <main class="relative z-10">
       <slot />
     </main>
     <Footer />
+    
+    <script is:inline src="/js/bg.js"></script>
   </body>
 </html>
+
+<style>
+  .bg-midnight-black {
+    background-color: #000000;
+  }
+  
+  html:not(.dark) #dark-stars {
+    display: none;
+  }
+  
+  html.dark #light-particles {
+    display: none;
+  }
+</style>

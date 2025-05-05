@@ -1,0 +1,143 @@
+---
+import PageLayout from "@layouts/PageLayout.astro";
+
+// Define the params type
+export function getStaticPaths() {
+  // Internship data
+  const internshipData = [
+    {
+      title: "Jus Scriptum",
+      role: "Legal Research & Writing Intern",
+      period: "December 2024 – January 2025",
+      dateStart: "Dec 2024",
+      description: "Conducted in-depth legal research and contributed to legal articles focusing on constitutional developments and intellectual property jurisprudence in India.",
+      image: "/placeholder-image.svg",
+      skills: ["Legal Research", "Constitutional Law", "IP Law", "Academic Writing"],
+      slug: "jus-scriptum",
+      fullDescription: `
+        <p>As a Legal Research & Writing Intern at Jus Scriptum, I had the opportunity to contribute to meaningful legal discourse through research and writing. The internship focused on developing skills in legal research methodologies, statutory interpretation, and case analysis.</p>
+        
+        <h3>Key Responsibilities:</h3>
+        <ul>
+          <li>Conducted in-depth research on current constitutional developments in India</li>
+          <li>Analyzed recent intellectual property rights cases and their implications</li>
+          <li>Authored legal articles for publication on the Jus Scriptum platform</li>
+          <li>Collaborated with editors to refine legal arguments and improve clarity</li>
+          <li>Maintained accuracy of legal citations and references</li>
+        </ul>
+        
+        <h3>Projects Completed:</h3>
+        <p>During my internship, I contributed to several key research projects, including:</p>
+        <ul>
+          <li>Analysis of recent amendments to intellectual property frameworks in India</li>
+          <li>Commentary on landmark constitutional cases from 2024</li>
+          <li>Research on comparative intellectual property regimes</li>
+        </ul>
+        
+        <p>This internship provided valuable exposure to legal research methodologies and academic writing, strengthening my analytical skills and knowledge of constitutional and IP law.</p>
+      `
+    },
+    {
+      title: "Jus Corpus",
+      role: "Legal Writing Intern",
+      period: "January – February 2025",
+      dateStart: "Jan 2025",
+      description: "Wrote analytical pieces on legal developments and case law summaries for publication on an open-access legal platform.",
+      image: "/placeholder-image.svg",
+      skills: ["Legal Writing", "Case Analysis", "Legal Research", "Content Creation"],
+      slug: "jus-corpus",
+      fullDescription: `
+        <p>During my internship at Jus Corpus, I worked as a Legal Writing Intern contributing to their open-access legal platform. This experience focused on developing concise legal writing skills and clear communication of complex legal concepts to a wider audience.</p>
+        
+        <h3>Key Responsibilities:</h3>
+        <ul>
+          <li>Authored succinct case law summaries highlighting key legal principles</li>
+          <li>Developed analytical pieces examining recent legal developments</li>
+          <li>Conducted targeted research on assigned legal topics</li>
+          <li>Collaborated with editorial team to maintain content standards</li>
+          <li>Adhered to publication deadlines and style guidelines</li>
+        </ul>
+        
+        <h3>Notable Contributions:</h3>
+        <p>During the internship period, I contributed several pieces that were well-received:</p>
+        <ul>
+          <li>Analysis of recent judgments in consumer protection law</li>
+          <li>Explainer on changes to arbitration proceedings in India</li>
+          <li>Case summaries for significant High Court judgments</li>
+        </ul>
+        
+        <p>This internship enhanced my ability to distill complex legal concepts into accessible language while maintaining accuracy and legal precision - skills that are valuable across all aspects of legal practice.</p>
+      `
+    }
+  ];
+  
+  return internshipData.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+---
+
+<PageLayout title={`${entry.role} at ${entry.title}`} description={`Details about my internship as ${entry.role} at ${entry.title}`}>
+  <div class="container mx-auto p-6">
+    <div class="max-w-4xl mx-auto">
+      <!-- Breadcrumb Navigation -->
+      <nav class="flex mb-8 text-sm text-black/60 dark:text-white/60">
+        <a href="/" class="hover:text-black hover:dark:text-white transition-colors">Home</a>
+        <span class="mx-2">/</span>
+        <a href="/work" class="hover:text-black hover:dark:text-white transition-colors">Work Experience</a>
+        <span class="mx-2">/</span>
+        <a href="/work#internships" class="hover:text-black hover:dark:text-white transition-colors">Internships</a>
+        <span class="mx-2">/</span>
+        <span class="text-black dark:text-white">{entry.title}</span>
+      </nav>
+      
+      <!-- Header -->
+      <div class="mb-10">
+        <div class="bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 overflow-hidden">
+          <div class="aspect-video w-full relative">
+            <img src={entry.image} alt={entry.title} class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 p-6">
+              <span class="inline-block px-3 py-1 bg-black/60 text-white rounded-full text-sm mb-3">
+                Internship
+              </span>
+              <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">{entry.role}</h1>
+              <p class="text-xl text-white/90">{entry.title}</p>
+              <p class="text-lg text-white/80">{entry.period}</p>
+            </div>
+          </div>
+          
+          <!-- Content -->
+          <div class="p-8">
+            <div class="prose dark:prose-invert max-w-none" set:html={entry.fullDescription} />
+            
+            <!-- Skills Tags -->
+            <div class="mt-8 pt-6 border-t border-black/10 dark:border-white/10">
+              <h3 class="text-lg font-semibold mb-4 text-black dark:text-white">Skills Applied</h3>
+              <div class="flex flex-wrap gap-2">
+                {entry.skills.map((skill: string) => (
+                  <span class="px-3 py-1 bg-black/5 dark:bg-white/10 rounded-full text-sm text-black/70 dark:text-white/70">
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Navigation -->
+      <div class="flex justify-between mt-12">
+        <a href="/work#internships" class="inline-flex items-center px-4 py-2 bg-black/5 dark:bg-white/10 rounded-lg hover:bg-black/10 hover:dark:bg-white/20 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+          </svg>
+          Back to Internships
+        </a>
+      </div>
+    </div>
+  </div>
+</PageLayout> 

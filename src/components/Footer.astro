@@ -1,88 +1,75 @@
 ---
-import { SITE, SOCIALS } from "@consts"
-import Container from "@components/Container.astro"
+import { SITE } from "@consts"
 ---
 
-<footer class="relative bg-white dark:bg-black">
-  <div class="animate">
-    <section class="py-5">
-      <Container size="md">
-        <div class="flex items-center justify-center sm:justify-end">
-          <button id="back-to-top" aria-label="Back to top of page" class="group flex w-fit p-1.5 gap-1.5 text-sm items-center border rounded hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white rotate-90">
-              <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
-              <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
+<footer class="bg-white/60 dark:bg-black/10 backdrop-blur-md border-t border-black/5 dark:border-white/5 py-6 mt-12 relative z-10">
+  <div class="container mx-auto px-4 sm:px-6">
+    <div class="flex flex-col sm:flex-row justify-between items-center">
+      <!-- Left side: Legal links + Copyright -->
+      <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 mb-4 sm:mb-0">
+        <div class="flex items-center gap-4">
+          <a 
+            href="/legal/terms" 
+            class="text-sm text-[#3a3a3a]/80 dark:text-white/70 hover:text-[#d8936a] dark:hover:text-[#3be9d1] transition-colors"
+          >
+            Terms
+          </a>
+          <a 
+            href="/legal/privacy" 
+            class="text-sm text-[#3a3a3a]/80 dark:text-white/70 hover:text-[#d8936a] dark:hover:text-[#3be9d1] transition-colors"
+          >
+            Privacy
+          </a>
+        </div>
+        <span class="hidden sm:block text-black/30 dark:text-white/30">|</span>
+        <div class="text-xs text-[#3a3a3a]/70 dark:text-white/60">
+          &copy; {new Date().getFullYear()} {SITE.AUTHOR}
+        </div>
+      </div>
+      
+      <!-- Right side: Social links + Status -->
+      <div class="flex flex-col sm:flex-row items-center gap-4">
+        <!-- Social icons -->
+        <div class="flex items-center gap-3">
+          <a 
+            href="https://github.com/" 
+            target="_blank" 
+            class="text-[#3a3a3a]/80 dark:text-white/70 hover:text-[#d8936a] dark:hover:text-[#3be9d1] transition-colors"
+            aria-label="GitHub"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
             </svg>
-            <div class="w-full group-hover:text-black group-hover:dark:text-white transition-colors duration-300 ease-in-out">
-              Back to top
-            </div>
-          </button>
+          </a>
+          <a 
+            href="https://linkedin.com/" 
+            target="_blank" 
+            class="text-[#3a3a3a]/80 dark:text-white/70 hover:text-[#d8936a] dark:hover:text-[#3be9d1] transition-colors"
+            aria-label="LinkedIn"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+          </a>
+          <a 
+            href="https://twitter.com/" 
+            target="_blank" 
+            class="text-[#3a3a3a]/80 dark:text-white/70 hover:text-[#d8936a] dark:hover:text-[#3be9d1] transition-colors"
+            aria-label="Twitter"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+            </svg>
+          </a>
         </div>
-      </Container>
-    </section>
-  
-    <section class=" py-5 overflow-hidden whitespace-nowrap border-t border-black/10 dark:border-white/25">
-      <Container size="md">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div class="flex flex-col items-center sm:items-start">
-            <a href="/" class="flex gap-1 w-fit font-semibold text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out">
-              <svg class="size-6 fill-current">
-                <use href="/brand.svg#brand"/>
-              </svg>
-              {SITE.TITLE}
-            </a>
-          </div>
-          <div class="flex gap-2 justify-center sm:justify-end items-center">
-            <span class="relative flex h-3 w-3">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-300"></span>
-              <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-            </span>
-            All systems normal
-          </div>
+        <span class="hidden sm:block text-black/30 dark:text-white/30">|</span>
+        <div class="text-xs text-[#d8936a]/90 dark:text-[#3be9d1]/80 font-mono flex items-center">
+          <div class="pulsating-orb mr-2"></div>
+          All systems stellar
         </div>
-      </Container>
-    </section>
-  
-    <section class=" py-5 overflow-hidden whitespace-nowrap border-t border-black/10 dark:border-white/25">
-      <Container size="md">
-        <div class="h-full grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div class="order-2 sm:order-1 flex flex-col items-center justify-center sm:items-start">
-            <div class="legal">
-              <a href="/legal/terms" class="text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out">
-                Terms
-              </a> |
-              <a href="/legal/privacy" class="text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out">
-                Privacy
-              </a>
-            </div>
-            <div class="text-sm mt-2">
-              &copy; 2024 | All rights reserved
-            </div>
-          </div>
-  
-          <div class="order-1 sm:order-2 flex justify-center sm:justify-end">
-            <div class="flex flex-wrap gap-1 items-center justify-center">
-              {
-                SOCIALS.map((SOCIAL) => (
-                  <a 
-                    href={SOCIAL.HREF} 
-                    target="_blank" 
-                    aria-label={`${SITE.TITLE} on ${SOCIAL.NAME}`} 
-                    class="group size-10 rounded-full p-2 items-center justify-center hover:bg-black/5 dark:hover:bg-white/20  blend"
-                  >
-                    <svg class="size-full fill-current group-hover:fill-black group-hover:dark:fill-white blend">
-                      <use href={`/social.svg#${SOCIAL.ICON}`} />
-                    </svg>
-                  </a>
-                ))
-              }
-              </div>
-          </div>
-        </div>
-      </Container>
-    </section>
+      </div>
+    </div>
   </div>
-
 </footer>
 
 <script is:inline>
@@ -102,3 +89,59 @@ import Container from "@components/Container.astro"
   document.addEventListener("astro:after-swap", inintializeBackToTop)
   inintializeBackToTop()
 </script>
+
+<style>
+  .bg-midnight-blue {
+    background-color: #0d1b2a;
+  }
+  
+  .pulsating-orb {
+    width: 8px;
+    height: 8px;
+    background-color: #d8936a;
+    border-radius: 50%;
+    display: inline-block;
+    animation: pulse 2s infinite;
+    box-shadow: 0 0 0 0 rgba(216, 147, 106, 0.7);
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(216, 147, 106, 0.7);
+    }
+    
+    70% {
+      transform: scale(1.1);
+      box-shadow: 0 0 0 6px rgba(216, 147, 106, 0);
+    }
+    
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(216, 147, 106, 0);
+    }
+  }
+  
+  html.dark .pulsating-orb {
+    background-color: #3be9d1;
+    box-shadow: 0 0 0 0 rgba(59, 233, 209, 0.7);
+    animation: pulse-dark 2s infinite;
+  }
+  
+  @keyframes pulse-dark {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(59, 233, 209, 0.7);
+    }
+    
+    70% {
+      transform: scale(1.1);
+      box-shadow: 0 0 0 6px rgba(59, 233, 209, 0);
+    }
+    
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(59, 233, 209, 0);
+    }
+  }
+</style>

@@ -1,0 +1,111 @@
+---
+import PageLayout from "@layouts/PageLayout.astro";
+
+// Define the params type
+export function getStaticPaths() {
+  // Committee data
+  const committeeData = [
+    {
+      title: "Journal and Seminar Committee",
+      role: "General Member",
+      period: "2024 - Present",
+      dateStart: "Jun 2024",
+      description: "Active member of the Journal and Seminar Committee at the Department of Law, University of Calcutta, contributing to academic publications and event planning.",
+      image: "/placeholder-image.svg",
+      responsibilities: [
+        "Assist in organizing academic seminars and conferences",
+        "Review submitted articles for journal publication",
+        "Coordinate with faculty and guest speakers",
+        "Promote committee activities among student body"
+      ],
+      slug: "journal-and-seminar-committee",
+      fullDescription: `
+        <p>As a General Member of the Journal and Seminar Committee at the Department of Law, University of Calcutta, I actively contribute to the committee's academic initiatives and event planning activities.</p>
+        
+        <p>The Committee serves as a platform for intellectual discourse and academic exchange within the legal community. We facilitate publication opportunities for students and faculty while organizing educational events that enhance the academic environment of the department.</p>
+        
+        <h3>Committee Overview:</h3>
+        <p>The Journal and Seminar Committee is one of the most active student bodies at the Department of Law, responsible for:</p>
+        <ul>
+          <li>Publishing the department's academic journal featuring scholarly legal articles</li>
+          <li>Organizing seminars, workshops, and conferences on contemporary legal topics</li>
+          <li>Facilitating guest lectures from distinguished legal scholars and practitioners</li>
+          <li>Creating opportunities for student academic growth through participation in research and writing</li>
+        </ul>
+        
+        <p>My involvement with the committee has provided valuable experience in academic editing, event organization, and professional networking within the legal academic community.</p>
+      `
+    }
+  ];
+  
+  return committeeData.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+---
+
+<PageLayout title={`${entry.role} at ${entry.title}`} description={`Details about my role as ${entry.role} at ${entry.title}`}>
+  <div class="container mx-auto p-6">
+    <div class="max-w-4xl mx-auto">
+      <!-- Breadcrumb Navigation -->
+      <nav class="flex mb-8 text-sm text-black/60 dark:text-white/60">
+        <a href="/" class="hover:text-black hover:dark:text-white transition-colors">Home</a>
+        <span class="mx-2">/</span>
+        <a href="/work" class="hover:text-black hover:dark:text-white transition-colors">Work Experience</a>
+        <span class="mx-2">/</span>
+        <a href="/work#committees" class="hover:text-black hover:dark:text-white transition-colors">Committees</a>
+        <span class="mx-2">/</span>
+        <span class="text-black dark:text-white">{entry.title}</span>
+      </nav>
+      
+      <!-- Header -->
+      <div class="mb-10">
+        <div class="bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 overflow-hidden">
+          <div class="aspect-video w-full relative">
+            <img src={entry.image} alt={entry.title} class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 p-6">
+              <span class="inline-block px-3 py-1 bg-black/60 text-white rounded-full text-sm mb-3">
+                Committee
+              </span>
+              <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">{entry.role}</h1>
+              <p class="text-xl text-white/90">{entry.title}</p>
+              <p class="text-lg text-white/80">{entry.period}</p>
+            </div>
+          </div>
+          
+          <!-- Content -->
+          <div class="p-8">
+            <div class="prose dark:prose-invert max-w-none" set:html={entry.fullDescription} />
+            
+            <!-- Responsibilities -->
+            <div class="mt-8 pt-6 border-t border-black/10 dark:border-white/10">
+              <h3 class="text-lg font-semibold mb-4 text-black dark:text-white">Responsibilities</h3>
+              <ul class="space-y-2">
+                {entry.responsibilities.map((responsibility: string) => (
+                  <li class="flex items-start">
+                    <span class="text-black dark:text-white mr-2">•</span>
+                    <span class="text-black/80 dark:text-white/80">{responsibility}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Navigation -->
+      <div class="flex justify-between mt-12">
+        <a href="/work#committees" class="inline-flex items-center px-4 py-2 bg-black/5 dark:bg-white/10 rounded-lg hover:bg-black/10 hover:dark:bg-white/20 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+          </svg>
+          Back to Committees
+        </a>
+      </div>
+    </div>
+  </div>
+</PageLayout> 

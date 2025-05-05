@@ -2,8 +2,58 @@
 @tailwind components;
 @tailwind utilities;
 
-:root{
-  --copy-btn-margin:10px;
+/* Variables for light/dark mode */
+:root {
+  --color-text: #3a3a3a; /* Darker text for light mode */
+  --color-bg: #fff0f3; /* Consistent rose background */
+  --color-primary: #d8936a; /* Rose gold accent */
+  --color-primary-hover: #c07e59; /* Darker rose gold for hover */
+  --color-card-bg: rgba(255, 255, 255, 0.85);
+  --color-card-border: rgba(216, 147, 106, 0.15);
+  --copy-btn-margin: 10px;
+  --dark-bg-color: #0a1929; /* Deep navy blue */
+  --light-bg-color: #fff0f3; /* Consistent rose white */
+  --rose-gold: #d8936a; /* Rose gold color */
+  --teal-star-color: #3be9d1;
+  --gold-star-color: #d8936a; /* Rose gold */
+  --accent: 216, 147, 106; /* Rose gold RGB */
+  --accent-light: 255, 240, 243; /* Light rose RGB */
+  --accent-dark: 192, 126, 89; /* Dark rose gold RGB */
+  --accent-gradient: linear-gradient(
+    45deg,
+    rgb(var(--accent)),
+    rgb(var(--accent-light)) 30%,
+    white 60%
+  );
+}
+
+.dark {
+  --color-text: #f9fafb;
+  --color-bg: #000000;
+  --color-primary: #3be9d1; /* Teal for dark mode */
+  --color-primary-hover: #42ffe5;
+  --color-card-bg: rgba(0, 0, 0, 0.7);
+  --color-card-border: rgba(255, 255, 255, 0.1);
+  --dark-bg-color: #000000;
+  --light-bg-color: #000000;
+  --teal-star-color: #3be9d1;
+  --gold-star-color: #ffd700;
+  --accent: 59, 233, 209; /* Teal RGB */
+  --accent-light: 100, 255, 240; /* Light teal RGB */
+  --accent-dark: 40, 200, 180; /* Dark teal RGB */
+  --accent-gradient: linear-gradient(
+    45deg,
+    rgb(var(--accent)),
+    rgb(var(--accent-light)) 30%,
+    white 60%
+  );
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color 0.3s, color 0.3s;
+  @apply relative flex flex-col;
 }
 
 @layer base {
@@ -27,29 +77,34 @@
 html {
   overflow-y: scroll;
   color-scheme: light;
-  background-color: white;
+  background-color: var(--light-bg-color);
   font-family: "Atkinson", sans-serif;
-  
+  min-height: 100vh;
+  background: var(--light-bg-color); /* Fixed background, no gradient */
 }
 
 html.dark {
   color-scheme: dark;
-  background-color: black;
+  background-color: #000000;
+  background: #000000;
 }
 
 html,
 body {
   @apply h-full w-full antialiased;
-  @apply bg-white dark:bg-black;
-  @apply text-black/75 dark:text-white/75;
+  background-color: var(--light-bg-color);
+  @apply text-[#3a3a3a] dark:text-white;
+  min-height: 100vh;
+  width: 100%;
 }
 
-body {
-  @apply relative flex flex-col;
+html.dark body {
+  background-color: #000000;
 }
 
 main {
-  @apply flex flex-col flex-1 bg-white dark:bg-black;
+  @apply flex flex-col flex-1;
+  background-color: transparent;
 }
 
 header {
@@ -62,8 +117,14 @@ header:not(.scrolled) {
 }
 
 header.scrolled {
-  @apply bg-white/75 dark:bg-black/50;
-  @apply border-black/10 dark:border-white/25;
+  background-color: rgba(255, 240, 243, 0.92); /* Light mode header - more opaque */
+  @apply border-[#d8936a]/10;
+  @apply backdrop-blur-sm saturate-200;
+}
+
+html.dark header.scrolled {
+  background-color: rgba(10, 25, 41, 0.7); /* Dark mode header */
+  @apply border-white/25;
   @apply backdrop-blur-sm saturate-200;
 }
 
@@ -72,11 +133,45 @@ article {
 }
 
 .page-heading {
-  @apply font-semibold text-black dark:text-white;
+  @apply font-semibold text-[#3a3a3a] dark:text-white;
 }
 
 .blend {
   @apply transition-all duration-300 ease-in-out;
+}
+
+/* Project cards and other elements styling */
+.project-card {
+  @apply bg-white/90 dark:bg-opacity-10 backdrop-blur-sm;
+  @apply border border-[#d8936a]/15 dark:border-white/20;
+  @apply hover:shadow-lg transition-all duration-300;
+  @apply rounded-lg overflow-hidden;
+}
+
+.card-hover-effect {
+  @apply transform transition-transform duration-300 hover:scale-[1.02];
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(216, 147, 106, 0.15);
+  border-radius: 0.5rem;
+  transition: all 300ms;
+}
+
+.dark .glass-effect {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Custom glow effects */
+.teal-glow {
+  text-shadow: 0 0 8px rgba(59, 233, 209, 0.3);
+}
+
+.gold-glow {
+  text-shadow: 0 0 10px var(--gold-star-color), 0 0 20px var(--gold-star-color);
 }
 
 /** Light theme particles on home page */
@@ -94,6 +189,7 @@ article {
   opacity: 0;
   transform: translateY(50px);
   transition: opacity 1s ease, transform 1s ease;
+  animation: float-up-down 3s ease-in-out infinite;
 }
 
 .animate.show {
@@ -104,65 +200,214 @@ article {
 article img {
   padding-top: 20px;
   padding-bottom: 20px;
+}
+
+/* Timeline and floating nav styles */
+.timeline-container {
+  position: relative;
+  padding-left: 30px;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 10px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, rgba(216, 147, 106, 0.8), rgba(216, 147, 106, 0.1));
+}
+
+.dark .timeline-line {
+  background: linear-gradient(to bottom, rgba(59, 233, 209, 0.8), rgba(59, 233, 209, 0.1));
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-node {
+  position: absolute;
+  left: -30px;
+  top: 20px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #d8936a;
+  box-shadow: 0 0 10px rgba(216, 147, 106, 0.6);
+  z-index: 1;
+}
+
+.dark .timeline-node {
+  background-color: #3be9d1;
+  box-shadow: 0 0 10px rgba(59, 233, 209, 0.6);
+}
+
+.timeline-content {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.timeline-content:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Updated glass effect */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+}
+
+.glass-effect:hover {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+/* Dark mode glass effect override */
+.dark .glass-effect {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.dark .glass-effect:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* Floating navigation for page sections */
+.floating-nav {
+  position: sticky;
+  top: 80px;
+  z-index: 10;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .floating-nav {
+    margin-bottom: 2.5rem;
+  }
+}
+
+.floating-nav-content {
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(216, 147, 106, 0.15);
+  border-radius: 9999px;
+  padding: 0.5rem;
+  overflow-x: auto;
+  max-width: 100%;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.dark .floating-nav-content {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.floating-nav-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  transition: all 0.2s ease-in-out;
+  color: #3a3a3a;
+}
+
+.dark .floating-nav-item {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.floating-nav-item.active {
+  background-color: #d8936a;
+  color: #ffffff;
+}
+
+.dark .floating-nav-item.active {
+  background-color: #3be9d1;
+  color: #000000;
+}
+
+/* Mobile scrolling card container */
+@media (max-width: 767px) {
+  .card-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    margin: 0 -1rem;
+    padding: 0 1rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .card-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .card-item {
+    flex: 0 0 auto;
+    width: 85%;
+    max-width: 320px;
+  }
+}
+
+/* Stars animation */
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Stars styling */
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: block;
-  margin: 0 auto;
+  background: url('/stars-light.svg') repeat;
+  z-index: -1;
+  opacity: 0.2;
+  animation: rotate 400s linear infinite;
+  pointer-events: none;
 }
 
-/**
- * TWINKLE STARS
- */
-
- #twinkle-star.template {
-  @apply absolute -left-full; /* hide offscreen */
+.dark .stars {
+  background: url('/stars.svg') repeat;
+  opacity: 0.6;
 }
 
-#twinkle-star.twinkle {
-  @apply animate-twinkle; /* defined in tailwind.config */
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 
-
-/**
- * Meteors
- */
-
-#meteors .shower {
-  @apply absolute inset-0 top-0;;
-  @apply left-1/2 -translate-x-1/2;
-  @apply w-screen aspect-square;
-}
-
-#meteors .meteor {
-  @apply animate-meteor; /* defined in tailwind.config */
-  @apply absolute top-1/2 left-1/2 w-px h-[75vh];
-  @apply bg-gradient-to-b from-white to-transparent;
-}
-
-#meteors .shower.ur {
-  @apply rotate-45;
-}
-
-#meteors .shower.dr {
-  @apply rotate-135;
-}
-
-#meteors .shower.dl {
-  @apply rotate-225;
-}
-
-#meteors .shower.ul {
-  @apply rotate-315;
-}
-
-.copy-cnt{
-  @apply absolute w-full;
-  top:var(--copy-btn-margin);
-}
-.copy-btn {
-  @apply  w-[30px] fixed;
-  left:calc(100% - var(--copy-btn-margin));
-  transform: translateX(-100%);
-}
-
-.copy-svg {
-  @apply w-full aspect-square text-white opacity-70 hover:opacity-90;
+/* Ensure smooth transitions between color schemes */
+html.transition,
+html.transition *,
+html.transition *:before,
+html.transition *:after {
+  transition: all 750ms !important;
+  transition-delay: 0 !important;
 }

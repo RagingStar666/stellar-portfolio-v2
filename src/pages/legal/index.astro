@@ -1,0 +1,72 @@
+---
+import PageLayout from "@layouts/PageLayout.astro";
+import Breadcrumbs from "@components/Breadcrumbs.astro";
+
+const links = [
+  { name: "Home", url: "/" },
+  { name: "Legal", url: "/legal" }
+];
+
+const legalDocuments = [
+  {
+    title: "Terms of Service",
+    description: "The terms and conditions governing the use of this website.",
+    url: "/legal/terms",
+    icon: "contract"
+  },
+  {
+    title: "Privacy Policy",
+    description: "Information about how your data is collected, used, and protected.",
+    url: "/legal/privacy",
+    icon: "privacy"
+  }
+];
+---
+
+<PageLayout title="Legal Information" description="Legal Information for Prodipta Roy's Website">
+  <div class="container mx-auto px-6 py-12">
+    <div class="max-w-4xl mx-auto">
+      <Breadcrumbs links={links} />
+      
+      <div class="glass-effect rounded-lg p-8 mt-6">
+        <h1 class="text-3xl font-bold text-black dark:text-white mb-6">Legal Information</h1>
+        
+        <p class="text-black/80 dark:text-white/80 mb-8">
+          This page contains the legal documents related to the use of this website. 
+          Please review these documents to understand your rights and responsibilities.
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {legalDocuments.map(doc => (
+            <a href={doc.url} class="block glass-effect rounded-lg p-6 hover:shadow-md transition-all duration-300 card-hover-effect">
+              <div class="flex items-start gap-4">
+                <div class="p-3 rounded-full bg-black/5 dark:bg-[#3be9d1]/10">
+                  {doc.icon === "contract" && (
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-black/80 dark:text-[#3be9d1]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  )}
+                  {doc.icon === "privacy" && (
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-black/80 dark:text-[#3be9d1]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                  )}
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold text-black dark:text-white mb-2">{doc.title}</h3>
+                  <p class="text-black/70 dark:text-white/70 text-sm">{doc.description}</p>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+        
+        <div class="mt-8 text-center">
+          <p class="text-sm text-black/60 dark:text-white/60">
+            If you have any questions about these legal documents, please <a href="mailto:contact@prodiptaroy.com" class="text-black/80 dark:text-[#3be9d1] hover:underline">contact me</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</PageLayout> 

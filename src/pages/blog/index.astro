@@ -1,30 +1,229 @@
 ---
 import { getCollection } from "astro:content"
 import PageLayout from "@layouts/PageLayout.astro"
-import TopLayout from "@layouts/TopLayout.astro"
-import BottomLayout from "@layouts/BottomLayout.astro"
-import Blog from "@components/Blog"
 import { BLOG } from "@consts"
+import Breadcrumbs from "@components/Breadcrumbs.astro"
 
-const posts = (await getCollection("blog"))
+// Type definition for blog posts
+type BlogPost = {
+  slug: string;
+  data: {
+    title: string;
+    date: Date;
+    summary: string;
+    tags: string[];
+    draft?: boolean;
+    readingTime?: string;
+  };
+};
+
+// Get all blog posts
+const posts = (await getCollection("blog") as unknown as BlogPost[])
   .filter(post => !post.data.draft)
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-const tags = [...new Set(posts.flatMap(post => post.data.tags))]
-  .sort((a, b) => a.localeCompare(b))
+// Separate posts by type (using tags to differentiate)
+const academicPosts = posts.filter(post => 
+  post.data.tags.some(tag => 
+    ['Research', 'Academic', 'Legal Analysis', 'IP Law', 'Constitutional Law'].includes(tag)
+  )
+);
+
+const blogPosts = posts.filter(post => 
+  post.data.tags.some(tag => 
+    ['Blog', 'Article', 'Commentary', 'ADR', 'Legal Tech'].includes(tag)
+  )
+);
+
+const creativeWriting = posts.filter(post => 
+  post.data.tags.some(tag => 
+    ['Creative', 'Essay', 'Fiction', 'Perspective'].includes(tag)
+  )
+);
+
+const links = [
+  { name: "Home", url: "/" },
+  { name: "Blog", url: "/blog" }
+];
 ---
 
 <PageLayout title={BLOG.TITLE} description={BLOG.DESCRIPTION}>
-  <TopLayout>
-    <div class="animate page-heading">
-      {BLOG.TITLE}
+  <div class="container mx-auto px-6 py-12">
+    <div class="max-w-6xl mx-auto">
+      <Breadcrumbs links={links} />
+      
+      <!-- Mobile Sidebar Toggle -->
+      <button id="toggle-sidebar" class="md:hidden mb-4 px-4 py-2 bg-[#3be9d1]/10 text-[#3be9d1] rounded-md flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        Toggle Navigation
+      </button>
+      
+      <div class="flex flex-col md:flex-row">
+        <!-- Sidebar Navigation -->
+        <div id="sidebar" class="hidden md:block md:w-64 md:mr-8 flex-shrink-0 mb-8 md:mb-0 transition-all duration-300">
+          <div class="glass-effect rounded-lg p-6 sticky top-24">
+            <h3 class="text-lg font-semibold text-white mb-4 border-b border-white/10 pb-2">
+              Writing
+            </h3>
+            <nav class="space-y-4">
+              <a href="#academic" class="block text-white hover:text-[#3be9d1] transition-colors py-1">
+                Academic Writing
+              </a>
+              <a href="#blogs" class="block text-white hover:text-[#3be9d1] transition-colors py-1">
+                Blogs & Articles
+              </a>
+              <a href="#creative" class="block text-white hover:text-[#3be9d1] transition-colors py-1">
+                Creative Writing
+              </a>
+            </nav>
+          </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1">
+          <div class="glass-effect rounded-lg p-8 mb-8">
+            <h1 class="text-3xl font-bold text-white mb-4">Writing & Publications</h1>
+            <p class="text-white/80">
+              Exploring the intersections of law, technology, and policy with a focus on intellectual property, 
+              constitutional developments, and the future of legal practice.
+            </p>
+          </div>
+          
+          <!-- Two-Column Layout -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            <!-- Academic Writing -->
+            <section id="academic">
+              <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">A</span>
+                Academic Writing
+              </h2>
+              
+              <div class="space-y-6">
+                {academicPosts.slice(0, 3).map(post => (
+                  <a href={`/blog/${post.slug}`} class="glass-effect rounded-lg p-5 block hover:shadow-md transition-all duration-300 card-hover-effect">
+                    <div class="mb-2 flex items-center justify-between">
+                      <span class="text-xs text-[#3be9d1]">{new Date(post.data.date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short'
+                      })}</span>
+                      <span class="px-2 py-0.5 bg-[#3be9d1]/10 rounded-full text-xs text-[#3be9d1]/90">
+                        {post.data.tags[0]}
+                      </span>
+                    </div>
+                    <h3 class="text-lg font-medium text-white mb-2">{post.data.title}</h3>
+                    <p class="text-white/60 text-sm line-clamp-2 mb-2">{post.data.summary}</p>
+                    <span class="text-xs text-[#3be9d1] hover:underline">Read full paper →</span>
+                  </a>
+                ))}
+              </div>
+            </section>
+            
+            <!-- Blogs & Articles -->
+            <section id="blogs">
+              <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">B</span>
+                Blogs & Articles
+              </h2>
+              
+              <div class="space-y-6">
+                {blogPosts.slice(0, 3).map(post => (
+                  <a href={`/blog/${post.slug}`} class="glass-effect rounded-lg p-5 block hover:shadow-md transition-all duration-300 card-hover-effect">
+                    <div class="mb-2 flex items-center justify-between">
+                      <span class="text-xs text-[#3be9d1]">{new Date(post.data.date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short'
+                      })}</span>
+                      <span class="px-2 py-0.5 bg-[#3be9d1]/10 rounded-full text-xs text-[#3be9d1]/90">
+                        {post.data.tags[0]}
+                      </span>
+                    </div>
+                    <h3 class="text-lg font-medium text-white mb-2">{post.data.title}</h3>
+                    <p class="text-white/60 text-sm line-clamp-2 mb-2">{post.data.summary}</p>
+                    <span class="text-xs text-[#3be9d1] hover:underline">Read article →</span>
+                  </a>
+                ))}
+              </div>
+            </section>
+          </div>
+          
+          <!-- Creative Writing -->
+          <section id="creative" class="mb-12">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+              <span class="w-8 h-8 rounded-full bg-[#3be9d1]/20 flex items-center justify-center text-[#3be9d1] mr-3 text-xs">C</span>
+              Creative Writing
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {creativeWriting.slice(0, 4).map(post => (
+                <a href={`/blog/${post.slug}`} class="glass-effect rounded-lg p-5 block hover:shadow-md transition-all duration-300 card-hover-effect">
+                  <div class="mb-2 flex items-center justify-between">
+                    <span class="text-xs text-[#3be9d1]">{new Date(post.data.date).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'short'
+                    })}</span>
+                    <span class="px-2 py-0.5 bg-[#3be9d1]/10 rounded-full text-xs text-[#3be9d1]/90">
+                      {post.data.tags[0]}
+                    </span>
+                  </div>
+                  <h3 class="text-lg font-medium text-white mb-2">{post.data.title}</h3>
+                  <p class="text-white/60 text-sm line-clamp-2 mb-2">{post.data.summary}</p>
+                  <span class="text-xs text-[#3be9d1] hover:underline">Read piece →</span>
+                </a>
+              ))}
+            </div>
+          </section>
+          
+          <!-- Pagination -->
+          <div class="flex justify-center mt-12">
+            <div class="flex space-x-1">
+              <button disabled class="px-3 py-1 rounded bg-white/5 text-white/40">
+                Previous
+              </button>
+              <button class="px-3 py-1 rounded bg-[#3be9d1]/20 text-[#3be9d1]">
+                1
+              </button>
+              <button class="px-3 py-1 rounded hover:bg-white/10 text-white/70">
+                2
+              </button>
+              <button class="px-3 py-1 rounded hover:bg-white/10 text-white/70">
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </TopLayout>
-  <BottomLayout>
-    <div class="animate">
-      <Blog client:load tags={tags} data={posts} />
     </div>
-  </BottomLayout>
 </PageLayout>
+
+<style>
+  .card-hover-effect {
+    transition: all 0.3s ease;
+  }
+  .card-hover-effect:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* Updated glass effect for dark background */
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+</style>
+
+<script>
+// Mobile toggle functionality
+document.addEventListener('DOMContentLoaded', () => {
+  const toggleButton = document.getElementById('toggle-sidebar');
+  const sidebar = document.getElementById('sidebar');
+  
+  toggleButton?.addEventListener('click', () => {
+    sidebar?.classList.toggle('hidden');
+  });
+});
+</script>
 
 

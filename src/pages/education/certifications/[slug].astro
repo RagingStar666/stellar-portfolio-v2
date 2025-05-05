@@ -1,0 +1,189 @@
+---
+import PageLayout from "@layouts/PageLayout.astro";
+
+// Define the params type
+export function getStaticPaths() {
+  // Certification data
+  const certificationData = [
+    {
+      title: "Certificate Course on Intellectual Property Rights & Management",
+      institution: "Kalinga University, Chhattisgarh",
+      date: "Sep 2023",
+      description: "Kalinga University, Chhattisgarh, A comprehensive introduction to intellectual property frameworks and management strategies.",
+      image: "/placeholder-image.svg",
+      link: "#",
+      dateStart: "Sep",
+      slug: "intellectual-property-rights-management",
+      fullDescription: `
+        <p>I completed the Certificate Course on Intellectual Property Rights & Management offered by Kalinga University, Chhattisgarh. This certificate program provided a comprehensive introduction to intellectual property frameworks and management strategies.</p>
+        
+        <h3>Course Overview:</h3>
+        <p>The program was designed to provide participants with a solid foundation in intellectual property law, covering the following key areas:</p>
+        <ul>
+          <li>Fundamentals of intellectual property protection</li>
+          <li>Copyright law and applications</li>
+          <li>Patent law and patent application processes</li>
+          <li>Trademark registration and protection</li>
+          <li>Trade secrets and confidential information</li>
+          <li>IP management strategies for organizations</li>
+          <li>IP valuation and commercialization</li>
+          <li>International IP protection frameworks</li>
+        </ul>
+        
+        <h3>Learning Outcomes:</h3>
+        <p>Through this certificate course, I gained:</p>
+        <ul>
+          <li>A comprehensive understanding of different types of intellectual property rights</li>
+          <li>Knowledge of legal frameworks governing intellectual property in India and internationally</li>
+          <li>Practical insights into IP management and strategic use of IP assets</li>
+          <li>Familiarity with IP registration procedures and enforcement mechanisms</li>
+        </ul>
+        
+        <p>This certification has provided me with valuable knowledge about intellectual property protection and management, which complements my legal studies and interest in intellectual property law.</p>
+      `
+    },
+    {
+      title: "ADR Mediation Upskill Course",
+      institution: "ADR Board, Department of Law, University of Calcutta",
+      date: "Dec 2024",
+      description: "ADR Board, Department of Law, University of Calcutta, Specialized training in mediation techniques and alternative dispute resolution approaches.",
+      image: "/placeholder-image.svg",
+      link: "#",
+      dateStart: "Dec",
+      slug: "adr-mediation-upskill",
+      fullDescription: `
+        <p>I completed the ADR Mediation Upskill Course offered by the Alternative Dispute Resolution Board at the Department of Law, University of Calcutta. This intensive course focused on developing practical skills in mediation and other alternative dispute resolution approaches.</p>
+        
+        <h3>Course Overview:</h3>
+        <p>The program was structured to provide theoretical knowledge and practical training in mediation and other ADR techniques, covering:</p>
+        <ul>
+          <li>Fundamentals of alternative dispute resolution</li>
+          <li>Mediation theory and process design</li>
+          <li>Facilitative and evaluative mediation approaches</li>
+          <li>Communication techniques for effective mediation</li>
+          <li>Conflict de-escalation strategies</li>
+          <li>Legal and ethical considerations in mediation</li>
+          <li>Drafting mediation agreements</li>
+          <li>Cross-cultural aspects of mediation</li>
+        </ul>
+        
+        <h3>Learning Outcomes:</h3>
+        <p>This certificate course equipped me with:</p>
+        <ul>
+          <li>Practical mediation skills through simulated dispute scenarios</li>
+          <li>Techniques for facilitating productive discussions between conflicting parties</li>
+          <li>Understanding of the mediator's role and ethical responsibilities</li>
+          <li>Knowledge of ADR mechanisms within the Indian legal system</li>
+          <li>Ability to identify cases suitable for various ADR processes</li>
+        </ul>
+        
+        <p>The skills developed through this course have practical applications across various legal contexts and align with my interest in alternative dispute resolution mechanisms as efficient and effective approaches to conflict resolution.</p>
+      `
+    },
+    {
+      title: "Intellectual Property Law Specialization",
+      institution: "University of Pennsylvania (via Coursera)",
+      date: "In Progress (2025)",
+      description: "University of Pennsylvania (via Coursera), A comprehensive multi-module specialization covering patent law, copyright law, trademark fundamentals, and related legal frameworks.",
+      image: "/placeholder-image.svg",
+      link: "#",
+      dateStart: "Jan",
+      slug: "intellectual-property-law-specialization",
+      fullDescription: `
+        <p>I am currently pursuing the Intellectual Property Law Specialization offered by the University of Pennsylvania through Coursera. This comprehensive specialization offers an in-depth exploration of intellectual property legal frameworks and their applications.</p>
+        
+        <h3>Program Structure:</h3>
+        <p>The specialization consists of four interconnected courses plus a capstone project:</p>
+        <ol>
+          <li><strong>Copyright Law:</strong> Examining legal protection for creative works, fair use doctrine, and digital copyright challenges</li>
+          <li><strong>Trademark Law:</strong> Covering trademark registration, protection, enforcement, and brand management strategies</li>
+          <li><strong>Patent Law:</strong> Exploring patent eligibility, application processes, patent prosecution, and infringement cases</li>
+          <li><strong>IP Law and Policy:</strong> Analyzing the interplay between intellectual property rights and public policy objectives</li>
+          <li><strong>Capstone Project:</strong> Applying IP knowledge to real-world legal scenarios through comprehensive case analyses</li>
+        </ol>
+        
+        <h3>Learning Objectives:</h3>
+        <p>Through this specialization, I am developing:</p>
+        <ul>
+          <li>Advanced understanding of the theoretical foundations of intellectual property law</li>
+          <li>Knowledge of U.S. and international IP legal frameworks</li>
+          <li>Analytical skills for addressing complex IP legal issues</li>
+          <li>Familiarity with current challenges in IP protection in the digital age</li>
+          <li>Insights into the strategic application of IP rights in various contexts</li>
+        </ul>
+        
+        <p>This specialization complements my formal legal education and deepens my expertise in intellectual property law, an area of significant interest in my legal studies and future career aspirations.</p>
+      `
+    }
+  ];
+  
+  return certificationData.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+---
+
+<PageLayout title={entry.title} description={`Details about my certification in ${entry.title} from ${entry.institution}`}>
+  <div class="container mx-auto p-6">
+    <div class="max-w-4xl mx-auto">
+      <!-- Breadcrumb Navigation -->
+      <nav class="flex mb-8 text-sm text-black/60 dark:text-white/60">
+        <a href="/" class="hover:text-black hover:dark:text-white transition-colors">Home</a>
+        <span class="mx-2">/</span>
+        <a href="/education" class="hover:text-black hover:dark:text-white transition-colors">Education</a>
+        <span class="mx-2">/</span>
+        <a href="/education#certifications" class="hover:text-black hover:dark:text-white transition-colors">Certifications</a>
+        <span class="mx-2">/</span>
+        <span class="text-black dark:text-white">{entry.title}</span>
+      </nav>
+      
+      <!-- Header -->
+      <div class="mb-10">
+        <div class="bg-white dark:bg-black/20 rounded-lg shadow-sm border border-black/10 dark:border-white/10 overflow-hidden">
+          <div class="aspect-video w-full relative">
+            <img src={entry.image} alt={entry.title} class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 p-6">
+              <span class="inline-block px-3 py-1 bg-black/60 text-white rounded-full text-sm mb-3">
+                Certification
+              </span>
+              <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">{entry.title}</h1>
+              <p class="text-xl text-white/90">{entry.institution}</p>
+              <p class="text-lg text-white/80">{entry.date}</p>
+            </div>
+          </div>
+          
+          <!-- Content -->
+          <div class="p-8">
+            <div class="prose dark:prose-invert max-w-none" set:html={entry.fullDescription} />
+            
+            {entry.link !== "#" && (
+              <div class="mt-8 pt-6 border-t border-black/10 dark:border-white/10">
+                <a href={entry.link} target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-4 py-2 bg-black text-white dark:bg-white dark:text-black rounded-lg hover:opacity-90 transition-opacity">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                    <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                  </svg>
+                  View Certificate
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      
+      <!-- Navigation -->
+      <div class="flex justify-between mt-12">
+        <a href="/education#certifications" class="inline-flex items-center px-4 py-2 bg-black/5 dark:bg-white/10 rounded-lg hover:bg-black/10 hover:dark:bg-white/20 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+          </svg>
+          Back to Certifications
+        </a>
+      </div>
+    </div>
+  </div>
+</PageLayout> 

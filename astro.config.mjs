@@ -6,6 +6,19 @@ import solidJs from "@astrojs/solid-js"
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://astro-sphere-demo.vercel.app",
-  integrations: [mdx(), sitemap(), solidJs(), tailwind({ applyBaseStyles: false })],
+  site: "https://prodiptaroy.com",
+  integrations: [
+    mdx(), 
+    sitemap({
+      filter: (page) => {
+        // Exclude draft pages and any temporary/testing pages
+        return !page.includes('/drafts/') && !page.includes('/temp/');
+      },
+      changefreq: 'weekly',
+      priority: 0.7,
+      lastmod: new Date(),
+    }), 
+    solidJs(), 
+    tailwind({ applyBaseStyles: false })
+  ],
 })

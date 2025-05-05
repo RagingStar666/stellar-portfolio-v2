@@ -1,0 +1,192 @@
+---
+import PageLayout from "@layouts/PageLayout.astro";
+import Breadcrumbs from "@components/Breadcrumbs.astro";
+
+const links = [
+  { name: "Home", url: "/" },
+  { name: "Blog", url: "/blog" },
+  { name: "Understanding IP Rights in the Digital Age", url: "/blog/ip-rights-digital-age" }
+];
+
+const post = {
+  title: "Understanding IP Rights in the Digital Age",
+  date: "Feb 15, 2025",
+  author: "Prodipta Roy",
+  excerpt: "A comprehensive look at how intellectual property rights apply to digital content and the challenges of enforcement in an increasingly connected world.",
+  readingTime: "10 min read",
+  tags: ["IP Law", "Digital Rights", "Copyright", "Internet Law"]
+};
+---
+
+<PageLayout title={post.title} description={post.excerpt}>
+  <div class="container mx-auto px-6 py-12">
+    <div class="max-w-4xl mx-auto">
+      <Breadcrumbs links={links} />
+      
+      <article class="glass-effect rounded-lg p-8 mt-6">
+        <header class="mb-8">
+          <h1 class="text-3xl font-bold text-black dark:text-white mb-4">{post.title}</h1>
+          
+          <div class="flex flex-wrap items-center text-black/60 dark:text-white/60 text-sm gap-4 mb-6">
+            <div class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span>{post.date}</span>
+            </div>
+            
+            <div class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>{post.readingTime}</span>
+            </div>
+            
+            <div class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              <span>{post.author}</span>
+            </div>
+          </div>
+          
+          <div class="flex flex-wrap gap-2 mb-6">
+            {post.tags.map(tag => (
+              <span class="px-3 py-1 bg-black/5 dark:bg-[#3be9d1]/10 rounded-full text-xs text-black/70 dark:text-[#3be9d1]/90">
+                {tag}
+              </span>
+            ))}
+          </div>
+          
+          <div class="w-full aspect-video bg-black/5 dark:bg-white/5 rounded-lg overflow-hidden mb-6">
+            <img src="/placeholder-image.svg" alt={post.title} class="w-full h-full object-cover" />
+          </div>
+        </header>
+        
+        <div class="prose prose-lg max-w-none text-black/80 dark:text-white/80">
+          <p>
+            The digital revolution has fundamentally transformed how intellectual property is created, distributed, and consumed. Traditional intellectual property frameworks, designed for a world of physical artifacts, are being challenged by the realities of digital content that can be perfectly copied and shared globally in seconds.
+          </p>
+          
+          <h2>The Fundamentals of IP in a Digital Context</h2>
+          <p>
+            Intellectual property rights remain critically important in the digital sphere, encompassing copyrights for creative works, patents for inventions, trademarks for brands, and trade secrets for confidential business information. However, their application to digital assets presents unique challenges.
+          </p>
+          <p>
+            For instance, copyright law grants authors exclusive rights to reproduce, distribute, and display their works. In a digital environment, where copying is effortless and often automatic (such as when a web browser caches content), the meaning of these rights becomes more complex and nuanced.
+          </p>
+          
+          <h2>Challenges of Digital IP Protection</h2>
+          <p>
+            Several factors make intellectual property protection particularly challenging in the digital realm:
+          </p>
+          <ul>
+            <li><strong>Perfect Reproduction:</strong> Unlike physical copies, digital copies are perfect duplicates of the original, with no degradation in quality.</li>
+            <li><strong>Ease of Distribution:</strong> The internet allows for virtually cost-free global distribution of content.</li>
+            <li><strong>Anonymity:</strong> Digital environments can make it difficult to identify infringers.</li>
+            <li><strong>Jurisdictional Issues:</strong> IP enforcement across international boundaries involves complex legal questions about applicable law and jurisdiction.</li>
+            <li><strong>Technological Evolution:</strong> Rapid technological change often outpaces legal frameworks, creating regulatory gaps.</li>
+          </ul>
+          
+          <h2>Copyright in the Digital Age</h2>
+          <p>
+            Copyright law has faced perhaps the most significant challenges in adapting to digital realities. The ease of copying and sharing digital content has led to widespread copyright infringement, prompting legal and technological responses.
+          </p>
+          <p>
+            Digital Rights Management (DRM) technologies attempt to control access to and use of digital content, but these systems often face criticism for restricting legitimate uses and being susceptible to circumvention.
+          </p>
+          <p>
+            Legal frameworks like the Digital Millennium Copyright Act (DMCA) in the United States have established notice-and-takedown procedures for addressing online copyright infringement, but these mechanisms have been criticized both for enabling censorship and for being inadequate to address the scale of infringement.
+          </p>
+          
+          <h2>Patents and Software</h2>
+          <p>
+            The patentability of software and business methods has been controversial, with different jurisdictions adopting varying approaches. In the United States, the landscape has shifted significantly following Supreme Court decisions like <em>Alice Corp. v. CLS Bank International</em>, which raised the bar for software patent eligibility.
+          </p>
+          <p>
+            Critics argue that software patents can hinder innovation, particularly for smaller developers who lack the resources to navigate complex patent landscapes or defend against infringement claims from larger entities.
+          </p>
+          
+          <h2>Trademarks and Domain Names</h2>
+          <p>
+            The digital marketplace has expanded the importance of trademarks as identifiers of source and quality. Domain names, social media handles, and app store identities all serve trademark-like functions online.
+          </p>
+          <p>
+            Conflicts between trademark rights and domain name registrations gave rise to specialized dispute resolution procedures like the Uniform Domain-Name Dispute-Resolution Policy (UDRP), providing an alternative to traditional litigation for resolving these conflicts.
+          </p>
+          
+          <h2>User-Generated Content and Platform Liability</h2>
+          <p>
+            The rise of social media and content-sharing platforms has created new challenges for IP enforcement. When users upload infringing content, questions arise about the liability of the platforms hosting that content.
+          </p>
+          <p>
+            Safe harbor provisions, like those in the DMCA, generally shield platforms from liability for user-uploaded content if they meet certain conditions, including prompt removal of infringing material when notified. However, the effectiveness and fairness of these systems remain subjects of debate.
+          </p>
+          
+          <h2>Fair Use and User Rights</h2>
+          <p>
+            Fair use (in the US) and similar exceptions in other jurisdictions play crucial roles in balancing IP protection with other societal interests like free expression, education, and innovation. The digital environment has both expanded the potential scope of fair use and created new tensions around its application.
+          </p>
+          <p>
+            Transformative uses of content, such as remixes and memes, have become central to online culture, raising questions about where to draw the line between infringing appropriation and protected creative expression.
+          </p>
+          
+          <h2>International Harmonization and Conflicts</h2>
+          <p>
+            The global nature of the internet highlights disparities between national IP regimes. Content that is legal in one jurisdiction may infringe IP rights in another, creating complex enforcement challenges.
+          </p>
+          <p>
+            International agreements like the WIPO Copyright Treaty have attempted to establish minimum standards for digital IP protection, but significant differences remain between national approaches.
+          </p>
+          
+          <h2>The Future of Digital IP</h2>
+          <p>
+            Emerging technologies continue to raise new questions for IP law. Blockchain technology offers potential new models for managing and tracking digital rights, while artificial intelligence challenges fundamental assumptions about authorship and inventorship.
+          </p>
+          <p>
+            The tension between proprietary and open models of innovation remains central to debates about IP in the digital realm, with movements like open source software and Creative Commons representing alternative approaches to incentivizing creation and innovation.
+          </p>
+          
+          <h2>Conclusion</h2>
+          <p>
+            The digital transformation demands a reconsideration of intellectual property frameworks to ensure they continue to serve their intended purposes of incentivizing creation and innovation while not unduly restricting access to knowledge and culture.
+          </p>
+          <p>
+            Finding this balance requires ongoing dialogue between legal experts, technologists, content creators, and users. As we navigate these complex issues, a nuanced understanding of both intellectual property principles and digital realities will be essential for developing effective and equitable solutions.
+          </p>
+        </div>
+        
+        <div class="mt-10 pt-6 border-t border-black/10 dark:border-white/10">
+          <div class="flex flex-wrap items-center justify-between">
+            <div>
+              <a href="/blog" class="inline-flex items-center text-black/80 dark:text-[#3be9d1] hover:underline">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Back to Blog
+              </a>
+            </div>
+            
+            <div class="flex space-x-4">
+              <a href="#" class="text-black/70 dark:text-white/70 hover:text-black hover:dark:text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/>
+                </svg>
+              </a>
+              <a href="#" class="text-black/70 dark:text-white/70 hover:text-black hover:dark:text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.037 10.037 0 01-3.127 1.195A4.929 4.929 0 0017.716 2a4.928 4.928 0 00-4.928 4.928c0 .387.044.764.13 1.124A13.979 13.979 0 013.484 3.056a4.897 4.897 0 00-.668 2.476c0 1.709.87 3.217 2.19 4.102a4.927 4.927 0 01-2.23-.616v.062a4.925 4.925 0 003.959 4.827 4.95 4.95 0 01-2.224.084 4.928 4.928 0 004.598 3.419A9.886 9.886 0 010 19.54a13.949 13.949 0 007.548 2.212c9.057 0 14.01-7.503 14.01-14.01 0-.212-.006-.424-.015-.635a10.018 10.018 0 002.41-2.539z"/>
+                </svg>
+              </a>
+              <a href="#" class="text-black/70 dark:text-white/70 hover:text-black hover:dark:text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</PageLayout> 

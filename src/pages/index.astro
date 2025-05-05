@@ -1,219 +1,514 @@
 ---
-import { getCollection } from "astro:content"
-import PageLayout from "@layouts/PageLayout.astro"
-import ArrowCard from "@components/ArrowCard"
-import StackCard from "@components/StackCard.astro"
-import { SITE, SOCIALS } from "@consts"
-import TwinklingStars from "@components/TwinklingStars.astro"
-import MeteorShower from "@components/MeteorShower.astro"
+import { getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import { SITE } from "@consts";
 
-const posts = (await getCollection("blog"))
-  .filter(post => !post.data.draft)
+// Define expected types for our content collections based on the schema
+type WorkEntry = {
+  slug: string;
+  data: {
+    company: string;
+    role: string;
+    dateStart: Date;
+    dateEnd: string | Date;
+    // These properties don't exist in the schema but we're using them
+    date?: Date; 
+    position?: string;
+    description?: string;
+    tags?: string[];
+    type?: string;
+  };
+};
+
+type BlogEntry = {
+  slug: string;
+  data: {
+    title: string;
+    summary: string;
+    date: Date;
+    tags: string[];
+    draft?: boolean;
+  };
+};
+
+// Education data
+const universityDegree = {
+  slug: "university-of-calcutta",
+  data: {
+    title: "B.A. LL.B.",
+    institution: "University of Calcutta",
+    date: new Date("2024-08-23"),
+    type: "degree",
+    description: "Five-year integrated law degree",
+    tags: ["Constitutional Law", "IP Law", "Corporate Law", "Legal Research"]
+  }
+};
+
+// Get all work entries
+const allWork = await getCollection("work") as unknown as WorkEntry[];
+
+// Get professional experience
+const professionalExperience = allWork
+  .filter(work => 
+    work.data.role.toLowerCase().includes('director') || 
+    work.data.role.toLowerCase().includes('founder') || 
+    work.data.role.toLowerCase().includes('leader') || 
+    work.data.role.toLowerCase().includes('manager')
+  )
+  .sort((a, b) => {
+    const dateA = a.data.dateStart instanceof Date ? a.data.dateStart : new Date();
+    const dateB = b.data.dateStart instanceof Date ? b.data.dateStart : new Date();
+    return dateB.getTime() - dateA.getTime();
+  })
+  .slice(0, 2);
+
+const internshipsFromCollection = allWork
+  .filter(work => 
+    work.data.role.toLowerCase().includes('intern') || 
+    work.data.role.toLowerCase().includes('trainee')
+  )
+  .sort((a, b) => {
+    const dateA = a.data.dateStart instanceof Date ? a.data.dateStart : new Date();
+    const dateB = b.data.dateStart instanceof Date ? b.data.dateStart : new Date();
+    return dateB.getTime() - dateA.getTime();
+  })
+  .slice(0, 2);
+
+const internships = internshipsFromCollection.length > 0 ? internshipsFromCollection : [
+  {
+    slug: "jus-scriptum",
+    data: {
+      company: "Jus Scriptum Law Review",
+      role: "Legal Research Intern",
+      dateStart: new Date("2024-05-01"),
+      dateEnd: new Date("2024-08-01"),
+      description: "Conducted legal research for peer-reviewed journal articles and assisted with case law analysis for publication."
+    }
+  },
+  {
+    slug: "jus-corpus",
+    data: {
+      company: "Jus Corpus Legal Services",
+      role: "Legal Intern",
+      dateStart: new Date("2024-12-01"),
+      dateEnd: "Present",
+      description: "Assisting with legal research, case preparation, and client communications at a boutique law firm specializing in intellectual property matters."
+    }
+  }
+];
+
+const committeesFromCollection = allWork
+  .filter(work => 
+    work.data.role.toLowerCase().includes('committee') || 
+    work.data.role.toLowerCase().includes('member')
+  )
+  .sort((a, b) => {
+    const dateA = a.data.dateStart instanceof Date ? a.data.dateStart : new Date();
+    const dateB = b.data.dateStart instanceof Date ? b.data.dateStart : new Date();
+    return dateB.getTime() - dateA.getTime();
+  })
+  .slice(0, 2);
+
+// Create placeholder committees if none exist
+const committees = committeesFromCollection.length > 0 ? committeesFromCollection : [
+  {
+    slug: "journal-and-seminar-committee",
+    data: {
+      company: "Department of Law, University of Calcutta",
+      role: "Member, Journal and Seminar Committee",
+      dateStart: new Date("2024-08-01"),
+      dateEnd: "Present",
+      description: "Contributing to the organization of academic seminars, workshops, and the publication of the department's legal journal."
+    }
+  }
+];
+
+// Get extracurricular activities data
+const extracurricular = [
+  {
+    title: "3rd National Article Writing Competition",
+    organizer: "Journal and Seminar Committee, UC Law",
+    role: "Participant",
+    date: "Dec 2024",
+    description: "Participated in the national-level legal writing competition focused on contemporary legal issues.",
+    slug: "3rd-national-article-writing-competition"
+  },
+  {
+    title: "SKMMIMNC 6.0 Mediation Competition",
+    organizer: "Lloyd Law College, India",
+    role: "Mediator",
+    date: "Mar 2025",
+    description: "Served as a mediator in this prestigious international competition, applying ADR principles in simulated dispute scenarios.",
+    slug: "skmmimnc-6-international-mediation-competition"
+  }
+];
+
+// Get Tower of Babel project
+const towerOfBabelProject = {
+  slug: "tower-of-babel",
+  data: {
+    title: "Tower of Babel",
+    summary: "A web development project focused on creating a multilingual communication platform that breaks down language barriers in real-time digital conversations.",
+    date: new Date("2024-01-01"),
+    tags: ["React", "NodeJS", "MongoDB", "WebSockets"],
+    client: "Personal Project",
+    category: "Development",
+    description: "The Tower of Babel project is a multilingual communication platform designed to break down language barriers in real-time digital conversations. It leverages advanced machine learning models for translation."
+  }
+};
+
+// Get certifications
+import { certsData } from "@data/certsData";
+const certifications = certsData
+  .sort((a, b) => {
+    const dateA = new Date(a.date.split(' ')[1]);
+    const dateB = new Date(b.date.split(' ')[1]);
+    return dateB.getTime() - dateA.getTime();
+  })
+  .slice(0, 2)
+  .map(cert => ({
+    title: cert.title,
+    institution: cert.description.split(',')[0].trim(),
+    description: cert.description,
+    date: cert.date
+  }));
+
+// Get academic blog posts 
+const allPosts = await getCollection("blog") as unknown as BlogEntry[];
+const academicPosts = allPosts
+  .filter(post => 
+    post.data.tags.some(tag => 
+      ['Research', 'Academic', 'Legal Analysis', 'IP Law', 'Constitutional Law'].includes(tag)
+    ) && !post.data.draft
+  )
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0,3)
+  .slice(0, 2);
 
-const projects = (await getCollection("projects"))
-  .filter(project => !project.data.draft)
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0,3)
+// Skills data
+const skillsData = [
+  {
+    category: "Legal & Research Tools",
+    tools: ["Zotero", "Google Scholar", "JSTOR", "HeinOnline", "SSRN"]
+  },
+  {
+    category: "Productivity & Collaboration",
+    tools: ["Microsoft Office", "Google Workspace", "Notion", "Trello"]
+  }
+];
 
-const stack = [
-  { 
-    text: "Astro", 
-    icon: "astro", 
-    href: "https://astro.build" 
-  },
-  { 
-    text: "Javascript", 
-    icon: "javascript", 
-    href: "https://www.javascript.com" 
-  },
-  { 
-    text: "Typescript", 
-    icon: "typescript", 
-    href: "https://www.typescriptlang.org" 
-  },
-  { 
-    text: "Tailwind", 
-    icon: "tailwind", 
-    href: "https://tailwindcss.com" 
-  },
-]
+function formatDate(date: Date | string) {
+  if (typeof date === "string") return date;
+  
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    year: "numeric"
+  });
+}
+
+// Define a position label
+const positionLabel = "Law Student & Operations Professional";
 ---
 
-<PageLayout title="Home" description={SITE.DESCRIPTION}>
-
-  <!-- Light Mode: Particles -->
-  <div class='absolute inset-0 block dark:hidden'>
-    <div id='particles1' class='fixed inset-0'></div>
-    <div id='particles2' class='fixed inset-0'></div>
-    <div id='particles3' class='fixed inset-0'></div>
+<PageLayout title={SITE.TITLE} description={SITE.DESCRIPTION}>
+  <div class="container min-h-screen mx-auto px-4 sm:px-6 py-8 md:py-12">
+    <div class="relative max-w-5xl mx-auto">
+      <!-- Intro Section -->
+      <section class="glass-effect rounded-lg mb-8 md:mb-12 p-6 md:p-10 relative">
+        <div class="flex flex-col">
+          <h1 class="text-2xl md:text-3xl font-bold text-center md:text-left text-white mb-2">
+            {SITE.AUTHOR}
+          </h1>
+          
+          <h2 class="text-base md:text-lg text-center md:text-left text-white/70 mb-4">
+            {positionLabel}
+          </h2>
+          
+          <p class="text-white/80 text-sm md:text-base">
+            B.A. LL.B. (Hons.) student at the University of Calcutta, specializing in intellectual property rights, 
+            mergers & acquisitions, and finance law. Passionate about bridging traditional legal frameworks with 
+            emerging technologies and business models.
+          </p>
+  </div>
+      </section>
+      
+      <!-- Professional Experience Section -->
+      <section class="mb-8 md:mb-12">
+        <div class="flex justify-between items-baseline mb-4 md:mb-6">
+          <h2 class="text-xl md:text-2xl font-bold text-white">Professional Experience</h2>
+          <a href="/work#professional" class="text-xs md:text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
+            View all →
+          </a>
   </div>
 
-  <!-- Dark Theme: Stars -->
-  <div class='absolute inset-0 bg-black hidden dark:block'>
-    <div id='stars1' class='fixed inset-0'></div>
-    <div id='stars2' class='fixed inset-0'></div>
-    <div id='stars3' class='fixed inset-0'></div>
+        <div class="timeline-container">
+          <div class="timeline-line"></div>
+          
+          {professionalExperience.map((entry) => (
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <a href={`/work/${entry.slug}`} class="timeline-content glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
+                <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
+                  {formatDate(entry.data.dateStart)} - {formatDate(entry.data.dateEnd)}
   </div>
 
-  <!-- Dark Theme: Twinkling Stars / Metors -->
-  <div id="galaxy" class="fixed inset-0">
-    <div class="hidden dark:block">
-      <TwinklingStars/>
-      <MeteorShower/>
-    </div>
-  </div>
-
-  <script is:inline src="/js/bg.js"></script>
-  
-  <!-- HERO -->
-  <section class="relative h-screen w-full">
-    <div id="planetcont" class='animate absolute inset-0 top-1/4 overflow-hidden'>
-      <div id="crescent" class='absolute top-0 left-1/2 -translate-x-1/2 w-[250vw] min-h-[100vh] aspect-square rounded-full p-[1px] bg-gradient-to-b from-black/25 dark:from-white/75 from-0% to-transparent to-5%'>
-        <div id="planet" class='w-full h-full bg-white dark:bg-black rounded-full p-[1px] overflow-hidden flex justify-center'>
-          <div id="blur" class='w-full h-20 rounded-full bg-neutral-900/25 dark:bg-white/25 blur-3xl'/>
+                <h3 class="text-lg font-semibold text-white">{entry.data.role}</h3>
+                <p class="text-white/80 mb-2">{entry.data.company}</p>
+                
+                <p class="text-white/70 text-sm line-clamp-2 mb-2">{entry.data.description || ''}</p>
+              </a>
+            </div>
+          ))}
         </div>
+      </section>
+      
+      <!-- Internships Section -->
+      <section class="mb-8 md:mb-12">
+        <div class="flex justify-between items-baseline mb-4 md:mb-6">
+          <h2 class="text-xl md:text-2xl font-bold text-white">Internships</h2>
+          <a href="/work#internships" class="text-xs md:text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
+            View all →
+          </a>
       </div>
+        
+        <div class="timeline-container">
+          <div class="timeline-line"></div>
+          
+          {internships.map((entry) => (
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <a href={`/work/internships/${entry.slug}`} class="timeline-content glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
+                <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
+                  {formatDate(entry.data.dateStart)} - {formatDate(entry.data.dateEnd)}
     </div>
-    <div class="animate absolute h-full w-full flex items-center justify-center">
-      <div class='relative w-full h-full flex items-center justify-center'>
-        <div class='p-5 text-center'>
-          <p class='animated text-lg md:text-xl lg:text-2xl font-semibold opacity-75'>
-            Hello, I am ...
-          </p>
-          <p class='animated text-2xl md:text-3xl lg:text-4xl font-bold uppercase text-black dark:text-white'>
-            Astro Sphere
-          </p>
-          <p class='animated text-sm md:text-base lg:text-lg opacity-75'>
-            Currently designing products for humans.
-          </p>
-          <div id="ctaButtons" class='animated flex flex-wrap gap-4 justify-center mt-5'>
-            <a href='/blog' class='py-2 px-4 rounded truncate text-xs md:text-sm lg:text-base bg-black dark:bg-white text-white dark:text-black hover:opacity-75 blend'>
-              Read my blog
-            </a>
-            <a href='/work' class='py-2 px-4 truncate rounded text-xs md:text-sm lg:text-base border border-black/25 dark:border-white/25 hover:bg-black/5 hover:dark:bg-white/15 blend'>
-              View my work
+                
+                <h3 class="text-lg font-semibold text-white">{entry.data.role}</h3>
+                <p class="text-white/80 mb-2">{entry.data.company}</p>
+                
+                <p class="text-white/70 text-sm line-clamp-2 mb-2">{entry.data.description || ''}</p>
             </a>
           </div>
-        </div>
-      </div>
+          ))}
     </div>
   </section>
 
-  <div class="relative bg-white dark:bg-black">
-    <div class="mx-auto max-w-screen-sm p-5 space-y-24 pb-16">
-
-      <!-- About Section -->
-      <section class="animate">
-        <article>
-          <p>I am a <b><i>software engineer</i></b>, <b><i>ui/ux designer</i></b>, <b><i>product planner</i></b>, <b><i>mentor</i></b>, <b><i>student</i></b>, <b><i>minimalist</i></b>, <b><i>eternal optimist</i></b>, <b><i>crypto enthusiast</i></b> and <b><i>sarcasm connoisseur</i></b>.</p>
-          <p>I love to both build and break things. I am motivated by challenging projects with self-guided research and dynamic problem solving. My true passion is crafting creative front end designs with unique takes on color, typography and motion.</p>
-          <p>During my career</p>
-          <p>I have built products ranging from marketing and ecommerce websites to complex enterprise apps with focus on delivering fast, elegant code along with delightful user interfaces.</p>
-          <p>Now</p>
-          <p>I currently work as a software engineer at StreamlineFS, where I do product planning, design and development.</p>
-        </article>
-      </section>
-
-      <!-- Blog Preview Section -->
-      <section class="animate">
-        <div class="space-y-4">
-          <div class="flex justify-between">
-            <p class="font-semibold text-black dark:text-white">
-              Recent posts
-            </p>
-            <a href="/blog" class="w-fit col-span-3 group flex gap-1 items-center underline decoration-[.5px] decoration-black/25 dark:decoration-white/50 hover:decoration-black dark:hover:decoration-white text-black dark:text-white underline-offset-2 blend">
-              <span class="text-black/75 dark:text-white/75 group-hover:text-black group-hover:dark:text-white blend">
-                All posts
-              </span>
-            </a>
-          </div>
-          <ul class="space-y-4">
-            {posts.map((post) => (
-              <li>
-                <ArrowCard entry={post} />
-              </li>
-            ))}
-          </ul>
+      <!-- Committees Section -->
+      <section class="mb-8 md:mb-12">
+        <div class="flex justify-between items-baseline mb-4 md:mb-6">
+          <h2 class="text-xl md:text-2xl font-bold text-white">Committees & Organizations</h2>
+          <a href="/work#committees" class="text-xs md:text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
+            View all →
+          </a>
+        </div>
+        
+        <div class="timeline-container">
+          <div class="timeline-line"></div>
+          
+          {committees.map((entry) => (
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <a href={`/work/committees/${entry.slug}`} class="timeline-content glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
+                <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
+                  {formatDate(entry.data.dateStart)} - {formatDate(entry.data.dateEnd)}
+                </div>
+                
+                <h3 class="text-lg font-semibold text-white">{entry.data.role}</h3>
+                <p class="text-white/80 mb-2">{entry.data.company}</p>
+                
+                <p class="text-white/70 text-sm line-clamp-2 mb-2">{entry.data.description || ''}</p>
+              </a>
+            </div>
+          ))}
         </div>
       </section>
 
-      <!-- Tech Stack Section -->
-      <section class="animate">
-        <div class="space-y-4">
-          <p class="font-semibold text-black dark:text-white">
-            Website build with
-          </p>
-          <div class="flex flex-wrap items-center gap-2 mt-5">
-            {stack.map(item => (
-              <StackCard 
-                text={item.text}
-                icon={item.icon}
-                href={item.href}
-              />
-            ))}
+      <!-- Extracurricular Section -->
+      <section class="mb-8 md:mb-12">
+        <div class="flex justify-between items-baseline mb-4 md:mb-6">
+          <h2 class="text-xl md:text-2xl font-bold text-white">Extracurriculars</h2>
+          <a href="/work#extracurricular" class="text-xs md:text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
+            View all →
+          </a>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          {extracurricular.map((entry) => (
+            <a href={`/work/activities/${entry.slug}`} class="glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
+              <div class="mb-2 flex items-center justify-between">
+                <span class="text-xs text-[#3be9d1]">{entry.date}</span>
+                <span class="px-2 py-0.5 bg-[#3be9d1]/10 rounded-full text-xs text-[#3be9d1]/90">Competition</span>
+              </div>
+              <h3 class="text-lg font-medium text-white mb-2">{entry.title}</h3>
+              <p class="text-white/80 mb-2">{entry.organizer}</p>
+              <p class="text-white/60 text-sm line-clamp-2 mb-2">{entry.description}</p>
+              <span class="text-xs text-[#3be9d1] hover:underline">View details →</span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <!-- Education Section -->
+      <section class="mb-8 md:mb-12">
+        <div class="flex justify-between items-baseline mb-4 md:mb-6">
+          <h2 class="text-xl md:text-2xl font-bold text-white">Education</h2>
+          <a href="/education#education" class="text-xs md:text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
+            View all →
+          </a>
+        </div>
+        
+        <div class="timeline-container">
+          <div class="timeline-line"></div>
+          
+          <div class="timeline-item">
+            <div class="timeline-node"></div>
+            <a href={`/education/${universityDegree.slug}`} class="timeline-content glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
+              <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
+                {formatDate(universityDegree.data.date)} - Present
           </div>
-          <div>
-            Performing reactivity and statefulness, special guest
-            <a href="https://www.solidjs.com/" target="_blank" class="w-fit group underline decoration-[.5px] decoration-black/25 dark:decoration-white/50 hover:decoration-black dark:hover:decoration-white text-black dark:text-white underline-offset-2 blend">
-              <span class="text-black/75 dark:text-white/75 group-hover:text-black group-hover:dark:text-white blend">
-                SolidJS
-              </span>
+              
+              <h3 class="text-lg font-semibold text-white">{universityDegree.data.title}</h3>
+              <p class="text-white/80 mb-2">{universityDegree.data.institution}</p>
+              
+              <p class="text-white/70 text-sm line-clamp-2 mb-2">{universityDegree.data.description}</p>
             </a>
           </div>
         </div>
       </section>
 
-      <!-- Project Preview Section -->
-      <section class="animate">
-        <div class="space-y-4">
-          <div class="flex justify-between">
-            <p class="font-semibold text-black dark:text-white">
-              Recent projects
-            </p>
-            <a href="/projects" class="w-fit col-span-3 group flex gap-1 items-center underline decoration-[.5px] decoration-black/25 dark:decoration-white/50 hover:decoration-black dark:hover:decoration-white text-black dark:text-white underline-offset-2 blend">
-              <span class="text-black/75 dark:text-white/75 group-hover:text-black group-hover:dark:text-white blend">
-                All projects
-              </span>
+      <!-- Certifications Section -->
+      <section class="mb-8 md:mb-12">
+        <div class="flex justify-between items-baseline mb-4 md:mb-6">
+          <h2 class="text-xl md:text-2xl font-bold text-white">Certifications</h2>
+          <a href="/education#certifications" class="text-xs md:text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
+            View all →
+          </a>
+        </div>
+        
+        <div class="timeline-container">
+          <div class="timeline-line"></div>
+          
+          {certifications.map((cert) => (
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <a href={`/education/certifications/${cert.title.toLowerCase().replace(/\s+/g, '-')}`} class="timeline-content glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
+                <div class="text-[#3be9d1] text-sm font-medium uppercase tracking-wider mb-2">
+                  {cert.date}
+                </div>
+                
+                <h3 class="text-lg font-semibold text-white">{cert.title}</h3>
+                <p class="text-white/80 mb-2">{cert.institution}</p>
+                
+                <p class="text-white/70 text-sm line-clamp-2 mb-2">{cert.description}</p>
             </a>
           </div>
-          <ul class="space-y-4">
-            {projects.map((project) => (
-              <li>
-                <ArrowCard entry={project} />
-              </li>
             ))}
-          </ul>
         </div>
       </section>
 
-      <!-- Contact Section -->
-      <section class="animate">
-        <div>
-          <p class="font-semibold text-black dark:text-white">
-            Let's Connect
-          </p>
-          <p>
-            Reach out to me via email or on social media.
-          </p>
-          <div class="grid grid-cols-4 gap-y-2 mt-4 auto-cols-min">
-            {SOCIALS.map(social => (
-              <div class="col-span-1 flex items-center gap-1">
-                <span class="whitespace-nowrap truncate">
-                  {social.NAME}
+      <!-- Skills Section -->
+      <section class="mb-8 md:mb-12">
+        <div class="flex justify-between items-baseline mb-4 md:mb-6">
+          <h2 class="text-xl md:text-2xl font-bold text-white">Skills & Tools</h2>
+          <a href="/education#skills" class="text-xs md:text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
+            View all →
+          </a>
+              </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+          {skillsData.map((skill) => (
+            <div class="glass-effect rounded-lg p-5">
+              <h3 class="text-lg font-semibold text-white mb-3">{skill.category}</h3>
+              
+              <div class="flex flex-wrap gap-2">
+                {skill.tools.map((tool) => (
+                  <span class="inline-flex items-center px-3 py-1 bg-[#3be9d1]/10 
+                        rounded-full text-sm text-[#3be9d1] transition-colors">
+                    {tool}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+      
+      <!-- Academic Writing Section -->
+      <section class="mb-8 md:mb-12">
+        <div class="flex justify-between items-baseline mb-4 md:mb-6">
+          <h2 class="text-xl md:text-2xl font-bold text-white">Academic Writing</h2>
+          <a href="/blog#academic" class="text-xs md:text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
+            View all →
+          </a>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          {academicPosts.map((post) => (
+            <a href={`/blog/${post.slug}`} class="glass-effect rounded-lg p-5 block transition-all duration-300 hover:translate-y-[-5px]">
+              <div class="mb-2 flex items-center justify-between">
+                <span class="text-xs text-[#3be9d1]">{formatDate(post.data.date)}</span>
+                <span class="px-2 py-0.5 bg-[#3be9d1]/10 rounded-full text-xs text-[#3be9d1]/90">
+                  {post.data.tags[0]}
                 </span>
               </div>
-              <div class="col-span-3 truncate">
-                <a href={social.HREF} target="_blank" class="w-fit col-span-3 group flex gap-1 items-center underline decoration-[.5px] decoration-black/25 dark:decoration-white/50 hover:decoration-black dark:hover:decoration-white text-black dark:text-white underline-offset-2 blend">
-                  <span class="text-black/75 dark:text-white/75 group-hover:text-black group-hover:dark:text-white blend">
-                    {social.TEXT}
-                  </span>
-                </a>
-              </div>
+              <h3 class="text-lg font-medium text-white mb-2">{post.data.title}</h3>
+              <p class="text-white/60 text-sm line-clamp-2 mb-2">{post.data.summary}</p>
+              <span class="text-xs text-[#3be9d1] hover:underline">Read paper →</span>
+            </a>
             ))}
         </div>
+      </section>
+      
+      <!-- Projects Section -->
+      <section class="mb-8 md:mb-12">
+        <div class="flex justify-between items-baseline mb-4 md:mb-6">
+          <h2 class="text-xl md:text-2xl font-bold text-white">Projects</h2>
+          <a href="/projects" class="text-xs md:text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
+            View all →
+          </a>
+        </div>
+        
+        <a href={`/projects/${towerOfBabelProject.slug}`} class="glass-effect rounded-lg p-5 block hover:shadow-md transition-all duration-300 hover:translate-y-[-5px]">
+          <div class="mb-2 flex items-center justify-between">
+            <span class="text-xs text-white/60">{formatDate(towerOfBabelProject.data.date)}</span>
+            <span class="px-2 py-0.5 bg-[#3be9d1]/10 rounded-full text-xs text-[#3be9d1]/90">
+              {towerOfBabelProject.data.category}
+            </span>
+          </div>
+          <h3 class="text-xl font-medium text-white mb-1">{towerOfBabelProject.data.title}</h3>
+          <p class="text-sm text-white/70 mb-1">{towerOfBabelProject.data.client}</p>
+          <p class="text-sm text-white/60 mb-4">{towerOfBabelProject.data.summary}</p>
+          <div class="flex flex-wrap gap-1 mb-2">
+            {towerOfBabelProject.data.tags.map((tag: string) => (
+              <span class="px-2 py-0.5 bg-white/5 rounded-full text-xs text-white/70">{tag}</span>
+            ))}
+          </div>
+          <span class="text-sm text-[#3be9d1] hover:underline">View project details →</span>
+        </a>
       </section>
     </div>
   </div>
 </PageLayout>
+
+<style>
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+  .card-hover-effect {
+    transition: all 0.3s ease;
+  }
+  .card-hover-effect:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* Updated glass effect for dark background */
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+</style>
