@@ -40,7 +40,6 @@ const universityDegree = {
     date: new Date("2024-08-23"),
     type: "degree",
     description: "Five-year integrated law degree",
-    tags: ["Constitutional Law", "IP Law", "Corporate Law", "Legal Research"]
   }
 };
 
@@ -80,9 +79,9 @@ const internships = internshipsFromCollection.length > 0 ? internshipsFromCollec
     data: {
       company: "Jus Scriptum Law Review",
       role: "Legal Research Intern",
-      dateStart: new Date("2024-05-01"),
-      dateEnd: new Date("2024-08-01"),
-      description: "Conducted legal research for peer-reviewed journal articles and assisted with case law analysis for publication."
+      dateStart: new Date("2024-12-01"),
+      dateEnd: new Date("2025-01-15"),
+      description: " Conducted research and authored articles on contemporary legal issues, particularly within constitutional and IP frameworks."
     }
   },
   {
@@ -90,9 +89,9 @@ const internships = internshipsFromCollection.length > 0 ? internshipsFromCollec
     data: {
       company: "Jus Corpus Legal Services",
       role: "Legal Intern",
-      dateStart: new Date("2024-12-01"),
-      dateEnd: "Present",
-      description: "Assisting with legal research, case preparation, and client communications at a boutique law firm specializing in intellectual property matters."
+      dateStart: new Date("2025-02-01"),
+      dateEnd: new Date("2025-03-01"),
+      description: "Drafted concise legal commentaries and case law summaries for online publication."
     }
   }
 ];
@@ -115,10 +114,9 @@ const committees = committeesFromCollection.length > 0 ? committeesFromCollectio
     slug: "journal-and-seminar-committee",
     data: {
       company: "Department of Law, University of Calcutta",
-      role: "Member, Journal and Seminar Committee",
-      dateStart: new Date("2024-08-01"),
-      dateEnd: "Present",
-      description: "Contributing to the organization of academic seminars, workshops, and the publication of the department's legal journal."
+      role: "General Member",
+      dateStart: new Date("2025-01-04"),
+      dateEnd: "Present"
     }
   }
 ];
@@ -130,7 +128,7 @@ const extracurricular = [
     organizer: "Journal and Seminar Committee, UC Law",
     role: "Participant",
     date: "Dec 2024",
-    description: "Participated in the national-level legal writing competition focused on contemporary legal issues.",
+    description: "Participated in the national-level legal writing competition focused on Business and Company Law.",
     slug: "3rd-national-article-writing-competition"
   },
   {
@@ -138,8 +136,16 @@ const extracurricular = [
     organizer: "Lloyd Law College, India",
     role: "Mediator",
     date: "Mar 2025",
-    description: "Served as a mediator in this prestigious international competition, applying ADR principles in simulated dispute scenarios.",
+    description: "Served as a mediator in this international competition, applying ADR principles in simulated dispute scenarios.",
     slug: "skmmimnc-6-international-mediation-competition"
+  }
+   {
+    title: "Article Writing Competition (2025 Edition)",
+    organizer: "NUJS IPLTS in collaboration with The Dialogue",
+    role: "Participant",
+    date: "May 2025",
+    description: "Aiming to submit a research article on intellectual property rights in the digital age.",
+    slug: "nujs-iplts-article-competition"
   }
 ];
 
@@ -148,9 +154,9 @@ const towerOfBabelProject = {
   slug: "tower-of-babel",
   data: {
     title: "Tower of Babel",
-    summary: "A web development project focused on creating a multilingual communication platform that breaks down language barriers in real-time digital conversations.",
+    summary: "Tower of Babel is a internal organisation platform that assists web comics/novel creators/publishers by automating chapter organisation, providing an in-program editing, and using LLM based context banks to auto-generate editable glossaries. It also features numerous other project management and export options.",
     date: new Date("2024-01-01"),
-    tags: ["React", "NodeJS", "MongoDB", "WebSockets"],
+    tags: ["JavaScript", "Vite", "NodeJS", "NLP"],
     client: "Personal Project",
     category: "Development",
     description: "The Tower of Babel project is a multilingual communication platform designed to break down language barriers in real-time digital conversations. It leverages advanced machine learning models for translation."
@@ -206,7 +212,7 @@ function formatDate(date: Date | string) {
 }
 
 // Define a position label
-const positionLabel = "Law Student & Operations Professional";
+const positionLabel = "Law Student & System Analytics Enthusiast";
 ---
 
 <PageLayout title={SITE.TITLE} description={SITE.DESCRIPTION}>
@@ -224,9 +230,7 @@ const positionLabel = "Law Student & Operations Professional";
           </h2>
           
           <p class="text-white/80 text-sm md:text-base">
-            B.A. LL.B. (Hons.) student at the University of Calcutta, specializing in intellectual property rights, 
-            mergers & acquisitions, and finance law. Passionate about bridging traditional legal frameworks with 
-            emerging technologies and business models.
+            I am a first-year law student with developing interests in IP Rights, ADR, Business Law, and interdisciplinary systems. I am passionate about System Analytics, mainly learning, analyzing, and designing systems, especially in the fields of law, tech, finance, and business. Since childhood, I’ve been involved in the creative fields, as well as the scientific fields, especially technology. I now hope to learn and gain experience in the fields to law, policy, and adr.
           </p>
   </div>
       </section>
@@ -234,7 +238,7 @@ const positionLabel = "Law Student & Operations Professional";
       <!-- Professional Experience Section -->
       <section class="mb-8 md:mb-12">
         <div class="flex justify-between items-baseline mb-4 md:mb-6">
-          <h2 class="text-xl md:text-2xl font-bold text-white">Professional Experience</h2>
+          <h2 class="text-xl md:text-2xl font-bold text-white">Experience</h2>
           <a href="/work#professional" class="text-xs md:text-sm text-[#3be9d1] hover:text-[#3be9d1]/80 transition-colors">
             View all →
           </a>

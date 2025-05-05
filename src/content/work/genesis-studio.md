@@ -5,7 +5,7 @@ dateStart: "10/01/2024"
 dateEnd: "Now"
 ---
 
-Genesis Studio is an international digital content company focused on the production and localization of web novels, comics, and multimedia storytelling. The studio brings together translators, editors, designers, and developers across continents to create high-quality serialized fiction.
+Genesis Studio is a US based digital content company focused on the production and localization of web novels, comics, and multimedia storytelling. The studio brings together translators, editors, designers, and developers across continents to create high-quality serialized fiction.
 
 - Oversee cross-functional operations for a globally distributed team of 40+ members.
 - Supervise internal workflows across editorial, translation, IT, and HR departments.

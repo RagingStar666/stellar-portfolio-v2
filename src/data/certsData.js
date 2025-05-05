@@ -1,9 +1,9 @@
 export const certsData = [
   {
-    title: "Intellectual Property Rights & Management",
+    title: "Certificate Course on Contract Drafting",
     description: "Certificate Course from Kalinga University, Chhattisgarh",
     image: "/placeholder-image.svg",
-    link: "/projects/ip-certificate",
+    link: "/projects/contract-drafting",
     date: "Aug - Sept 2023",
     featured: true
   },
@@ -19,7 +19,7 @@ export const certsData = [
     title: "Intellectual Property Law Specialization",
     description: "University of Pennsylvania (via Coursera)",
     image: "/placeholder-image.svg",
-    link: "#",
+    link: "/projects/ip-certificate",
     date: "2025 (In Progress)",
     featured: true
   }
