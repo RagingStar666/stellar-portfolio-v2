@@ -35,11 +35,11 @@ type BlogEntry = {
 const universityDegree = {
   slug: "university-of-calcutta",
   data: {
-    title: "B.A. LL.B. (Hons.)",
+    title: "B.A. LL.B.",
     institution: "University of Calcutta",
-    date: new Date("2024-06-01"),
+    date: new Date("2024-08-23"),
     type: "degree",
-    description: "Five-year integrated law degree with focus on intellectual property and business law.",
+    description: "Five-year integrated law degree",
     tags: ["Constitutional Law", "IP Law", "Corporate Law", "Legal Research"]
   }
 };
@@ -62,7 +62,6 @@ const professionalExperience = allWork
   })
   .slice(0, 2);
 
-// Create placeholder internships if none exist in the collection
 const internshipsFromCollection = allWork
   .filter(work => 
     work.data.role.toLowerCase().includes('intern') || 
@@ -75,7 +74,6 @@ const internshipsFromCollection = allWork
   })
   .slice(0, 2);
 
-// Create placeholder internships if none exist
 const internships = internshipsFromCollection.length > 0 ? internshipsFromCollection : [
   {
     slug: "jus-scriptum",
@@ -99,7 +97,6 @@ const internships = internshipsFromCollection.length > 0 ? internshipsFromCollec
   }
 ];
 
-// Create placeholder committees if none exist in the collection
 const committeesFromCollection = allWork
   .filter(work => 
     work.data.role.toLowerCase().includes('committee') || 

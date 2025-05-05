@@ -6,10 +6,12 @@ const subpath = pathname.match(/[^/]+/g)
 import Container from "@components/Container.astro"
 ---
 
-<header id="header" class="fixed top-0 w-full h-16 z-50 bg-transparent dark:bg-transparent transition-colors duration-300 ease-in-out backdrop-blur-sm">
+<header id="header" class="fixed top-0 w-full z-50 bg-transparent dark:bg-transparent transition-colors duration-300 ease-in-out backdrop-blur-sm">
   <Container size="md">
-    <div class="relative h-full w-full">
-      <div class="absolute left-0 top-1/2 -translate-y-1/2 flex gap-1 font-semibold">
+    <!-- First row: Logo and action buttons -->
+    <div class="flex justify-between items-center h-16 w-full">
+      <!-- Logo -->
+      <div class="flex-shrink-0 flex gap-1 font-semibold">
         <a href="/" class="flex gap-1 text-[#3a3a3a] dark:text-white hover:text-[#d8936a] dark:hover:text-[#3be9d1] transition-colors duration-300 ease-in-out">
           <svg class="size-6 stroke-current" width="24" height="24">
             <use href="/brand.svg#brand"></use>
@@ -17,7 +19,27 @@ import Container from "@components/Container.astro"
         </a>
       </div>
 
-    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+      <!-- Buttons -->
+      <div class="flex-shrink-0 flex gap-1">
+        <a href="/search" aria-label={`Search blog posts and projects on ${SITE.TITLE}`} class={cn("flex", "size-9 rounded-full p-2 items-center justify-center", "bg-transparent hover:bg-[#d8936a]/20 dark:hover:bg-[#3be9d1]/20", "stroke-[#3a3a3a] hover:stroke-[#d8936a] dark:stroke-white dark:hover:stroke-[#3be9d1]", "border border-[#3a3a3a]/10 dark:border-white/10", "transition-colors duration-300 ease-in-out", pathname === "/search" || "/" + subpath?.[0] === "/search" ? "pointer-events-none bg-[#d8936a] dark:bg-[#3be9d1] stroke-white dark:stroke-black" : "")}>
+          <svg class="size-full">
+            <use href="/ui.svg#search"></use>
+          </svg>
+        </a>
+
+        <button id="theme-toggle" aria-label={`Toggle light and dark theme`} class={cn("flex", "size-9 rounded-full p-2 items-center justify-center", "bg-transparent hover:bg-[#d8936a]/20 dark:hover:bg-[#3be9d1]/20", "stroke-[#3a3a3a] hover:stroke-[#d8936a] dark:stroke-white dark:hover:stroke-[#3be9d1]", "border border-[#3a3a3a]/10 dark:border-white/10", "transition-colors duration-300 ease-in-out")}>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 dark:hidden" viewBox="0 0 24 24" stroke="currentColor" fill="none">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 hidden dark:block" viewBox="0 0 24 24" stroke="currentColor" fill="none">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Second row: Navigation (centered on desktop, full-width on mobile) -->
+    <div class="md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 pb-2 md:pb-0">
       <nav class="flex items-center justify-center text-xs sm:text-sm gap-0.5 sm:gap-1 overflow-x-auto max-w-full">
         {
           LINKS.map((LINK) => (
@@ -28,28 +50,17 @@ import Container from "@components/Container.astro"
         }
       </nav>
     </div>
-
-    <div class="buttons absolute right-0 top-1/2 -translate-y-1/2 flex gap-1">
-      <a href="/search" aria-label={`Search blog posts and projects on ${SITE.TITLE}`} class={cn("flex", "size-9 rounded-full p-2 items-center justify-center", "bg-transparent hover:bg-[#d8936a]/20 dark:hover:bg-[#3be9d1]/20", "stroke-[#3a3a3a] hover:stroke-[#d8936a] dark:stroke-white dark:hover:stroke-[#3be9d1]", "border border-[#3a3a3a]/10 dark:border-white/10", "transition-colors duration-300 ease-in-out", pathname === "/search" || "/" + subpath?.[0] === "/search" ? "pointer-events-none bg-[#d8936a] dark:bg-[#3be9d1] stroke-white dark:stroke-black" : "")}>
-        <svg class="size-full">
-          <use href="/ui.svg#search"></use>
-        </svg>
-      </a>
-
-      <button id="theme-toggle" aria-label={`Toggle light and dark theme`} class={cn("flex", "size-9 rounded-full p-2 items-center justify-center", "bg-transparent hover:bg-[#d8936a]/20 dark:hover:bg-[#3be9d1]/20", "stroke-[#3a3a3a] hover:stroke-[#d8936a] dark:stroke-white dark:hover:stroke-[#3be9d1]", "border border-[#3a3a3a]/10 dark:border-white/10", "transition-colors duration-300 ease-in-out")}>
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 dark:hidden" viewBox="0 0 24 24" stroke="currentColor" fill="none">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-        </svg>
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 hidden dark:block" viewBox="0 0 24 24" stroke="currentColor" fill="none">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-        </svg>
-      </button>
-    </div>
-  </div>
   </Container>
 </header>
 
 <style>
+  /* Additional top margin for page content to account for two-row header on mobile */
+  @media (max-width: 768px) {
+    :global(main) {
+      margin-top: 1.75rem;
+    }
+  }
+
   .bg-midnight-blue {
     background-color: #0d1b2a;
   }

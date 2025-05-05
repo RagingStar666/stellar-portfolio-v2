@@ -3,7 +3,7 @@ import type { Site, Page, Links, Socials } from "@types"
 // Global
 export const SITE: Site = {
   TITLE: "Prodipta Roy",
-  DESCRIPTION: "B.A. LL.B. (Hons.) student specializing in Intellectual Property Rights, Alternative Dispute Resolution, and Business Law",
+  DESCRIPTION: "B.A. LL.B. student passionate about Intellectual Property Rights, Alternative Dispute Resolution, and Business Law",
   AUTHOR: "Prodipta Roy",
 }
 
